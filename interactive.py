@@ -56,3 +56,39 @@ my_data[ids[1]] = Node(ids[1], parent=my_data[ids[0]])
 for pre, fill, node in RenderTree(my_data[ids[0]]):
     print("%s%s" % (pre, node.name))
 
+#%%
+from cog.torque import Graph
+from cog import config
+
+config.COG_HOME="archi_external-use"
+config.COG_PATH_PREFIX="."
+
+g = Graph("cool")
+
+
+g.put("alice","composed of","bob")
+g.put("bob","composed of","fred")
+g.put("bob","status","cool_person")
+g.put("charlie","serves","bob")
+g.put("charlie","composed of","dani")
+g.put("dani","follows","bob")
+g.put("dani","follows","greg")
+g.put("dani","status","cool_person")
+g.put("emily","composed of","fred")
+g.put("fred","follows","greg")
+g.put("greg","status","cool_person")
+g.put("bob","score","5")
+g.put("greg","score","10")
+g.put("alice","score","7")
+g.put("dani","score","100")
+
+
+g.v("bob").tag("from").out(["status", "composed of"]).tag("to").view(["status", "composed of"]).render()
+# g.v().has("status", 'cool_person').all()
+# g.v().has("follows", "fred").inc().all('e')
+#g.v("alice").out().count()
+g.v("bob").tag("from").out(["status", "composed of"]).tag("to").view(["status", "composed of"])
+g.v("bob").tag("from").out(["status", "composed of"]).tag("to").all('e')
+
+
+
