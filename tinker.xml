@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model xmlns="http://www.opengroup.org/xsd/archimate/3.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengroup.org/xsd/archimate/3.0/ http://www.opengroup.org/xsd/archimate/3.1/archimate3_Diagram.xsd" identifier="id-ca511faf1c904f9981a2af65e3943a6d">
+  <name xml:lang="en">tinker</name>
+  <elements>
+    <element identifier="id-1d4cb2202a604caa880e9e2f42df8996" xsi:type="ApplicationComponent">
+      <name xml:lang="en">Application Component</name>
+    </element>
+    <element identifier="id-e7ba459f108a4c62804e8e2ac83d25bd" xsi:type="ApplicationFunction">
+      <name xml:lang="en">Application Function</name>
+    </element>
+  </elements>
+  <relationships>
+    <relationship identifier="id-f533caf4d495490796da71dd11145385" source="id-1d4cb2202a604caa880e9e2f42df8996" target="id-e7ba459f108a4c62804e8e2ac83d25bd" xsi:type="Assignment" />
+  </relationships>
+  <organizations>
+    <item>
+      <label xml:lang="en">Application</label>
+      <item identifierRef="id-1d4cb2202a604caa880e9e2f42df8996" />
+      <item identifierRef="id-e7ba459f108a4c62804e8e2ac83d25bd" />
+    </item>
+    <item>
+      <label xml:lang="en">Relations</label>
+      <item identifierRef="id-f533caf4d495490796da71dd11145385" />
+    </item>
+    <item>
+      <label xml:lang="en">Views</label>
+      <item identifierRef="id-2683cb1d748a40148dba0ca693063c60" />
+    </item>
+  </organizations>
+  <views>
+    <diagrams>
+      <view identifier="id-2683cb1d748a40148dba0ca693063c60" xsi:type="Diagram">
+        <name xml:lang="en">view1</name>
+        <node identifier="id-0a7141002af64a7ab69fba02ff5ca301" elementRef="id-1d4cb2202a604caa880e9e2f42df8996" xsi:type="Element" x="858" y="273" w="120" h="55">
+          <style>
+            <fillColor r="181" g="255" b="255" a="100" />
+            <lineColor r="92" g="92" b="92" a="100" />
+            <font name="Sans" size="9">
+              <color r="0" g="0" b="0" />
+            </font>
+          </style>
+        </node>
+        <node identifier="id-8f9c2c66eed14037891c1bba98cfffb8" elementRef="id-e7ba459f108a4c62804e8e2ac83d25bd" xsi:type="Element" x="684" y="273" w="120" h="55">
+          <style>
+            <fillColor r="181" g="255" b="255" a="100" />
+            <lineColor r="92" g="92" b="92" a="100" />
+            <font name="Sans" size="9">
+              <color r="0" g="0" b="0" />
+            </font>
+          </style>
+        </node>
+        <node identifier="id-ef429ba838d042da8bd9da7b7f25496d" xsi:type="Label" x="885" y="153" w="185" h="80">
+          <label xml:lang="en">my note</label>
+          <style>
+            <fillColor r="255" g="255" b="255" a="100" />
+            <lineColor r="92" g="92" b="92" a="100" />
+            <font name="Sans" size="9">
+              <color r="0" g="0" b="0" />
+            </font>
+          </style>
+        </node>
+        <connection identifier="id-8694941da3db4eaa9b49b449613c5cad" relationshipRef="id-f533caf4d495490796da71dd11145385" xsi:type="Relationship" source="id-0a7141002af64a7ab69fba02ff5ca301" target="id-8f9c2c66eed14037891c1bba98cfffb8">
+          <style>
+            <lineColor r="0" g="0" b="0" />
+            <font name="Sans" size="9">
+              <color r="0" g="0" b="0" />
+            </font>
+          </style>
+        </connection>
+        <connection identifier="id-fcc38a89d0fb414ca257a465d09e8646" xsi:type="Line" source="id-ef429ba838d042da8bd9da7b7f25496d" target="id-0a7141002af64a7ab69fba02ff5ca301">
+          <style>
+            <lineColor r="0" g="0" b="0" />
+            <font name="Sans" size="9">
+              <color r="0" g="0" b="0" />
+            </font>
+          </style>
+        </connection>
+      </view>
+    </diagrams>
+  </views>
+</model>
