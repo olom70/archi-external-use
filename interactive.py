@@ -1,24 +1,15 @@
 #%%
-import xml.etree.ElementTree as ET
-with open('tinker.xml', encoding='utf-8') as xmltoanalyse:
-    data = xmltoanalyse.read()
-    # is it an xml file ?
-    if data[0:5] == '<?xml':
-        root = ET.fromstring(data)
-        # for myelement in root:
-        #     print(myelement.tag)
-        for e in root.iter("{http://www.opengroup.org/xsd/archimate/3.0/}element"):
-            print(e.items())
-            myname = e.findall("{http://www.opengroup.org/xsd/archimate/3.0/}name")
-            print(myname)
-#%%
-from xml.dom import minidom
+from xml.dom import minidom, Node
+from xml.dom.expatbuilder import TEXT_NODE
 with open('tinker.xml', encoding='utf-8') as xmltoanalyse:
     dom = minidom.parse(xmltoanalyse)
 model = dom.childNodes[0]
 topnodes = model.childNodes
 for a in topnodes:
-    if a.nodeType == 1:
+    if a.nodeType == Node.TEXT_NODE:
+        print("(textnode)" + a.nodeName)
+        print(a.data)
+    if a.nodeType == Node.ELEMENT_NODE:
         print('nodeName : ', a.nodeName)
         print('nodeValue : ', a.nodeValue)
         print('localName : ', a.localName)
@@ -26,14 +17,61 @@ for a in topnodes:
         print('attributes : ', a.attributes)
         print(a.attributes.length)
         if a.attributes.length > 0:
-            print(a.attributes.item(0).nodeName)
+            print("attribute :"+a.attributes.item(0).localName)
 
         for s in a.childNodes:
-            if s.nodeType == 1:
+            if s.nodeType == Node.ELEMENT_NODE:
                 print('s-nodeName : ', s.nodeName)
                 if s.attributes.length > 0:
                     print(s.attributes.item(0).nodeName)
                     print(s.getAttribute('xsi:type'))
+#%%
+from xml.dom import minidom, Node
+
+Nodes = ['element', 'name', 'documentation' 'relationship']
+Attributes = [['identifier', 'xsi:type'], [], [], ['identifier', 'source', 'target']]
+Value = [False, True, True, False]
+
+with open('tinker.xml', encoding='utf-8') as xmltoanalyse:
+    doc = minidom.parse(xmltoanalyse)
+
+name = doc.getElementsByTagName("name")[0]
+print(name.firstChild.data)
+
+def printNode(node: Node):
+    print(f'name : {node.tagName}, value : {node.firstChild.data}')
+
+def printAttribute(node):
+    print(f'name : {node.localName}, value : {node.value}')
+
+
+def walk(listOfNodes):
+    for child in listOfNodes:
+        if child.nodeType == Node.ELEMENT_NODE:
+            printNode(child)
+            if child.hasAttributes():
+                if child.nodeName == 'element':
+                    print(child.getAttribute('identifier'))
+
+        if child.hasChildNodes():
+            walk(child.childNodes)
+        
+
+
+walk(doc.getElementsByTagName("element"))
+
+# elements = doc.getElementsByTagName("element")
+# for element in elements:
+#     print(f"id : {element.getAttribute('identifier')}, type {element.getAttribute('xsi:type')}")
+#     name = element.getElementsByTagName("name")[0]
+#     print(name.firstChild.data)
+#     childs = element.childNodes
+#     for child in childs:
+#         if child.nodeType == Node.ELEMENT_NODE:
+#             print(f'type : {child.nodeType}, {child.tagName}, {child.firstChild.data}')
+    
+
+
 #%%
 from anytree import Node, RenderTree
 import uuid
