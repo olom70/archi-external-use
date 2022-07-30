@@ -28,9 +28,64 @@ for a in topnodes:
 #%%
 from xml.dom import minidom, Node
 
-Nodes = ['element', 'name', 'documentation' 'relationship']
-Attributes = [['identifier', 'xsi:type'], [], [], ['identifier', 'source', 'target']]
-Value = [False, True, True, False]
+NODELIST = ('element', 'relationship')
+
+NODES = (
+            ('element', #1
+                'name', #2
+                'documentation', #3
+                'propertyDefinitionRef', #4
+                'name'),
+            ('relationship', #1
+                'name'),
+)
+
+GETFROMTHESENODES = (
+                        ('attr', #1
+                        'firstChild.data', #2
+                        'firstChild.data', #3
+                        'attr', #4
+                        'firstChild.data'),
+                        ('attr', #1
+                        'firstChild.data')
+)
+
+PARENTSOFTHESENODES = (
+                        ('elements', #1
+                        'element', #2
+                        'element', #3
+                        'properties', #4
+                        'property'),
+                        ('relationships', #1
+                        'relationship')
+)
+
+ATTRIBUTESOFTHESENODES = (
+                            (['identifier', 'xsi:type'], #1
+                            [], #2
+                            [], #3
+                            ['value'], #4
+                            []),
+                            (['identifier', 'source', 'target'], #1
+                            [])
+)
+
+
+def printNode(node: Node):
+    if node.hasChildNodes():
+        print(f'parent : {node.parentNode.localName}, node name : {node.localName}, value : {node.firstChild.data}')
+
+def printAttribute(node: Node):
+    '''
+    https://linux.die.net/diveintopython/html/xml_processing/attributes.html
+    '''
+    if node.hasAttributes():
+        map = node.attributes
+        for key in map.keys():
+            print(f'parent : {node.parentNode.localName}, attr name :  {map[key].localName}, value : {map[key].value}')
+
+
+
 
 with open('tinker.xml', encoding='utf-8') as xmltoanalyse:
     doc = minidom.parse(xmltoanalyse)
@@ -38,37 +93,29 @@ with open('tinker.xml', encoding='utf-8') as xmltoanalyse:
 name = doc.getElementsByTagName("name")[0]
 print(name.firstChild.data)
 
-def printNode(node: Node):
-    print(f'name : {node.tagName}, value : {node.firstChild.data}')
 
-def printAttribute(node):
-    print(f'name : {node.localName}, value : {node.value}')
+
 
 
 def walk(listOfNodes):
+    '''
+        get a list of Nodes and walk the tree of each element of that list
+
+    '''
     for child in listOfNodes:
         if child.nodeType == Node.ELEMENT_NODE:
             printNode(child)
-            if child.hasAttributes():
-                if child.nodeName == 'element':
-                    print(child.getAttribute('identifier'))
-
+            printAttribute(child)
         if child.hasChildNodes():
             walk(child.childNodes)
         
 
 
-walk(doc.getElementsByTagName("element"))
+for e, i in zip(NODELIST, range(0, len(NODELIST))):
+    print(f'+++++++++++++++++++++++++++ {i} ++++++++++++++++++++')
+    walk(doc.getElementsByTagName(e))
+    
 
-# elements = doc.getElementsByTagName("element")
-# for element in elements:
-#     print(f"id : {element.getAttribute('identifier')}, type {element.getAttribute('xsi:type')}")
-#     name = element.getElementsByTagName("name")[0]
-#     print(name.firstChild.data)
-#     childs = element.childNodes
-#     for child in childs:
-#         if child.nodeType == Node.ELEMENT_NODE:
-#             print(f'type : {child.nodeType}, {child.tagName}, {child.firstChild.data}')
     
 
 

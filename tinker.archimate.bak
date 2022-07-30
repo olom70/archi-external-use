@@ -68,7 +68,7 @@
     <element xsi:type="archimate:CompositionRelationship" id="id-bf210675f24d41958657463fecf45272" source="id-7c03fad9d29944bfb822f32e31eb60b6" target="id-053fa1a298544b429656d9f8f49bd0ed"/>
   </folder>
   <folder name="Views" id="id-b36ca452468446bb80d96bf6ac2332f7" type="diagrams">
-    <element xsi:type="archimate:ArchimateDiagramModel" name="view1" id="id-2683cb1d748a40148dba0ca693063c60">
+    <element xsi:type="archimate:ArchimateDiagramModel" name="application layer" id="id-2683cb1d748a40148dba0ca693063c60">
       <child xsi:type="archimate:DiagramObject" id="id-8f9c2c66eed14037891c1bba98cfffb8" targetConnections="id-8694941da3db4eaa9b49b449613c5cad" font="1|Sans|9.0|0|WINDOWS|1|-22|0|0|0|400|0|0|0|0|3|2|1|34|Sans" fontColor="#000000" lineColor="#5c5c5c" fillColor="#b5ffff" archimateElement="id-e7ba459f108a4c62804e8e2ac83d25bd">
         <bounds x="672" y="273" width="120" height="55"/>
         <sourceConnection xsi:type="archimate:Connection" id="id-690bac5cb56e40b0ad95f672cdfeba22" source="id-8f9c2c66eed14037891c1bba98cfffb8" target="id-39f0a78df2bc4c36bfc6173deac84eb3" archimateRelationship="id-23a7d1fa38a94c698f5295ebaee087c7"/>
