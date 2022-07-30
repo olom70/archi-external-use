@@ -176,4 +176,16 @@ g.v("bob").tag("from").out(["status", "composed of"]).tag("to").view(["status", 
 g.v("bob").tag("from").out(["status", "composed of"]).tag("to").all('e')
 
 
+#%%
+NODES = (
+            ('element', #1
+                'name', #2
+                'documentation', #3
+                'propertyDefinitionRef', #4
+                'name'),
+            ('relationship', #1
+                'name'),
+)
 
+t = NODES[0]
+print(t)
