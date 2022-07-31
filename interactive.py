@@ -27,8 +27,9 @@ for a in topnodes:
                     print(s.getAttribute('xsi:type'))
 #%%
 from xml.dom import minidom, Node
+from enum import Enum
+import  archi.configarchi as configarchi
 
-NODELIST = ('element', 'relationship')
 
 NODES = (
             ('element', #1
@@ -39,6 +40,7 @@ NODES = (
             ('relationship', #1
                 'name'),
 )
+
 
 GETFROMTHESENODES = (
                         ('attr', #1
@@ -85,6 +87,9 @@ def printAttribute(node: Node):
             print(f'parent : {node.parentNode.localName}, attr name :  {map[key].localName}, value : {map[key].value}')
 
 
+def processNode(node: Node, knownNodes: list):
+    pass
+    
 
 
 with open('tinker.xml', encoding='utf-8') as xmltoanalyse:
@@ -94,10 +99,7 @@ name = doc.getElementsByTagName("name")[0]
 print(name.firstChild.data)
 
 
-
-
-
-def walk(listOfNodes):
+def walk(listOfNodes, knownNodes: list) -> None:
     '''
         get a list of Nodes and walk the tree of each element of that list
 
@@ -107,15 +109,13 @@ def walk(listOfNodes):
             printNode(child)
             printAttribute(child)
         if child.hasChildNodes():
-            walk(child.childNodes)
+            walk(child.childNodes, knownNodes)
         
 
 
-for e, i in zip(NODELIST, range(0, len(NODELIST))):
-    print(f'+++++++++++++++++++++++++++ {i} ++++++++++++++++++++')
-    walk(doc.getElementsByTagName(e))
+for e, i in zip(configarchi.NodeList, range(0, len(configarchi.NodeList))):
+    walk(doc.getElementsByTagName(e.value), NODES[i])
     
-
     
 
 
@@ -189,3 +189,16 @@ NODES = (
 
 t = NODES[0]
 print(t)
+#%%
+import archi.configarchi as config
+from archi.configarchi import KnownContent
+
+for i in config.NodeList:
+    print(i.value)
+
+print(len(config.NodeList))
+print(len(NODES))
+
+a = KnownContent()
+
+print(a.NODES)
