@@ -203,4 +203,3 @@ a = KnownContent()
 
 print(a.NODES)
 #%%
-print(len(l))
