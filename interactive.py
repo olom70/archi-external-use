@@ -113,7 +113,7 @@ def walk(listOfNodes, knownNodes: list) -> None:
         
 
 
-for e, i in zip(configarchi.NodeList, range(0, len(configarchi.NodeList))):
+for e, i in zip(configarchi.NodeType, range(0, len(configarchi.NodeType))):
     walk(doc.getElementsByTagName(e.value), NODES[i])
     
     
@@ -145,8 +145,8 @@ for pre, fill, node in RenderTree(my_data[ids[0]]):
 from cog.torque import Graph
 from cog import config
 
-config.COG_HOME="archi_external-use"
-config.COG_PATH_PREFIX="."
+conf.COG_HOME="archi_external-use"
+conf.COG_PATH_PREFIX="."
 
 g = Graph("cool")
 
@@ -190,15 +190,17 @@ NODES = (
 t = NODES[0]
 print(t)
 #%%
-import archi.configarchi as config
+import archi.configarchi as conf
 from archi.configarchi import KnownContent
 
-for i in config.NodeList:
+for i in conf.NodeType:
     print(i.value)
 
-print(len(config.NodeList))
+print(len(conf.NodeType))
 print(len(NODES))
 
 a = KnownContent()
 
 print(a.NODES)
+#%%
+print(len(l))

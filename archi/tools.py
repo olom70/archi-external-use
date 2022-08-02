@@ -1,7 +1,8 @@
 import os
 import logging
 import functools
-from xml.dom import minidom
+from xml.dom import minidom, Node
+import archi.configarchi as conf
 
 mlogger = logging.getLogger('archi-external-use.tools')
 
@@ -14,27 +15,92 @@ def log_function_call(func):
         return response
     return wrapper
 
+def processNodeAttributes(node: Node, content: conf.XMLContent) -> None:
+    mlogger.debug(f'function processNodeAttributes() : node received {node.localName}')
+    if node.hasAttributes():
+        i = content.NODES[content.indice].index(node.localName)
+        map = node.attributes
+        for key in map.keys():
+            if map[key].localName in content.ATTRIBUTESOFTHESENODES[i]:
+                print(f'parent : {node.parentNode.localName}, attr name :  {map[key].localName}, value : {map[key].value}')
+            else:
+                mlogger.warning(f'this attribute is unknown : {map[key].localName}, add it in ATTRIBUTESOFTHENODES in order to process it.')
+    else:
+        content.somethingWentWrong == True
+        mlogger.warning(f'node : {node.localName} has no attributes even tough the configuration says otherwise. check GETFROMTHODES')
+
+
+def processNodeValue(node: Node, content: conf.XMLContent) -> None:
+    mlogger.debug(f'function processNodeValue() : node received {node.localName}')
+    pass
+
+def processNode(node: Node, content: conf.XMLContent) -> None:
+    mlogger.debug(f'function processNode() : node received {node.localName}')
+    try:
+        i = content.NODES[content.indice].index(node.localName)
+        mlogger.debug(f'function processNode() : indice to seek into NODES : {i}')
+        if (node.parentNode.localName == content.PARENTSOFTHESENODES[i]):
+            # test juste pour vérifier que je suis bien au bon endroit de la hiérarchie
+            # et pas dans homonyme ailleurs
+            match content.GETFROMTHESENODES[i]:
+                case conf.ToGet.ATTR:
+                    processNodeAttributes(node, content)
+                case conf.ToGet.DATA.value:
+                    processNodeValue(node, content)
+        else:
+            mlogger.warning(f'unexpected parent : {node.parentNode.localName}, for node name : {node.localName}')
+    except BaseException as be:
+        mlogger.critical(f'Unexpected error in function processNode() : {type(be)}{be.args}')
+        content.somethingWentWrong = True        
+
+
 
 
 @log_function_call
-def read_model(fileToRead: str) -> tuple:
+def readModel(fileToRead: str) -> conf.XMLContent:
     '''
-        Read an archimate model (in "open exchange" format) and put
-        all elements, relationships in lists
+        Read an archimate model (in "open exchange" format)
+        feed the object XMLContent with what's read
     '''
-    elements = []
-    elementsNames = []
-    elementsDocumentation = []
-    elementsProperties = []
+
+    @log_function_call
+    def walk(listOfNodes, content: conf.XMLContent) -> None:
+        '''
+            get a list of Nodes and walk the tree of each element of that list
+
+        '''
+        for child in listOfNodes:
+            mlogger.debug(f'function walk() : current Node :  {child.localName}')
+            if child.nodeType == Node.ELEMENT_NODE:
+                processNode(child)
+            if not content.somethingWentWrong: # I stop walking if a node raise a problem
+                if child.hasChildNodes():
+                    walk(child.childNodes, content)
+            else:
+                mlogger.critical(f'Something went wrong in function walk() check the logs')
+
+
 
     try:
         with open(fileToRead, encoding='utf-8') as xmltoanalyse:
-            dom = minidom.parse(xmltoanalyse)
-        
+            doc = minidom.parse(xmltoanalyse)
+            mlogger.info(f'function read_model() : opening the file {fileToRead}')
+        modelName = doc.getElementsByTagName("name")[0].firstChild.data
+        content = conf.XMLContent(modelName=modelName)
 
 
-        return elements, elementsNames, elementsDocumentation, elementsProperties
+        for e, i in zip(conf.NodeType, range(0, len(conf.NodeType))):
+            mlogger.debug(f'function read_model() : processing the node type {conf.NodeType}')
+            mlogger.debug(f'function read_model() : known nodes given to walk() {content.NODES[i]}')
+            content.indice == i
+            walk(doc.getElementsByTagName(e.value), content)
+            if content.somethingWentWrong:
+                mlogger.critical(f'Something went wrong in function read_model() check the logs')
+                return None
+
+
+        return content
     except BaseException as be:
-        mlogger.critical(f'Unknown error in function read_model : {type(be)}{be.args}')
-        return None, None, None, None
+        mlogger.critical(f'Unexpected error in function read_model() : {type(be)}{be.args}')
+        return None
 
