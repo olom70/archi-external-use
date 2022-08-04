@@ -203,3 +203,52 @@ a = KnownContent()
 
 print(a.NODES)
 #%%
+
+class NodeType(Enum):
+    '''
+    list the nodes type to parse in the Archi file
+    '''
+    ELEMENT = 'element'
+    RELATIONSSHIP = 'relationship'
+
+class ToGet(Enum):
+    '''
+    ATTR to get the attributes of the node
+    DATA to get the value
+    '''
+    ATTR = 'attr'
+    DATA = 'firstChild.data'
+
+class ToStore(Enum):
+    '''
+    list the names of the attributtes or the name of the tag we want to collect for each node
+    '''
+    ID = 'identifier'
+    TYPE = 'xsi:type'
+    VALUE = 'value'
+    SOURCE = 'source'
+    TARGET = 'target'
+    PROPERTY = 'propertyDefinitionRef'
+
+allObjects = {NodeType.ELEMENT: [
+                                [ToStore.ID],
+                                [ToStore.TYPE],
+                                ['element-name.value'],
+                                ['element-documentation.value'],
+                                [{ToStore.PROPERTY: 'propertie.name.value'}]
+                            ],
+                            NodeType.RELATIONSSHIP: [
+                                [ToStore.ID],
+                                [ToStore.TYPE],
+                                ['relationship-name.value'],
+                                ['relationship-documentation.value'],
+                                [{ToStore.PROPERTY: 'propertie.name.value'}],
+                                [ToStore.SOURCE],
+                                [ToStore.TARGET]
+
+                            ]
+        }
+
+print(allObjects)
+allObjects[NodeType.ELEMENT.ELEMENT][0].append('****+++****')
+print(allObjects)

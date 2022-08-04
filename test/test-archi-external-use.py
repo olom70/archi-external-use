@@ -29,7 +29,7 @@ def main():
     xmlContent = tools.readModel(fileToRead)
     assert xmlContent.getAll()  is not None
     assert xmlContent.getNodes(conf.NodeType.ELEMENT.value)  is not None
-    assert xmlContent.getNodes(conf.NodeType.RELATIONSSHIPS.value)  is not None
+    assert xmlContent.getNodes(conf.NodeType.RELATIONSSHIP.value)  is not None
     allContent = xmlContent.getAll()
     assert 'id-1d4cb2202a604caa880e9e2f42df8996' in allContent[conf.NodeType.ELEMENT.value][conf.ElAttr.ID.value]
     indice = allContent[conf.NodeType.ELEMENT.value][conf.ElAttr.ID.value].index('id-1d4cb2202a604caa880e9e2f42df8996')
