@@ -252,3 +252,11 @@ allObjects = {NodeType.ELEMENT: [
 print(allObjects)
 allObjects[NodeType.ELEMENT.ELEMENT][0].append('****+++****')
 print(allObjects)
+#%%
+node = 'name'
+parent = 'property'
+match (node, parent):
+    case ('element', 'elements'):
+        print('element')
+    case ['name', ('property', 'element')]:
+        print('property')
