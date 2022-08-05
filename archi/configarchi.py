@@ -1,26 +1,29 @@
 from enum import IntEnum, Enum
 
-class ElAttr(IntEnum):
-    '''
-    List if all the known atributes for the Nodes of type 'element'
-    '''
-    ID = 0
-    TYPE = 1
-    NAME = 2
-    DOCUMENTATION = 3
-    PROPERTIES = 4
+# class ElAttr(IntEnum):
+#     '''
+#     List if all the known atributes for the Nodes of type 'element'
+#     '''
+#     ID = 0
+#     TYPE = 1
+#     NAME = 2
+#     DOCUMENTATION = 3
+#     PROPERTIES = 4
 
-class RelAttr(IntEnum):
-    '''
-    List if all the known atributes for the Nodes of type 'relationship'
-    '''
-    ID = 0
-    TYPE = 1
-    NAME = 2
-    DOCUMENTATION = 3
-    PROPERTIES = 4
-    SOURCE = 5
-    TARGET = 7
+# class RelAttr(IntEnum):
+#     '''
+#     List if all the known atributes for the Nodes of type 'relationship'
+#     '''
+#     ID = 0
+#     TYPE = 1
+#     NAME = 2
+#     DOCUMENTATION = 3
+#     PROPERTIES = 4
+#     SOURCE = 5
+#     TARGET = 7
+
+class QualifyName(Enum):
+    PROPERTYNAME = 'property'
 
 class NodeType(Enum):
     '''
@@ -43,7 +46,9 @@ class ToStore(Enum):
     '''
     ID = 'identifier'
     TYPE = 'xsi:type'
-    VALUE = 'value'
+    NAME = 'name'
+    DOCUMENTATION = 'documentation'
+    # VALUE = 'value'
     SOURCE = 'source'
     TARGET = 'target'
     PROPERTY = 'propertyDefinitionRef'
@@ -64,7 +69,7 @@ class XMLContent(object):
                 'name')
         }
         self.GETFROMTHESENODES = {NodeType.ELEMENT.value:
-                            (ToGet.ATTR.value, #1
+                                (ToGet.ATTR.value, #1
                             ToGet.DATA.value, #2
                             ToGet.DATA.value, #3
                             ToGet.ATTR.value, #4
@@ -74,7 +79,6 @@ class XMLContent(object):
                             ToGet.DATA.value, #3
                             ToGet.ATTR.value, #4
                             ToGet.DATA.value)
-
         }
 
         self.PARENTSOFTHESENODES = {NodeType.ELEMENT.value:
@@ -92,35 +96,37 @@ class XMLContent(object):
                                 )
         }
 
-        self.ATTRIBUTESOFTHESENODES = {NodeType.ELEMENT.value:
-                                    ([ToStore.ID, ToStore.TYPE], #1
-                                    [ToStore.VALUE], #2
-                                    [ToStore.VALUE], #3
-                                    [ToStore.PROPERTY], #4
-                                    [ToStore.VALUE]),
-                                    NodeType.RELATIONSSHIP.value:
-                                    ([ToStore.ID, ToStore.TYPE,ToStore.SOURCE, ToStore.TARGET], #1
-                                    [ToStore.VALUE], #2
-                                    [ToStore.VALUE], #3
-                                    [ToStore.PROPERTY], #4
-                                    [ToStore.VALUE])
-        }
+        # self.ATTRIBUTESOFTHESENODES = {NodeType.ELEMENT.value:
+        #                             ([ToStore.ID, ToStore.TYPE], #1
+        #                             [ToStore.VALUE], #2
+        #                             [ToStore.VALUE], #3
+        #                             [ToStore.PROPERTY], #4
+        #                             [ToStore.VALUE]),
+        #                             NodeType.RELATIONSSHIP.value:
+        #                             ([ToStore.ID, ToStore.TYPE,ToStore.SOURCE, ToStore.TARGET], #1
+        #                             [ToStore.VALUE], #2
+        #                             [ToStore.VALUE], #3
+        #                             [ToStore.PROPERTY], #4
+        #                             [ToStore.VALUE])
+        # }
   
 
         # allObjects holds everything. See documentation below
         self.allObjects = {NodeType.ELEMENT.value: [
                                 [ToStore.ID],
                                 [ToStore.TYPE],
-                                ['element-name.value'],
-                                ['element-documentation.value'],
-                                [{ToStore.PROPERTY: 'propertie.name.value'}]
+                                [ToStore.NAME],
+                                [ToStore.DOCUMENTATION],
+                                [ToStore.PROPERTY],
+                                [ToStore.NAME]
                             ],
                             NodeType.RELATIONSSHIP.value: [
                                 [ToStore.ID],
                                 [ToStore.TYPE],
-                                ['relationship-name.value'],
-                                ['relationship-documentation.value'],
-                                [{ToStore.PROPERTY: 'propertie.name.value'}],
+                                [ToStore.NAME],
+                                [ToStore.DOCUMENTATION],
+                                [ToStore.PROPERTY]
+                                [ToStore.NAME],
                                 [ToStore.SOURCE],
                                 [ToStore.TARGET]
 

@@ -3,6 +3,7 @@ import logging
 import functools
 from xml.dom import minidom, Node
 import archi.configarchi as conf
+from interactive import ToStore
 
 mlogger = logging.getLogger('archi-external-use.tools')
 
@@ -24,27 +25,38 @@ def processNodeAttributes(node: Node, content: conf.XMLContent) -> None:
             if map[key].localName in content.ToStore:
                 mlogger.debug(f'parent of the node : {node.parentNode.localName}, attr name :  {map[key].localName}, value : {map[key].value}')
                 match key:
-                    case conf.ToStore.ID:
+                    case conf.ToStore.ID.value:
                         content.allObjects[content.currentNodeType][0].append(map[key].value)
-                    case conf.ToStore.TYPE:
+                    case conf.ToStore.TYPE.value:
                         content.allObjects[content.currentNodeType][1].append(map[key].value)
-                    case conf.ToStore.SOURCE:
-                        content.allObjects[content.currentNodeType][5].append(map[key].value)
-                    case conf.ToStore.TARGET:
+                    case conf.ToStore.PROPERTY.value:
+                        content.allObjects[content.currentNodeType][4].append(map[key].value)
+                    case conf.ToStore.SOURCE.value:
                         content.allObjects[content.currentNodeType][6].append(map[key].value)
-                    case conf.ToStore.PROPERTY:
-                        content.allObjects[content.currentNodeType][4][map[key].value] == ''
-
+                    case conf.ToStore.TARGET.value:
+                        content.allObjects[content.currentNodeType][7].append(map[key].value)
             else:
                 mlogger.warning(f'this attribute is unknown : {map[key].localName}, add it in ATTRIBUTESOFTHENODES in order to process it.')
     else:
         content.somethingWentWrong == True
-        mlogger.warning(f'node : {node.localName} has no attributes even tough the configuration says otherwise. check GETFROMTHODES')
+        mlogger.warning(f'node : {node.localName} has no attributes even though the configuration says otherwise. check GETFROMTHODES')
 
 
 def processNodeValue(node: Node, content: conf.XMLContent) -> None:
-    mlogger.debug(f'function processNodeValue() : node received {node.localName}')
+    mlogger.debug(f'function processNodeValue() : node received {node.localName}. parent : {node.parentNode.localName}')
     if node.hasChildNodes():
+        i = content.NODES[content.currentNodeType].index(node.localName)
+        match (node.localName):
+            case (conf.ToStore.DOCUMENTATION.value):
+                content.allObjects[content.currentNodeType][3].append(node.firstChild.data)
+            case (conf.ToStore.NAME.value):
+                if (content.PARENTSOFTHESENODES[content.currentNodeType][i] == conf.QualifyName.PROPERTYNAME.value):
+                    content.allObjects[content.currentNodeType][5].append(node.firstChild.data)
+                else:
+                    content.allObjects[content.currentNodeType][2].append(node.firstChild.data)
+            case _:
+                mlogger.warning(f'This node is not parametized, set it up. Node name : {node.localName}. Parent : {node.parentNode.localName}')
+                
         print(f'parent : {node.parentNode.localName}, node name : {node.localName}, value : {node.firstChild.data}')
     else:
         content.somethingWentWrong == True
@@ -58,10 +70,8 @@ def processNode(node: Node, content: conf.XMLContent) -> None:
         i == content.NODES[content.currentNodeType].index(node.localName)
         mlogger.debug(f'function processNode() : indice to seek into NODES : {i}')
         if (node.parentNode.localName == content.PARENTSOFTHESENODES[content.currentNodeType][i]):
-            # test juste pour vérifier que je suis bien au bon endroit de la hiérarchie
-            # et pas dans homonyme ailleurs
             match content.GETFROMTHESENODES[content.currentNodeType][i]:
-                case conf.ToGet.ATTR:
+                case conf.ToGet.ATTR.value:
                     processNodeAttributes(node, content)
                 case conf.ToGet.DATA.value:
                     processNodeValue(node, content)
