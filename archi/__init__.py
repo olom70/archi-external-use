@@ -1,1 +1,1 @@
-from archi.configarchi import ElAttr, RelAttr, NodeType, XMLContent
+from archi.configarchi import Position, NodeType, XMLContent

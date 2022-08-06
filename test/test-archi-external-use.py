@@ -26,14 +26,14 @@ def main():
     logger.info('Start. Application is initializing')
     fileToRead = 'tinker.xml'
 
-    xmlContent = tools.readModel(fileToRead)
-    assert xmlContent.getAll()  is not None
-    assert xmlContent.getNodes(conf.NodeType.ELEMENT.value)  is not None
-    assert xmlContent.getNodes(conf.NodeType.RELATIONSSHIP.value)  is not None
-    allContent = xmlContent.getAll()
-    assert 'id-1d4cb2202a604caa880e9e2f42df8996' in allContent[conf.NodeType.ELEMENT.value][conf.ElAttr.ID.value]
-    indice = allContent[conf.NodeType.ELEMENT.value][conf.ElAttr.ID.value].index('id-1d4cb2202a604caa880e9e2f42df8996')
-    assert allContent[conf.NodeType.ELEMENT.value][conf.ElAttr.TYPE.value][indice] == 'ApplicationComponent'
+    content = tools.readModel(fileToRead)
+    assert content.getAll()  is not None
+    assert content.getNodes(conf.NodeType.ELEMENT)  is not None
+    assert content.getNodes(conf.NodeType.RELATIONSSHIP)  is not None
+    allContent = content.getAll()
+    assert 'id-1d4cb2202a604caa880e9e2f42df8996' in allContent[conf.NodeType.ELEMENT.value][conf.Position.ID.value]
+    indice = allContent[conf.NodeType.ELEMENT.value][conf.Position.ID.value].index('id-1d4cb2202a604caa880e9e2f42df8996')
+    assert allContent[conf.NodeType.ELEMENT.value][conf.Position.TYPE.value][indice] == 'ApplicationComponent'
 
 
 

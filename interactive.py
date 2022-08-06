@@ -260,3 +260,34 @@ match (node, parent):
         print('element')
     case ['name', ('property', 'element')]:
         print('property')
+#%%
+class ToStore(Enum):
+    '''
+    list the names of the attributtes or the name of the tag we want to collect for each node
+    '''
+    ID = 'identifier'
+    TYPE = 'xsi:type'
+    NAME = 'name'
+    DOCUMENTATION = 'documentation'
+    # VALUE = 'value'
+    SOURCE = 'source'
+    TARGET = 'target'
+    PROPERTY = 'propertyDefinitionRef'
+
+    @staticmethod
+    def list():
+        return list(map(lambda c: c.value, ToStore))
+
+key = 'identifier'
+if key in list(ToStore.list()):
+    print('Found')
+print(list(ToStore))
+
+
+def getNodes(key: ToStore) -> list:
+    '''
+    get all the nodes from one type listed in the enum NodeType
+    '''
+    print(key.value)
+
+getNodes(ToStore.ID)

@@ -1,26 +1,17 @@
 from enum import IntEnum, Enum
 
-# class ElAttr(IntEnum):
-#     '''
-#     List if all the known atributes for the Nodes of type 'element'
-#     '''
-#     ID = 0
-#     TYPE = 1
-#     NAME = 2
-#     DOCUMENTATION = 3
-#     PROPERTIES = 4
-
-# class RelAttr(IntEnum):
-#     '''
-#     List if all the known atributes for the Nodes of type 'relationship'
-#     '''
-#     ID = 0
-#     TYPE = 1
-#     NAME = 2
-#     DOCUMENTATION = 3
-#     PROPERTIES = 4
-#     SOURCE = 5
-#     TARGET = 7
+class Position(IntEnum):
+    '''
+    Where to store information in allobject
+    '''
+    ID = 0
+    TYPE = 1
+    NAME = 2
+    DOCUMENTATION = 3
+    PROPNAME = 4
+    PROPVALUE = 5
+    SOURCE = 6
+    TARGET = 7
 
 class QualifyName(Enum):
     PROPERTYNAME = 'property'
@@ -53,6 +44,11 @@ class ToStore(Enum):
     TARGET = 'target'
     PROPERTY = 'propertyDefinitionRef'
 
+    @staticmethod
+    def list():
+        return list(map(lambda c: c.value, ToStore))
+
+
 class XMLContent(object):
     def __init__(self, modelName: str) -> None:
         self.NODES = {NodeType.ELEMENT.value:
@@ -69,16 +65,16 @@ class XMLContent(object):
                 'name')
         }
         self.GETFROMTHESENODES = {NodeType.ELEMENT.value:
-                                (ToGet.ATTR.value, #1
-                            ToGet.DATA.value, #2
-                            ToGet.DATA.value, #3
-                            ToGet.ATTR.value, #4
-                            ToGet.DATA.value),
+                                (ToGet.ATTR, #1
+                            ToGet.DATA, #2
+                            ToGet.DATA, #3
+                            ToGet.ATTR, #4
+                            ToGet.DATA),
                             NodeType.RELATIONSSHIP.value:
-                            (ToGet.ATTR.value, #1
-                            ToGet.DATA.value, #3
-                            ToGet.ATTR.value, #4
-                            ToGet.DATA.value)
+                            (ToGet.ATTR, #1
+                            ToGet.DATA, #3
+                            ToGet.ATTR, #4
+                            ToGet.DATA)
         }
 
         self.PARENTSOFTHESENODES = {NodeType.ELEMENT.value:
@@ -142,12 +138,12 @@ class XMLContent(object):
         # to store the name of the Archi model 
         self.modelName = modelName
     
-    def getNodes(self, key: str) -> list:
+    def getNodes(self, key: ToStore) -> list:
         '''
-        get all the nodes from one the type listed in the enum NodeType
+        get all the nodes from one type listed in the enum NodeType
         '''
         try:
-            return self.allObjects[str]
+            return self.allObjects[key.value]
         except KeyError as e:
             return None
 

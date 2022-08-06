@@ -19,22 +19,21 @@ def log_function_call(func):
 def processNodeAttributes(node: Node, content: conf.XMLContent) -> None:
     mlogger.debug(f'function processNodeAttributes() : node received {node.localName}')
     if node.hasAttributes():
-        i = content.NODES[content.currentNodeType].index(node.localName)
         map = node.attributes
         for key in map.keys():
-            if map[key].localName in content.ToStore:
+            if map[key].localName in content.ToStore.list():
                 mlogger.debug(f'parent of the node : {node.parentNode.localName}, attr name :  {map[key].localName}, value : {map[key].value}')
                 match key:
                     case conf.ToStore.ID.value:
-                        content.allObjects[content.currentNodeType][0].append(map[key].value)
+                        content.allObjects[content.currentNodeType][conf.Position.ID.value].append(map[key].value)
                     case conf.ToStore.TYPE.value:
-                        content.allObjects[content.currentNodeType][1].append(map[key].value)
+                        content.allObjects[content.currentNodeType][conf.Position.TYPE.value].append(map[key].value)
                     case conf.ToStore.PROPERTY.value:
-                        content.allObjects[content.currentNodeType][4].append(map[key].value)
+                        content.allObjects[content.currentNodeType][conf.Position.PROPNAME.value].append(map[key].value)
                     case conf.ToStore.SOURCE.value:
-                        content.allObjects[content.currentNodeType][6].append(map[key].value)
+                        content.allObjects[content.currentNodeType][conf.Position.SOURCE.value].append(map[key].value)
                     case conf.ToStore.TARGET.value:
-                        content.allObjects[content.currentNodeType][7].append(map[key].value)
+                        content.allObjects[content.currentNodeType][conf.Position.TARGET.value].append(map[key].value)
             else:
                 mlogger.warning(f'this attribute is unknown : {map[key].localName}, add it in ATTRIBUTESOFTHENODES in order to process it.')
     else:
@@ -48,12 +47,12 @@ def processNodeValue(node: Node, content: conf.XMLContent) -> None:
         i = content.NODES[content.currentNodeType].index(node.localName)
         match (node.localName):
             case (conf.ToStore.DOCUMENTATION.value):
-                content.allObjects[content.currentNodeType][3].append(node.firstChild.data)
+                content.allObjects[content.currentNodeType][conf.Position.DOCUMENTATION.value].append(node.firstChild.data)
             case (conf.ToStore.NAME.value):
                 if (content.PARENTSOFTHESENODES[content.currentNodeType][i] == conf.QualifyName.PROPERTYNAME.value):
-                    content.allObjects[content.currentNodeType][5].append(node.firstChild.data)
+                    content.allObjects[content.currentNodeType][conf.Position.PROPVALUE.value].append(node.firstChild.data)
                 else:
-                    content.allObjects[content.currentNodeType][2].append(node.firstChild.data)
+                    content.allObjects[content.currentNodeType][conf.Position.NAME.value].append(node.firstChild.data)
             case _:
                 mlogger.warning(f'This node is not parametized, set it up. Node name : {node.localName}. Parent : {node.parentNode.localName}')
                 
@@ -71,9 +70,9 @@ def processNode(node: Node, content: conf.XMLContent) -> None:
         mlogger.debug(f'function processNode() : indice to seek into NODES : {i}')
         if (node.parentNode.localName == content.PARENTSOFTHESENODES[content.currentNodeType][i]):
             match content.GETFROMTHESENODES[content.currentNodeType][i]:
-                case conf.ToGet.ATTR.value:
+                case conf.ToGet.ATTR:
                     processNodeAttributes(node, content)
-                case conf.ToGet.DATA.value:
+                case conf.ToGet.DATA:
                     processNodeValue(node, content)
         else:
             mlogger.warning(f'unexpected parent : {node.parentNode.localName}, for node name : {node.localName}')
@@ -125,8 +124,6 @@ def readModel(fileToRead: str) -> conf.XMLContent:
             if content.somethingWentWrong:
                 mlogger.critical(f'Something went wrong in function read_model() check the logs')
                 return None
-
-
         return content
     except BaseException as be:
         mlogger.critical(f'Unexpected error in function read_model() : {type(be)}{be.args}')
