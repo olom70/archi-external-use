@@ -84,7 +84,7 @@ def printAttribute(node: Node):
     if node.hasAttributes():
         map = node.attributes
         for key in map.keys():
-            print(f'parent : {node.parentNode.localName}, attr name :  {map[key].localName}, value : {map[key].value}')
+            print(f'node name : {node.localName}, attr name :  {map[key].localName}, value : {map[key].value}')
 
 
 def processNode(node: Node, knownNodes: list):

@@ -1,21 +1,5 @@
 from enum import IntEnum, Enum
 
-class Position(IntEnum):
-    '''
-    Where to store information in allobject
-    '''
-    ID = 0
-    TYPE = 1
-    NAME = 2
-    DOCUMENTATION = 3
-    PROPNAME = 4
-    PROPVALUE = 5
-    SOURCE = 6
-    TARGET = 7
-
-class QualifyName(Enum):
-    PROPERTYNAME = 'property'
-
 class NodeType(Enum):
     '''
     list the nodes type to parse in the Archi file
@@ -31,38 +15,25 @@ class ToGet(Enum):
     ATTR = 'attr'
     DATA = 'firstChild.data'
 
-class ToStore(Enum):
-    '''
-    list the names of the attributtes or the name of the tag we want to collect for each node
-    '''
-    ID = 'identifier'
-    TYPE = 'xsi:type'
-    NAME = 'name'
-    DOCUMENTATION = 'documentation'
-    # VALUE = 'value'
-    SOURCE = 'source'
-    TARGET = 'target'
-    PROPERTY = 'propertyDefinitionRef'
-
     @staticmethod
     def list():
-        return list(map(lambda c: c.value, ToStore))
+        return list(map(lambda c: c.value, ToGet))
 
 
 class XMLContent(object):
     def __init__(self, modelName: str) -> None:
-        self.NODES = {NodeType.ELEMENT.value:
-            ('element', #1
-                'name', #2
-                'documentation', #3
-                'propertie', #4
-                'name'),
+        self.NODES = {NodeType.ELEMENT.value:  
+            ('elements-element', #0 parenNode-node
+                'element-name', #1
+                'element-documentation', #2
+                'properties-propertie', #3
+                'propertie-name'),
             NodeType.RELATIONSSHIP.value:
-            ('relationship', #1
-                'name', #2
-                'documentation', #3
-                'propertie', #4
-                'name')
+            ('relationships-relationship', #0
+                'relationship-name', #1
+                'relationship-documentation', #2
+                'properties-propertie', #3
+                'propertie-name')
         }
         self.GETFROMTHESENODES = {NodeType.ELEMENT.value:
                                 (ToGet.ATTR, #1
@@ -78,53 +49,56 @@ class XMLContent(object):
         }
 
         self.PARENTSOFTHESENODES = {NodeType.ELEMENT.value:
-                                ('elements', #1
+                                ('elements', #0
+                                'element', #1
                                 'element', #2
-                                'element', #3
-                                'properties', #4
+                                'properties', #3
                                 'property'),
                                 NodeType.RELATIONSSHIP.value:
-                                ('relationships', #1
-                                'relationship',
-                                'relationship'
-                                'properties',
-                                'property'
-                                )
+                                ('relationships', #0
+                                'relationship', #1
+                                'relationship' #2
+                                'properties', #3
+                                'property')
         }
 
-        # self.ATTRIBUTESOFTHESENODES = {NodeType.ELEMENT.value:
-        #                             ([ToStore.ID, ToStore.TYPE], #1
-        #                             [ToStore.VALUE], #2
-        #                             [ToStore.VALUE], #3
-        #                             [ToStore.PROPERTY], #4
-        #                             [ToStore.VALUE]),
-        #                             NodeType.RELATIONSSHIP.value:
-        #                             ([ToStore.ID, ToStore.TYPE,ToStore.SOURCE, ToStore.TARGET], #1
-        #                             [ToStore.VALUE], #2
-        #                             [ToStore.VALUE], #3
-        #                             [ToStore.PROPERTY], #4
-        #                             [ToStore.VALUE])
-        # }
+        self.TOSTORE = {NodeType.ELEMENT.value:
+                                    ('elements-identifier' , #0 parentNode-attributename
+                                    'elements-xsi:type', #1 parentNode-attributename
+                                    'element-name', #2 parentNode-node
+                                    'elements-documentation' #3 parentNode-node
+                                    'propertie-propertyDefinitionRefs', #4 parentNode-node
+                                    'property-name'), #5 parentNode-attributename
+                                    NodeType.RELATIONSSHIP.value:
+                                    ('elements-identifier' , #0 parentNode-attributename
+                                    'elements-xsi:type', #1 parentNode-attributename
+                                    'element-name', #2 parentNode-node
+                                    'elements-documentation' #3 parentNode-node
+                                    'propertie-propertyDefinitionRefs', #4 parentNode-attributename
+                                    'property-name', #5 parentNode-node
+                                    'relationships-source', #6 parentNode-attributename
+                                    'relationships-target') #7 parentNode-attributename
+        }
   
 
         # allObjects holds everything. See documentation below
         self.allObjects = {NodeType.ELEMENT.value: [
-                                [ToStore.ID],
-                                [ToStore.TYPE],
-                                [ToStore.NAME],
-                                [ToStore.DOCUMENTATION],
-                                [ToStore.PROPERTY],
-                                [ToStore.NAME]
+                                ['elements-identifier'],
+                                ['elements-xsi:type'],
+                                ['element-name'],
+                                ['elements-documentation'],
+                                ['propertie-propertyDefinitionRefs'],
+                                ['property-name']
                             ],
                             NodeType.RELATIONSSHIP.value: [
-                                [ToStore.ID],
-                                [ToStore.TYPE],
-                                [ToStore.NAME],
-                                [ToStore.DOCUMENTATION],
-                                [ToStore.PROPERTY]
-                                [ToStore.NAME],
-                                [ToStore.SOURCE],
-                                [ToStore.TARGET]
+                                ['elements-identifier'],
+                                ['elements-xsi:type'],
+                                ['element-name'],
+                                ['elements-documentation'],
+                                ['propertie-propertyDefinitionRefs'],
+                                ['property-name'],
+                                ['relationships-source'],
+                                ['relationships-target']
 
                             ]
         }
