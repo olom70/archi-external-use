@@ -3,7 +3,6 @@ import logging
 import functools
 from xml.dom import minidom, Node
 import archi.configarchi as conf
-from interactive import ToStore
 
 mlogger = logging.getLogger('archi-external-use.tools')
 
@@ -57,6 +56,8 @@ def processNode(node: Node, content: conf.XMLContent) -> None:
                 processNodeAttributes(node, content)
             case conf.ToGet.DATA:
                 processNodeValue(node, content)
+            case conf.ToGet.NONE:
+                pass
     except KeyError as k:
         mlogger.critical(f"'{tofind}' not found in NODES, check the configuration.")
         content.somethingWentWrong = True        
@@ -78,7 +79,7 @@ def readModel(fileToRead: str) -> conf.XMLContent:
         for child in listOfNodes:
             mlogger.debug(f'function walk() : current Node :  {child.localName}')
             if child.nodeType == Node.ELEMENT_NODE:
-                processNode(child)
+                processNode(child, content)
             if not content.somethingWentWrong: # I stop walking if a node raise a problem
                 if child.hasChildNodes():
                     walk(child.childNodes, content)
@@ -98,7 +99,7 @@ def readModel(fileToRead: str) -> conf.XMLContent:
         for e in conf.NodeType:
             mlogger.debug(f'function read_model() : processing the node type {conf.NodeType}')
             mlogger.debug(f'function read_model() : known nodes given to walk() {content.NODES[e.value]}')
-            content.currentNodeType == e.value
+            content.currentNodeType = e.value
             walk(doc.getElementsByTagName(e.value), content)
             if content.somethingWentWrong:
                 mlogger.critical(f'Something went wrong in function read_model() check the logs')

@@ -14,6 +14,7 @@ class ToGet(Enum):
     '''
     ATTR = 'attr'
     DATA = 'firstChild.data'
+    NONE = None
 
     @staticmethod
     def list():
@@ -26,24 +27,29 @@ class XMLContent(object):
             ('elements-element', #0 parenNode-node
                 'element-name', #1
                 'element-documentation', #2
-                'properties-propertie', #3
+                'element-properties' #3
+                'properties-propertie', #4
                 'propertie-name'),
             NodeType.RELATIONSSHIP.value:
             ('relationships-relationship', #0
                 'relationship-name', #1
                 'relationship-documentation', #2
-                'properties-propertie', #3
+                'relationship-properties' #3
+                'properties-propertie', #4
                 'propertie-name')
         }
         self.GETFROMTHESENODES = {NodeType.ELEMENT.value:
-                                (ToGet.ATTR, #1
+                                (ToGet.ATTR, #0
+                            ToGet.DATA, #1
                             ToGet.DATA, #2
-                            ToGet.DATA, #3
+                            ToGet.NONE, #3
                             ToGet.ATTR, #4
                             ToGet.DATA),
                             NodeType.RELATIONSSHIP.value:
-                            (ToGet.ATTR, #1
-                            ToGet.DATA, #3
+                            (ToGet.ATTR, #0
+                            ToGet.DATA, # 1
+                            ToGet.DATA, # 2
+                            ToGet.NONE, #3
                             ToGet.ATTR, #4
                             ToGet.DATA)
         }
@@ -52,26 +58,28 @@ class XMLContent(object):
                                 ('elements', #0
                                 'element', #1
                                 'element', #2
-                                'properties', #3
+                                'element', #3
+                                'properties', #4
                                 'property'),
                                 NodeType.RELATIONSSHIP.value:
                                 ('relationships', #0
                                 'relationship', #1
                                 'relationship' #2
-                                'properties', #3
+                                'relationship', #3
+                                'properties', #4
                                 'property')
         }
 
         self.TOSTORE = {NodeType.ELEMENT.value:
                                     ('elements-identifier' , #0 parentNode-attributename
-                                    'elements-xsi:type', #1 parentNode-attributename
+                                    'elements-type', #1 parentNode-attributename
                                     'element-name', #2 parentNode-node
                                     'elements-documentation' #3 parentNode-node
                                     'propertie-propertyDefinitionRefs', #4 parentNode-node
                                     'property-name'), #5 parentNode-attributename
                                     NodeType.RELATIONSSHIP.value:
                                     ('elements-identifier' , #0 parentNode-attributename
-                                    'elements-xsi:type', #1 parentNode-attributename
+                                    'elements-type', #1 parentNode-attributename
                                     'element-name', #2 parentNode-node
                                     'elements-documentation' #3 parentNode-node
                                     'propertie-propertyDefinitionRefs', #4 parentNode-attributename
@@ -84,7 +92,7 @@ class XMLContent(object):
         # allObjects holds everything. See documentation below
         self.allObjects = {NodeType.ELEMENT.value: [
                                 ['elements-identifier'],
-                                ['elements-xsi:type'],
+                                ['elements-type'],
                                 ['element-name'],
                                 ['elements-documentation'],
                                 ['propertie-propertyDefinitionRefs'],
@@ -92,7 +100,7 @@ class XMLContent(object):
                             ],
                             NodeType.RELATIONSSHIP.value: [
                                 ['elements-identifier'],
-                                ['elements-xsi:type'],
+                                ['elements-type'],
                                 ['element-name'],
                                 ['elements-documentation'],
                                 ['propertie-propertyDefinitionRefs'],
@@ -112,7 +120,7 @@ class XMLContent(object):
         # to store the name of the Archi model 
         self.modelName = modelName
     
-    def getNodes(self, key: ToStore) -> list:
+    def getNodes(self, key: NodeType) -> list:
         '''
         get all the nodes from one type listed in the enum NodeType
         '''

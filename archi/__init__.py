@@ -1,1 +1,1 @@
-from archi.configarchi import Position, NodeType, XMLContent
+from archi.configarchi import  NodeType, XMLContent
