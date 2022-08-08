@@ -1,4 +1,3 @@
-import os
 import logging
 import functools
 from xml.dom import minidom, Node
