@@ -27,16 +27,16 @@ class XMLContent(object):
             ('elements-element', #0 parenNode-node
                 'element-name', #1
                 'element-documentation', #2
-                'element-properties' #3
-                'properties-propertie', #4
-                'propertie-name'),
+                'element-properties', #3
+                'properties-property', #4
+                'property-value'),
             NodeType.RELATIONSSHIP.value:
             ('relationships-relationship', #0
                 'relationship-name', #1
                 'relationship-documentation', #2
                 'relationship-properties' #3
-                'properties-propertie', #4
-                'propertie-name')
+                'properties-property', #4
+                'property-value')
         }
         self.GETFROMTHESENODES = {NodeType.ELEMENT.value:
                                 (ToGet.ATTR, #0
@@ -64,7 +64,7 @@ class XMLContent(object):
                                 NodeType.RELATIONSSHIP.value:
                                 ('relationships', #0
                                 'relationship', #1
-                                'relationship' #2
+                                'relationship', #2
                                 'relationship', #3
                                 'properties', #4
                                 'property')
@@ -74,39 +74,40 @@ class XMLContent(object):
                                     ('elements-identifier' , #0 parentNode-attributename
                                     'elements-type', #1 parentNode-attributename
                                     'element-name', #2 parentNode-node
-                                    'elements-documentation' #3 parentNode-node
-                                    'propertie-propertyDefinitionRefs', #4 parentNode-node
-                                    'property-name'), #5 parentNode-attributename
+                                    'element-documentation', #3 parentNode-node
+                                    'properties-propertyDefinitionRef', #4 parentNode-node
+                                    'property-value'), #5 parentNode-attributename
                                     NodeType.RELATIONSSHIP.value:
-                                    ('elements-identifier' , #0 parentNode-attributename
-                                    'elements-type', #1 parentNode-attributename
-                                    'element-name', #2 parentNode-node
-                                    'elements-documentation' #3 parentNode-node
-                                    'propertie-propertyDefinitionRefs', #4 parentNode-attributename
-                                    'property-name', #5 parentNode-node
+                                    ('relationships-identifier' , #0 parentNode-attributename
+                                    'relationships-type', #1 parentNode-attributename
+                                    'relationship-name', #2 parentNode-node
+                                    'relationship-documentation', #3 parentNode-node
+                                    'properties-propertyDefinitionRef', #4 parentNode-attributename
+                                    'property-value', #5 parentNode-node
                                     'relationships-source', #6 parentNode-attributename
-                                    'relationships-target') #7 parentNode-attributename
+                                    'relationships-target', #7 parentNode-attributename
+                                    'relationships-accessType') #7 parentNode-attributename
         }
   
-
         # allObjects holds everything. See documentation below
         self.allObjects = {NodeType.ELEMENT.value: [
                                 ['elements-identifier'],
                                 ['elements-type'],
                                 ['element-name'],
-                                ['elements-documentation'],
+                                ['element-documentation'],
                                 ['propertie-propertyDefinitionRefs'],
-                                ['property-name']
+                                ['property-value']
                             ],
                             NodeType.RELATIONSSHIP.value: [
-                                ['elements-identifier'],
-                                ['elements-type'],
-                                ['element-name'],
-                                ['elements-documentation'],
+                                ['relationships-identifier'],
+                                ['relationships-type'],
+                                ['relationship-name'],
+                                ['relationships-documentation'],
                                 ['propertie-propertyDefinitionRefs'],
-                                ['property-name'],
+                                ['property-value'],
                                 ['relationships-source'],
-                                ['relationships-target']
+                                ['relationships-target'],
+                                ['relationships-accessType']
 
                             ]
         }
@@ -138,40 +139,3 @@ class XMLContent(object):
             return self.allObjects
         else:
             return None
-
-    def documentation() -> str:
-        d = ''' 
-            Bellow are presented the structures that holds the archi model.
-
-            properties = [
-                {'propertyDefinitionRef1.value': 'propertyDefinitionRef_name.value1',
-                ''propertyDefinitionRef1.value': 'propertyDefinitionRef_name.value1''
-                }
-            ]
-
-            elements = [
-                ['element.ToStore.ID', 'element.ToStore.ID2', 'element.ToStore.ID3'],
-                ['element.ToStore.TYPE', 'element.xsi:type2', 'element.xsi:type'],
-                ['elementName.value', 'elementName.value', 'elementName.value'],
-                ['documentation_name.value', 'documentation_name.value', 'documentation_name.value'],
-                ['[properties1]', '[properties2]', '[properties3]']
-            ]
-
-            relationsships = [
-                ['element.ToStore.ID', 'element.ToStore.ID2', 'element.ToStore.ID3'],
-                ['element.ToStore.TYPE', 'element.xsi:type2', 'element.xsi:type'],
-                ['elementName.value', 'elementName.value', 'elementName.value'],
-                ['documentation_name.value', 'documentation_name.value', 'documentation_name.value'],
-                ['[properties1]', '[properties2]', '[properties3]'],
-                ['source1', 'source2', 'source3'],
-                ['target1', 'target2', 'target3']
-            ]
-
-            allObjects = {
-                NodeType.ELEMENT : [],
-                NodeType.RELATIONSSHIPS : []
-            }
-
-            End of the documentation on the structures
-            '''
-        return d
