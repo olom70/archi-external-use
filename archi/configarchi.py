@@ -7,10 +7,15 @@ class NodeType(Enum):
     ELEMENT = 'element'
     RELATIONSSHIP = 'relationship'
 
+    @staticmethod
+    def list():
+        return list(map(lambda c: c.value, NodeType))
+
 class ToGet(Enum):
     '''
     ATTR to get the attributes of the node
-    DATA to get the value
+    DATA to get the value of the node
+    NONE to ignore the node
     '''
     ATTR = 'attr'
     DATA = 'firstChild.data'
@@ -19,6 +24,29 @@ class ToGet(Enum):
     @staticmethod
     def list():
         return list(map(lambda c: c.value, ToGet))
+
+class ToStore(Enum):
+    '''
+    list the information I want to keep from XML File
+    the value as either the form parentNode-node or parentNode-NodeAttribute
+    '''
+    EI='elements-identifier'
+    ET='elements-type'
+    EN='element-name'
+    ED='element-documentation'
+    PP='properties-propertyDefinitionRef'
+    PV='property-value'
+    RI='relationships-identifier'
+    RT='relationships-type'
+    RN='relationship-name'
+    RD='relationship-documentation'
+    RS='relationships-source'
+    RG='relationships-target'
+    RA='relationships-accessType'
+
+    @staticmethod
+    def list():
+        return list(map(lambda c: c.value, ToStore))
 
 
 class XMLContent(object):
@@ -54,65 +82,30 @@ class XMLContent(object):
                             ToGet.DATA)
         }
 
-        self.PARENTSOFTHESENODES = {NodeType.ELEMENT.value:
-                                ('elements', #0
-                                'element', #1
-                                'element', #2
-                                'element', #3
-                                'properties', #4
-                                'property'),
-                                NodeType.RELATIONSSHIP.value:
-                                ('relationships', #0
-                                'relationship', #1
-                                'relationship', #2
-                                'relationship', #3
-                                'properties', #4
-                                'property')
+        self.allObjects = {NodeType.ELEMENT.value: {
+                                ToStore.EI.value: [],
+                                ToStore.ET.value: [],
+                                ToStore.EN.value: [],
+                                ToStore.ED.value: [],
+                                ToStore.PP.value: [],
+                                ToStore.PV.value: []
+        },
+                            NodeType.RELATIONSSHIP.value: {
+                                ToStore.RI.value: [],
+                                ToStore.RT.value: [],
+                                ToStore.RN.value: [],
+                                ToStore.RD.value: [],
+                                ToStore.PP.value: [],
+                                ToStore.PV.value: [],
+                                ToStore.RS.value: [],
+                                ToStore.RG.value: [],
+                                ToStore.RA.value: []
+                            }
         }
 
-        self.TOSTORE = {NodeType.ELEMENT.value:
-                                    ('elements-identifier' , #0 parentNode-attributename
-                                    'elements-type', #1 parentNode-attributename
-                                    'element-name', #2 parentNode-node
-                                    'element-documentation', #3 parentNode-node
-                                    'properties-propertyDefinitionRef', #4 parentNode-node
-                                    'property-value'), #5 parentNode-attributename
-                                    NodeType.RELATIONSSHIP.value:
-                                    ('relationships-identifier' , #0 parentNode-attributename
-                                    'relationships-type', #1 parentNode-attributename
-                                    'relationship-name', #2 parentNode-node
-                                    'relationship-documentation', #3 parentNode-node
-                                    'properties-propertyDefinitionRef', #4 parentNode-attributename
-                                    'property-value', #5 parentNode-node
-                                    'relationships-source', #6 parentNode-attributename
-                                    'relationships-target', #7 parentNode-attributename
-                                    'relationships-accessType') #7 parentNode-attributename
-        }
-  
-        # allObjects holds everything. See documentation below
-        self.allObjects = {NodeType.ELEMENT.value: [
-                                ['elements-identifier'],
-                                ['elements-type'],
-                                ['element-name'],
-                                ['element-documentation'],
-                                ['propertie-propertyDefinitionRefs'],
-                                ['property-value']
-                            ],
-                            NodeType.RELATIONSSHIP.value: [
-                                ['relationships-identifier'],
-                                ['relationships-type'],
-                                ['relationship-name'],
-                                ['relationships-documentation'],
-                                ['propertie-propertyDefinitionRefs'],
-                                ['property-value'],
-                                ['relationships-source'],
-                                ['relationships-target'],
-                                ['relationships-accessType']
 
-                            ]
-        }
-        
-        # holds value of the NodeTpe currently processed
+
+        # holds value of the NodeType currently processed
         self.currentNodeType = None
         
         # to stop to process the model if any error occurs
@@ -135,7 +128,4 @@ class XMLContent(object):
         get all the nodes all all the types listed in the enum NodeType
         '''
 
-        if len(self.allObjects) > 0:
-            return self.allObjects
-        else:
-            return None
+        return self.allObjects

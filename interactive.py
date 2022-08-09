@@ -1,4 +1,5 @@
 #%%
+from tkinter import Variable
 from xml.dom import minidom, Node
 from xml.dom.expatbuilder import TEXT_NODE
 with open('tinker.xml', encoding='utf-8') as xmltoanalyse:
@@ -291,3 +292,62 @@ def getNodes(key: ToStore) -> list:
     print(key.value)
 
 getNodes(ToStore.ID)
+#%%
+from enum import IntEnum, Enum
+class ToStore(Enum):
+    EI='elements-identifier'
+    ET='elements-type'
+    EN='element-name'
+    ED='element-documentation'
+    PP='properties-propertyDefinitionRef'
+    PV='property-value'
+    RI='relationships-identifier'
+    RT='relationships-type'
+    RN='relationship-name'
+    RD='relationship-documentation'
+    RS='relationships-source'
+    RG='relationships-target'
+    RA='relationships-accessType'
+
+    @staticmethod
+    def list():
+        return list(map(lambda c: c.value, ToStore))
+
+
+class NodeType(Enum):
+    '''
+    list the nodes type to parse in the Archi file
+    '''
+    ELEMENT = 'element'
+    RELATIONSSHIP = 'relationship'
+
+    @staticmethod
+    def list():
+        return list(map(lambda c: c.value, NodeType))
+
+
+allObjects1 = {NodeType.ELEMENT.value: {
+                        ToStore.EI.value: [ToStore.EI.value],
+                        ToStore.ET.value: [ToStore.ET.value],
+                        ToStore.EN.value: [ToStore.EN.value],
+                        ToStore.ED.value: [ToStore.ED.value],
+                        ToStore.PP.value: [ToStore.PP.value],
+                        ToStore.PV.value: [ToStore.PV.value]
+},
+                    NodeType.RELATIONSSHIP.value: {
+                        ToStore.RI.value: [ToStore.RI.value],
+                        ToStore.RT.value: [ToStore.RT.value],
+                        ToStore.RN.value: [ToStore.RN.value],
+                        ToStore.RD.value: [ToStore.RD.value],
+                        ToStore.PP.value: [ToStore.PP.value],
+                        ToStore.PV.value: [ToStore.PV.value],
+                        ToStore.RS.value: [ToStore.RS.value],
+                        ToStore.RG.value: [ToStore.RG.value],
+                        ToStore.RA.value: [ToStore.RA.value]
+                    }
+}
+
+v = 'elements-identifier'
+print(allObjects1[NodeType.ELEMENT.value][v]) 
+allObjects1[NodeType.ELEMENT.value][v].append('x')
+print(allObjects1[NodeType.ELEMENT.value][v]) 

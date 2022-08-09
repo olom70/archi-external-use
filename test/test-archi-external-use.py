@@ -30,6 +30,6 @@ if __name__ == '__main__':
     assert content.getNodes(conf.NodeType.ELEMENT)  is not None
     assert content.getNodes(conf.NodeType.RELATIONSSHIP)  is not None
     allContent = content.getAll()
-    
+    assert 'id-bc7db218fc4c42b88409118617393819' in allContent[conf.NodeType.ELEMENT.value][conf.ToStore.EI.value]
 
     fh.close()

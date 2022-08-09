@@ -21,8 +21,7 @@ def processNodeAttributes(node: Node, content: conf.XMLContent) -> None:
         for key in map.keys():
             try:
                 tofind = node.parentNode.localName+"-"+map[key].localName
-                i = content.TOSTORE[content.currentNodeType].index(tofind)
-                content.allObjects[content.currentNodeType][i].append(map[key].value)
+                content.allObjects[content.currentNodeType][tofind].append(map[key].value)
             except KeyError as k:
                 mlogger.warning(f"'{tofind}' not found in TOSTORE, check the configuration")    
     else:
@@ -35,8 +34,7 @@ def processNodeValue(node: Node, content: conf.XMLContent) -> None:
     if node.hasChildNodes():
         try:
             tofind = node.parentNode.localName+"-"+node.localName
-            i = content.TOSTORE[content.currentNodeType].index(tofind)
-            content.allObjects[content.currentNodeType][i].append(node.firstChild.data)
+            content.allObjects[content.currentNodeType][tofind].append(node.firstChild.data)
         except KeyError as k:
             mlogger.warning(f"'{tofind}' not found in TOSTORE, check the configuration")
     else:
