@@ -27,8 +27,8 @@ class ToGet(Enum):
 
 class ToStore(Enum):
     '''
-    list the information I want to keep from XML File
-    the value as either the form parentNode-node or parentNode-NodeAttribute
+    list the information I want to keep from XML File.
+    The value has either the form parentNode-node or parentNode-NodeAttribute
     '''
     EI='elements-identifier'
     ET='elements-type'
