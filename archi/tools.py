@@ -29,43 +29,41 @@ def processNodeAttributes(node: Node, content: conf.XMLContent) -> None:
         mlogger.warning(f'node : {node.localName} has no attributes even though the configuration says otherwise. check GETFROMTHODES')
 
 
-def processNodeValue(node: Node, content: conf.XMLContent) -> None:
-    mlogger.debug(f'function processNodeValue() : node received {node.localName}. parent : {node.parentNode.localName}')
-    if node.hasChildNodes():
-        try:
-            tofind = node.parentNode.localName+"-"+node.localName
-            content.allObjects[content.currentNodeType][tofind].append(node.firstChild.data)
-        except KeyError as k:
-            mlogger.warning(f"'{tofind}' not found in TOSTORE, check the configuration")
-    else:
-        content.somethingWentWrong == True
-        mlogger.warning(f'node : {node.localName} has no value even tough the configuration says otherwise. check GETFROMTHODES')
-
-
-def processNode(node: Node, content: conf.XMLContent) -> None:
-    mlogger.debug(f'function processNode() : node received {node.localName}')
-    try:
-        tofind = node.parentNode.localName+"-"+node.localName
-        i = content.NODES[content.currentNodeType].index(tofind)
-        mlogger.debug(f'function processNode() : indice to seek into NODES : {i}')
-        match content.GETFROMTHESENODES[content.currentNodeType][i]:
-            case conf.ToGet.ATTR:
-                processNodeAttributes(node, content)
-            case conf.ToGet.DATA:
-                processNodeValue(node, content)
-            case conf.ToGet.NONE:
-                pass
-    except KeyError as k:
-        mlogger.critical(f"'{tofind}' not found in NODES, check the configuration.")
-        content.somethingWentWrong = True        
-
-
 @log_function_call
 def readModel(fileToRead: str) -> conf.XMLContent:
     '''
         Read an archimate model (in "open exchange" format)
         feed the object XMLContent with what's read
     '''
+
+    def processNodeValue(node: Node, content: conf.XMLContent) -> None:
+        mlogger.debug(f'function processNodeValue() : node received {node.localName}. parent : {node.parentNode.localName}')
+        if node.hasChildNodes():
+            try:
+                tofind = node.parentNode.localName+"-"+node.localName
+                content.allObjects[content.currentNodeType][tofind].append(node.firstChild.data)
+            except KeyError as k:
+                mlogger.warning(f"'{tofind}' not found in TOSTORE, check the configuration")
+        else:
+            content.somethingWentWrong == True
+            mlogger.warning(f'node : {node.localName} has no value even tough the configuration says otherwise. check GETFROMTHODES')
+
+    def processNode(node: Node, content: conf.XMLContent) -> None:
+        mlogger.debug(f'function processNode() : node received {node.localName}')
+        try:
+            tofind = node.parentNode.localName+"-"+node.localName
+            i = content.NODES[content.currentNodeType].index(tofind)
+            mlogger.debug(f'function processNode() : indice to seek into NODES : {i}')
+            match content.GETFROMTHESENODES[content.currentNodeType][i]:
+                case conf.ToGet.ATTR:
+                    processNodeAttributes(node, content)
+                case conf.ToGet.DATA:
+                    processNodeValue(node, content)
+                case conf.ToGet.NONE:
+                    pass
+        except KeyError as k:
+            mlogger.critical(f"'{tofind}' not found in NODES, check the configuration.")
+            content.somethingWentWrong = True        
 
     @log_function_call
     def walk(listOfNodes, content: conf.XMLContent) -> None:
