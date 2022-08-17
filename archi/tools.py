@@ -21,6 +21,8 @@ def alignIndices(content: conf.XMLContent) -> None:
         As some nodes (like Documentation) are optional,
         at the end of the walk() of each NodeType, one need
         to insert None where needed
+
+        TODO : instead as iterating explicitly twice, I could use cycle() : https://realpython.com/iterate-through-dictionary-python/#using-itertools
     '''
     for e in conf.NodeType:
         max = -1 # First step is to get the maximum length pf the lists
