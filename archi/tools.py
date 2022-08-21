@@ -91,8 +91,7 @@ def readModel(fileToRead: str) -> conf.XMLContent:
                 case conf.ToGet.NONE:
                     pass
         except KeyError as k:
-            mlogger.critical(f"'{tofind}' not found in NODES, check the configuration.")
-            content.somethingWentWrong = True
+            mlogger.warning(f"'{tofind}' not found in NODES, check the configuration.")
     
 
     @log_function_call
