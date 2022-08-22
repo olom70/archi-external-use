@@ -92,7 +92,8 @@ def readModel(fileToRead: str) -> conf.XMLContent:
                     pass
         except KeyError as k:
             mlogger.warning(f"'{tofind}' not found in NODES, check the configuration.")
-    
+        except Exception as e:
+            mlogger.warning(f"'{tofind}' not found in NODES, check the configuration.")
 
     @log_function_call
     def walk(listOfNodes, content: conf.XMLContent) -> None:
@@ -109,9 +110,6 @@ def readModel(fileToRead: str) -> conf.XMLContent:
                     walk(child.childNodes, content)
             else:
                 mlogger.critical(f'Something went wrong in function walk() check the logs')
-
-
-
     try:
         with open(fileToRead, encoding='utf-8') as xmltoanalyse:
             doc = minidom.parse(xmltoanalyse)
