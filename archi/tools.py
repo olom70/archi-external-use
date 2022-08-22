@@ -29,8 +29,8 @@ def alignIndices(content: conf.XMLContent) -> None:
         for k, v in content.allObjects[e.value].items():
             if len(v) > max:
                 max = len(v)
-        #Second step is to add one value to the lists for which the length is lower than the max
-        # as this function called for each NodeTYpe, I know that at most one value is missing
+        #Second step is to add one value to the lists for those thier length is lower than the max
+        # as this function is called for each NodeTYpe, I know that at most one value is missing
         mlogger.debug(f'function alignIndices() : max value found : {max}')
         for k, v in content.allObjects[e.value].items():
             if len(v) < max:
