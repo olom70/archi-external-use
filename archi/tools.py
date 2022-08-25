@@ -3,7 +3,7 @@ import functools
 from xml.dom import minidom, Node
 import archi.configarchi as conf
 
-mlogger = logging.getLogger('archi-external-use.tools')
+mlogger = logging.getLogger('test-archi-external-use.tools')
 
 def log_function_call(func):
     @functools.wraps(func)

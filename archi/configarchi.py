@@ -48,6 +48,7 @@ class ToStore(Enum):
     VT='diagrams-type'
     VN='view-name'
     NI='view-identifier'
+    VY='view-type'
     NE='view-elementRef'
     NT='node-element'
     NL='node-label'
@@ -132,6 +133,7 @@ class XMLContent(object):
                                 ToStore.VI.value: [],
                                 ToStore.VT.value: [],
                                 ToStore.VN.value: [],
+                                ToStore.VY.value: [],
                                 ToStore.NE.value: [],
                                 ToStore.NI.value: [],
                                 ToStore.NT.value: [],

@@ -5,7 +5,6 @@ import os
 import sys
 import logging
 
-
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 sys.path.append(PROJECT_ROOT)
 
@@ -13,7 +12,6 @@ import archi.tools as tools
 import  archi.configarchi as conf
 
 if __name__ == '__main__':
-
 
     logger = logging.getLogger('test-archi-external-use')
     logger.setLevel(logging.DEBUG)
