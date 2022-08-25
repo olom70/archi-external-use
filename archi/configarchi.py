@@ -1,4 +1,6 @@
 from enum import IntEnum, Enum
+from pickle import NONE
+from re import A
 
 class NodeType(Enum):
     '''
@@ -52,6 +54,12 @@ class ToStore(Enum):
     NE='view-elementRef'
     NT='node-element'
     NL='node-label'
+    OI='node-identifier'
+    OE='node-elementRef'
+    OT='node-type'
+    VR='view-relationshipRef'
+    VA='view-target'
+    VS='view-source'
 
 
     @staticmethod
@@ -84,7 +92,11 @@ class XMLContent(object):
                 'style-lineColor', #5
                 'style-font', #6
                 'font-color', #7
-                'node-label')
+                'node-label', #8
+                'node-node', #9
+                'view-connection', #10
+                'connection-style' , #11
+                'connection-bendpoint') #12
         }
         self.GETFROMTHESENODES = {NodeType.ELEMENT.value:
                                 (ToGet.ATTR, #0
@@ -109,7 +121,11 @@ class XMLContent(object):
                             ToGet.NONE, #5
                             ToGet.NONE, #6
                             ToGet.NONE, #7
-                            ToGet.DATA)
+                            ToGet.DATA, #8
+                            ToGet.ATTR, #9
+                            ToGet.ATTR, #10
+                            ToGet.NONE, #11
+                            ToGet.NONE) #12
         }
 
         self.allObjects = {NodeType.ELEMENT.value: {
@@ -137,7 +153,13 @@ class XMLContent(object):
                                 ToStore.NE.value: [],
                                 ToStore.NI.value: [],
                                 ToStore.NT.value: [],
-                                ToStore.NL.value: []}
+                                ToStore.NL.value: [],
+                                ToStore.OI.value: [],
+                                ToStore.OE.value: [],
+                                ToStore.OT.value: [],
+                                ToStore.VR.value: [],
+                                ToStore.VA.value: [],
+                                ToStore.VS.value: []}
         }
 
         # holds value of the NodeType currently processed
