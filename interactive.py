@@ -146,22 +146,22 @@ for pre, fill, node in RenderTree(my_data[ids[0]]):
 from cog.torque import Graph
 from cog import config
 
-conf.COG_HOME="archi_external-use"
-conf.COG_PATH_PREFIX="."
+config.COG_HOME="archi_external-use"
+config.COG_PATH_PREFIX="."
 
 g = Graph("cool")
 
 
-g.put("alice","composed of","bob")
-g.put("bob","composed of","fred")
+g.put("alice","composedof","bob")
+g.put("bob","composedof","fred")
 g.put("bob","status","cool_person")
 g.put("charlie","serves","bob")
-g.put("charlie","composed of","dani")
+g.put("bob","composedof","dani")
 g.put("dani","follows","bob")
 g.put("dani","follows","greg")
 g.put("dani","status","cool_person")
-g.put("emily","composed of","fred")
-g.put("fred","follows","greg")
+g.put("emily","composedof","fred")
+g.put("fred","composedof","greg")
 g.put("greg","status","cool_person")
 g.put("bob","score","5")
 g.put("greg","score","10")
@@ -169,12 +169,26 @@ g.put("alice","score","7")
 g.put("dani","score","100")
 
 
-g.v("bob").tag("from").out(["status", "composed of"]).tag("to").view(["status", "composed of"]).render()
+#g.v().has("composed of", "fred").all()
+#g.getv("follows").render()
+#g.v().inc(["composedof"]).view(['composedof']).render()
+g.v("bob").tag("part of").out(["composedof"]).all()
 # g.v().has("status", 'cool_person').all()
 # g.v().has("follows", "fred").inc().all('e')
 #g.v("alice").out().count()
-g.v("bob").tag("from").out(["status", "composed of"]).tag("to").view(["status", "composed of"])
-g.v("bob").tag("from").out(["status", "composed of"]).tag("to").all('e')
+#g.v("bob").tag("from").out(["status", "composed of"]).tag("to").view(["status", "composed of"]).all()
+#g.v("bob").tag("from").out(["status", "composed of"]).tag("to").all('e')
+#g.v("bob").tag("from").out(["composed of"]).tag("to").all('e')
+
+#g.v("bob").out().all()
+#g.v("bob").tag("from").out("composed of").tag("to").all()
+#g.v("bob").out().all()
+#g.v("bob").out().count()
+#g.scan(scan_type='v')
+#g.v("bob").out("composed of").tag("from").out("composed of").tag("to").all()
+#g.v().tag("from").out("composed of").tag("to").view("composed of").render()
+#g.v("bob").out().tag("from").out().tag("to").all()
+#g.v().has("composed of", "fred").inc().all('e')
 
 
 #%%
@@ -350,4 +364,31 @@ allObjects1 = {NodeType.ELEMENT.value: {
 v = 'elements-identifier'
 print(allObjects1[NodeType.ELEMENT.value][v]) 
 allObjects1[NodeType.ELEMENT.value][v].append('x')
-print(allObjects1[NodeType.ELEMENT.value][v]) 
+print(allObjects1[NodeType.ELEMENT.value][v])
+#%%
+import networkx as nx
+MDG = nx.MultiDiGraph()
+nodes = ['id1', 'id2', 'id3', 'id4']
+MDG.add_nodes_from(nodes)
+edges = [('id1', 'id2', {"composed of": "name12"}),
+         ("id2", "id3", {"composed of": "name23"}),
+         ("id3", "id4", {"composed of": "name34"}),
+         ("id3", "id4", {"aggregates": "name34a"})
+        ]
+MDG.add_edges_from(edges)
+#list(MDG.nodes)
+#dict(MDG.nodes)
+#dict(MDG.edges)
+#MDG.degree["id3"]
+#for n, nbrs in MDG.adj.items():
+#    for nbr, eattr in nbrs.items():
+#        wt = eattr['weight']
+#        if wt < 0.5: print(f"({n}, {nbr}, {wt:.3})")
+l = (nx.neighbors(MDG,"id2"))
+print(nx.edges(MDG, l))
+for v, k in MDG.adj["id3"]["id4"].items():
+    print(v)
+    if "composed of" in k:
+        print("yes")
+
+MDG.adj["id3"]["id4"]
