@@ -402,6 +402,5 @@ def walkgraph(MDG: nx.MultiDiGraph,  current_node: str, already_met: list) -> No
 
 
 start = "id1"
-already_met = []
 
 walkgraph(MDG, start, [])
