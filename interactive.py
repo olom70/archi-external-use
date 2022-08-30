@@ -384,7 +384,9 @@ MDG.add_edges_from(edges)
 #    for nbr, eattr in nbrs.items():
 #        wt = eattr['weight']
 #        if wt < 0.5: print(f"({n}, {nbr}, {wt:.3})")
-l = (nx.neighbors(MDG,"id2"))
+l = (nx.neighbors(MDG,"id1"))
+print(nx.get_node_attributes(MDG, "id1"))
+print(nx.edges(MDG, "id3"))
 print(nx.edges(MDG, l))
 for v, k in MDG.adj["id3"]["id4"].items():
     print(v)
@@ -392,3 +394,15 @@ for v, k in MDG.adj["id3"]["id4"].items():
         print("yes")
 
 MDG.adj["id3"]["id4"]
+
+def walkgraph(MDG: nx.MultiDiGraph,  current_node: str) -> None:
+   for e in nx.edges(MDG, current_node):
+      for v, k in MDG.adj[e[0]][e[1]].items():
+        if "composed of" in k:
+            print(k)
+            walkgraph(MDG, e[1])
+           
+
+
+start = "id1"
+walkgraph(MDG, start)
