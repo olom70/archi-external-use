@@ -368,41 +368,40 @@ print(allObjects1[NodeType.ELEMENT.value][v])
 #%%
 import networkx as nx
 MDG = nx.MultiDiGraph()
-nodes = ['id1', 'id2', 'id3', 'id4']
+nodes = ['id1', 'id2', 'id3', 'id4', 'id5']
 MDG.add_nodes_from(nodes)
 edges = [('id1', 'id2', {"composed of": "name12"}),
          ("id2", "id3", {"composed of": "name23"}),
          ("id3", "id4", {"composed of": "name34"}),
-         ("id3", "id4", {"aggregates": "name34a"})
+         ("id3", "id4", {"aggregates": "name34a"}),
+         ("id4", "id5", {"aggregates": "name45"})
         ]
 MDG.add_edges_from(edges)
-#list(MDG.nodes)
-#dict(MDG.nodes)
-#dict(MDG.edges)
-#MDG.degree["id3"]
-#for n, nbrs in MDG.adj.items():
-#    for nbr, eattr in nbrs.items():
-#        wt = eattr['weight']
-#        if wt < 0.5: print(f"({n}, {nbr}, {wt:.3})")
-l = (nx.neighbors(MDG,"id1"))
-print(nx.get_node_attributes(MDG, "id1"))
-print(nx.edges(MDG, "id3"))
-print(nx.edges(MDG, l))
-for v, k in MDG.adj["id3"]["id4"].items():
-    print(v)
-    if "composed of" in k:
-        print("yes")
 
-MDG.adj["id3"]["id4"]
 
-def walkgraph(MDG: nx.MultiDiGraph,  current_node: str) -> None:
-   for e in nx.edges(MDG, current_node):
-      for v, k in MDG.adj[e[0]][e[1]].items():
-        if "composed of" in k:
-            print(k)
-            walkgraph(MDG, e[1])
-           
+def walkgraph(MDG: nx.MultiDiGraph,  current_node: str, already_met: list) -> None:
+
+    def continue_walk(e: dict) -> bool:
+        print("inside continue")
+        for v, k in e.items():
+            if ("composed of" in k):
+                print('return true')
+                return True
+
+    print(f'current_node : {current_node}')
+#    if current_node not in already_met:
+    for e in nx.edges(MDG, current_node):
+        if e[0] not in already_met:
+            print(f"edges : {e}")
+            print(f"list of edges {MDG.adj[e[0]][e[1]]}")
+            if continue_walk(MDG.adj[e[0]][e[1]]):
+                already_met.append(e[0])
+                print(f'already_met : {already_met}')
+                walkgraph(MDG, e[1], already_met)           
+
 
 
 start = "id1"
-walkgraph(MDG, start)
+already_met = []
+
+walkgraph(MDG, start, [])
