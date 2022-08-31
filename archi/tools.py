@@ -2,6 +2,7 @@ import logging
 import functools
 from xml.dom import minidom, Node
 import archi.configarchi as conf
+import networkx as nx
 
 mlogger = logging.getLogger('test-archi-external-use.tools')
 
@@ -93,7 +94,7 @@ def readModel(fileToRead: str) -> conf.XMLContent:
         except KeyError as k:
             mlogger.warning(f"'{tofind}' not found in NODES, check the configuration.")
         except Exception as e:
-            mlogger.warning(f"'{tofind}' not found in NODES, check the configuration.")
+            mlogger.warning(f"'{tofind}' not found in NODES, check the configuration. ({type(be)}{be.args})")
 
     @log_function_call
     def walk(listOfNodes, content: conf.XMLContent) -> None:
@@ -132,3 +133,33 @@ def readModel(fileToRead: str) -> conf.XMLContent:
         mlogger.critical(f'Unexpected error in function read_model() : {type(be)}{be.args}')
         return None
 
+@log_function_call
+def createGraph(content: conf.XMLContent) -> nx.MultiDiGraph:
+    '''
+        process conf.XMLContent.allobjects to create a graph
+    '''
+    modelAsGraph = nx.MultiDiGraph()
+
+    def processElement(elements: dict) -> None:
+        pass
+
+    def processRelationShip(relationships: dict) -> None:
+        pass
+
+    def processViews(views: dict) -> None:
+        mlogger.info(f"nodeType Views is known, but is not handled")
+
+
+
+    for e in conf.NodeType:
+        match e:
+            case conf.NodeType.ELEMENT:
+                processElement(conf.XMLContent.getNodes(e))
+            case conf.NodeType.RELATIONSSHIP:
+                processRelationShip(conf.XMLContent.getNodes(e))
+            case conf.NodeType.VIEW:
+                processViews(conf.XMLContent.getNodes(e))
+            case _:
+                mlogger.warning(f'this NodeType seems new, as it has no means to process it. When will you get your hands dirty ?. NodeType : {e.value}')
+
+    return modelAsGraph

@@ -4,6 +4,7 @@ import unittest
 import os
 import sys
 import logging
+import networkx as nx
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 sys.path.append(PROJECT_ROOT)
@@ -29,5 +30,10 @@ if __name__ == '__main__':
     assert content.getNodes(conf.NodeType.RELATIONSSHIP)  is not None
     allContent = content.getAll()
     assert 'id-bc7db218fc4c42b88409118617393819' in allContent[conf.NodeType.ELEMENT.value][conf.ToStore.EI.value]
+
+    modelAsGraph = tools.createGraph(content)
+    assert nx.is_directed(modelAsGraph)
+    name = nx.get_node_attributes(modelAsGraph, 'name')
+    assert name["id-e7ba459f108a4c62804e8e2ac83d25bd"] == 'A function'
 
     fh.close()
