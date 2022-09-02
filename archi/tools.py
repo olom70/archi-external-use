@@ -141,25 +141,51 @@ def createGraph(content: conf.XMLContent) -> nx.MultiDiGraph:
     modelAsGraph = nx.MultiDiGraph()
 
     def processElement(elements: dict) -> None:
-        pass
+        for ei, et, en, ed, pv in zip(elements[conf.ToStore.EI.value],
+                                                elements[conf.ToStore.ET.value],
+                                                elements[conf.ToStore.EN.value],
+                                                elements[conf.ToStore.ED.value],
+                                                elements[conf.ToStore.PV.value]):
+            modelAsGraph.add_nodes_from(
+                [
+                    (ei, {conf.ToStore.ET.value: et,
+                            conf.ToStore.EN.value: en,
+                            conf.ToStore.ED.value: ed,
+                            conf.ToStore.PV.value: pv})
+                ]
+            )
 
     def processRelationShip(relationships: dict) -> None:
-        pass
-
+        for ri, rt, rn, rs, rg, ra in zip(relationships[conf.ToStore.RI.value],
+                                                relationships[conf.ToStore.RT.value],
+                                                relationships[conf.ToStore.RN.value],
+                                                relationships[conf.ToStore.RS.value],
+                                                relationships[conf.ToStore.RG.value],
+                                                relationships[conf.ToStore.RA.value]):
+            modelAsGraph.add_edges_from(
+                [
+                    (rs, rg, {conf.ToStore.RI.value: ri,
+                                conf.ToStore.RT.value: rt,
+                                conf.ToStore.RN.value: rn,
+                                conf.ToStore.RA.value: ra})
+                ]
+            )
+        
     def processViews(views: dict) -> None:
         mlogger.info(f"nodeType Views is known, but is not handled")
 
-
-
-    for e in conf.NodeType:
-        match e:
-            case conf.NodeType.ELEMENT:
-                processElement(conf.XMLContent.getNodes(e))
-            case conf.NodeType.RELATIONSSHIP:
-                processRelationShip(conf.XMLContent.getNodes(e))
-            case conf.NodeType.VIEW:
-                processViews(conf.XMLContent.getNodes(e))
-            case _:
-                mlogger.warning(f'this NodeType seems new, as it has no means to process it. When will you get your hands dirty ?. NodeType : {e.value}')
-
-    return modelAsGraph
+    try:
+        for e in conf.NodeType:
+            match e:
+                case conf.NodeType.ELEMENT:
+                    processElement(content.getNodes(e))
+                case conf.NodeType.RELATIONSSHIP:
+                    processRelationShip(content.getNodes(e))
+                case conf.NodeType.VIEW:
+                    processViews(content.getNodes(e))
+                case _:
+                    mlogger.warning(f'this NodeType seems new, as it has no means to process it. When will you get your hands dirty ?. NodeType : {e.value}')
+        return modelAsGraph
+    except Exception as be:
+        mlogger.critical(f'Unexpected error in function create_graph() : {type(be)}{be.args}')
+        return None

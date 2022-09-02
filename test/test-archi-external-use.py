@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
     modelAsGraph = tools.createGraph(content)
     assert nx.is_directed(modelAsGraph)
-    name = nx.get_node_attributes(modelAsGraph, 'name')
+    name = nx.get_node_attributes(modelAsGraph, conf.ToStore.EN.value)
     assert name["id-e7ba459f108a4c62804e8e2ac83d25bd"] == 'A function'
 
     fh.close()
