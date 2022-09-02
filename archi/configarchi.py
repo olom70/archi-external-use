@@ -103,7 +103,7 @@ class XMLContent(object):
                             ToGet.DATA, #1
                             ToGet.DATA, #2
                             ToGet.NONE, #3  
-                            ToGet.NONE, #4  # BEWARE that as an archimate's artefact can have several properties, the program is not able to handle that at the moment. I should add a beacon "is multiple" in the config.
+                            ToGet.NONE, #4  # BEWARE that is an archimate's artefact that can have several properties. The program is not able to handle that at the moment. I should add a beacon "is multiple" in the config.
                             ToGet.NONE),
                             NodeType.RELATIONSSHIP.value:
                             (ToGet.ATTR, #0
