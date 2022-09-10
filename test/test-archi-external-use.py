@@ -30,7 +30,9 @@ if __name__ == '__main__':
     assert content.getNodes(conf.NodeType.RELATIONSSHIP)  is not None
     allContent = content.getAll()
     assert 'id-bc7db218fc4c42b88409118617393819' in allContent[conf.NodeType.ELEMENT.value][conf.ToStore.EI.value]
-
+    assert allContent[conf.NodeType.VIEW.value]['id-2683cb1d748a40148dba0ca693063c60'][0] == 'application layer'
+    assert allContent[conf.NodeType.VIEW.value]['id-2683cb1d748a40148dba0ca693063c60'][1][0] == 'id-e7ba459f108a4c62804e8e2ac83d25bd'
+    assert allContent[conf.NodeType.VIEW.value]['id-2683cb1d748a40148dba0ca693063c60'][2][0] == 'id-23a7d1fa38a94c698f5295ebaee087c7'
     modelAsGraph = tools.createGraph(content)
     assert nx.is_directed(modelAsGraph)
     name = nx.get_node_attributes(modelAsGraph, conf.ToStore.EN.value)

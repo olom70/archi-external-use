@@ -52,11 +52,34 @@ def readModel(fileToRead: str) -> conf.XMLContent:
         if node.hasAttributes():
             map = node.attributes
             for key in map.keys():
-                try:
-                    tofind = node.parentNode.localName+"-"+map[key].localName
-                    content.allObjects[content.currentNodeType][tofind].append(map[key].value)
-                except KeyError as k:
-                    mlogger.warning(f"'{tofind}' not found in TOSTORE, check the configuration")    
+                tofind = node.parentNode.localName+"-"+map[key].localName
+                if content.currentNodeType != conf.NodeType.VIEW.value :
+                    try:
+                        content.allObjects[content.currentNodeType][tofind].append(map[key].value)
+                    except KeyError as k:
+                        mlogger.warning(f"'{tofind}' not found in TOSTORE, check the configuration")    
+                else:
+                    try:
+                        match tofind:
+                            case conf.ToStore.VI.value: #diagrams-identifier
+                                # each time I find this value I know that it's a ne view to add
+                                content.allObjects[content.currentNodeType][map[key].value] = [None, [], []]
+                                                                                            # [name, [Nodes], [Relationships]]
+                                content.currentView = map[key].value
+                            case conf.ToStore.VT.value: #diagrams-type
+                                if map[key].value != 'Diagram':
+                                    del content.allObjects[content.currentNodeType][content.currentView]
+                                    content.currentView = None
+                                    # As the view is not a diagram I delete what I initiated when
+                                    # I encountered ToStore.VI.value
+                            case conf.ToStore.NE.value | conf.ToStore.OE.value: # view-elementRef, node-elementRef
+                                if content.currentView is not None:
+                                    content.allObjects[content.currentNodeType][content.currentView][1].append(map[key].value)
+                            case conf.ToStore.VR.value: # view-relationshipRef
+                                if content.currentView is not None:
+                                    content.allObjects[content.currentNodeType][content.currentView][2].append(map[key].value)
+                    except Exception as e:
+                        mlogger.warning(f"'A problem occured during the process of {content.currentNodeType}/{tofind}', check the configuration. ({type(e)}{e.args})")
         else:
             content.somethingWentWrong == True
             mlogger.warning(f'node : {node.localName} has no attributes even though the configuration says otherwise. check GETFROMTHODES')
@@ -66,11 +89,16 @@ def readModel(fileToRead: str) -> conf.XMLContent:
     def processNodeValue(node: Node, content: conf.XMLContent) -> None:
         mlogger.debug(f'function processNodeValue() : node received {node.localName}. parent : {node.parentNode.localName}')
         if node.hasChildNodes():
-            try:
-                tofind = node.parentNode.localName+"-"+node.localName
-                content.allObjects[content.currentNodeType][tofind].append(node.firstChild.data)
-            except KeyError as k:
-                mlogger.warning(f"'{tofind}' not found in TOSTORE, check the configuration")
+            tofind = node.parentNode.localName+"-"+node.localName
+            if content.currentNodeType != conf.NodeType.VIEW.value :
+                try:
+                    content.allObjects[content.currentNodeType][tofind].append(node.firstChild.data)
+                except KeyError as k:
+                    mlogger.warning(f"'{tofind}' not found in TOSTORE, check the configuration")
+            else:
+                match tofind:
+                    case conf.ToStore.VN.value: #view-name
+                        content.allObjects[content.currentNodeType][content.currentView][0] = node.firstChild.data
         else:
             content.somethingWentWrong == True
             mlogger.warning(f'node : {node.localName} has no value even tough the configuration says otherwise. check GETFROMTHODES')

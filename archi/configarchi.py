@@ -145,25 +145,14 @@ class XMLContent(object):
                                 ToStore.RS.value: [],
                                 ToStore.RG.value: [],
                                 ToStore.RA.value: []},
-                            NodeType.VIEW.value: {
-                                ToStore.VI.value: [],
-                                ToStore.VT.value: [],
-                                ToStore.VN.value: [],
-                                ToStore.VY.value: [],
-                                ToStore.NE.value: [],
-                                ToStore.NI.value: [],
-                                ToStore.NT.value: [],
-                                ToStore.NL.value: [],
-                                ToStore.OI.value: [],
-                                ToStore.OE.value: [],
-                                ToStore.OT.value: [],
-                                ToStore.VR.value: [],
-                                ToStore.VA.value: [],
-                                ToStore.VS.value: []}
-        }
+                            NodeType.VIEW.value: {}
+                        }
 
         # holds value of the NodeType currently processed
         self.currentNodeType = None
+
+        #Holds the current VIEW being processed
+        self.currentView = None
         
         # to stop to process the model if any error occurs
         self.somethingWentWrong = False
