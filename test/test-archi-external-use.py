@@ -24,18 +24,31 @@ if __name__ == '__main__':
     logger.info('Start. Application is initializing')
 
     fileToRead = 'tinker.xml'
+    
     content = tools.readModel(fileToRead)
     assert content.getAll()  is not None
     assert content.getNodes(conf.NodeType.ELEMENT)  is not None
     assert content.getNodes(conf.NodeType.RELATIONSSHIP)  is not None
+    
     allContent = content.getAll()
     assert 'id-bc7db218fc4c42b88409118617393819' in allContent[conf.NodeType.ELEMENT.value][conf.ToStore.EI.value]
     assert allContent[conf.NodeType.VIEW.value]['id-2683cb1d748a40148dba0ca693063c60'][0] == 'application layer'
     assert allContent[conf.NodeType.VIEW.value]['id-2683cb1d748a40148dba0ca693063c60'][1][0] == 'id-e7ba459f108a4c62804e8e2ac83d25bd'
     assert allContent[conf.NodeType.VIEW.value]['id-2683cb1d748a40148dba0ca693063c60'][2][0] == 'id-23a7d1fa38a94c698f5295ebaee087c7'
+    
     modelAsGraph = tools.createGraph(content)
     assert nx.is_directed(modelAsGraph)
     name = nx.get_node_attributes(modelAsGraph, conf.ToStore.EN.value)
     assert name["id-e7ba459f108a4c62804e8e2ac83d25bd"] == 'A function'
+
+    viewIdentifier = 'id-14c9a667d06949e49b10686750cf5cac'
+    viewAsGraph = tools.createGraphView(viewIdentifier, content)
+    name = nx.get_node_attributes(viewAsGraph, conf.ToStore.EN.value)
+    assert name['id-2652f6a8ea82422f914026fd17b39331'] == 'Support'
+    
+    viewIdentifier = 'id-2683cb1d748a40148dba0ca693063c60'
+    viewAsGraph = tools.createGraphView(viewIdentifier, content)
+    assert len(viewAsGraph.get_edge_data('id-e7ba459f108a4c62804e8e2ac83d25bd', 'id-bc7db218fc4c42b88409118617393819')) > 0
+    
 
     fh.close()

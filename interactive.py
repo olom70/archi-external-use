@@ -368,13 +368,14 @@ print(allObjects1[NodeType.ELEMENT.value][v])
 #%%
 import networkx as nx
 MDG = nx.MultiDiGraph()
-nodes = ['id1', 'id2', 'id3', 'id4', 'id5']
+nodes = ['id5', 'id2', 'id3', 'id4', 'id1', 'id0']
 MDG.add_nodes_from(nodes)
 edges = [('id1', 'id2', {"composed of": "name12"}),
          ("id2", "id3", {"composed of": "name23"}),
          ("id3", "id4", {"composed of": "name34"}),
          ("id3", "id4", {"aggregates": "name34a"}),
-         ("id4", "id5", {"aggregates": "name45"})
+         ("id4", "id5", {"aggregates": "name45"}),
+         ("id0", "id2", {"aggregates": "name45"})
         ]
 MDG.add_edges_from(edges)
 
@@ -404,3 +405,9 @@ def walkgraph(MDG: nx.MultiDiGraph,  current_node: str, already_met: list) -> No
 start = "id1"
 
 walkgraph(MDG, start, [])
+
+print(list(MDG.nodes))
+
+print(list(nx.topological_sort(MDG)))
+
+print([n for n,d in MDG.in_degree() if d==0])
