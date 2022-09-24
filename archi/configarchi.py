@@ -14,6 +14,14 @@ class NodeType(Enum):
     def list():
         return list(map(lambda c: c.value, NodeType))
 
+class SuitableRelationship(Enum):
+    COMPOSITION = 'Composition'
+    AGGREGATION = 'Aggregation'
+
+    @staticmethod
+    def list():
+        return list(map(lambda c: c.value, SuitableRelationship))
+
 class ToGet(Enum):
     '''
     ATTR to get the attributes of the node
@@ -61,10 +69,24 @@ class ToStore(Enum):
     VA='view-target'
     VS='view-source'
 
-
     @staticmethod
     def list():
         return list(map(lambda c: c.value, ToStore))
+
+class IsPotentialParentType(Enum):
+    VIEW = 'view-elementRef'
+    NODE = 'node-elementRef'
+
+    @staticmethod
+    def list():
+        return list(map(lambda c: c.value, IsPotentialParentType))
+
+class IsChildType(Enum):
+    NODE = 'node-elementRef'
+
+    @staticmethod
+    def list():
+        return list(map(lambda c: c.value, IsChildType))
 
 
 class XMLContent(object):
@@ -98,6 +120,10 @@ class XMLContent(object):
                 'connection-style' , #11
                 'connection-bendpoint') #12
         }
+
+        self.isPotentialParent = ''
+        self.isChild = ''
+
         self.GETFROMTHESENODES = {NodeType.ELEMENT.value:
                                 (ToGet.ATTR, #0
                             ToGet.DATA, #1

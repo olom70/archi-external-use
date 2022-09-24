@@ -3,7 +3,9 @@ import functools
 from xml.dom import minidom, Node
 import archi.configarchi as conf
 import networkx as nx
-
+import numpy as np
+import uuid
+import itertools
 
 mlogger = logging.getLogger('test-archi-external-use.tools')
 
@@ -40,13 +42,58 @@ def alignIndices(content: conf.XMLContent) -> None:
                 content.allObjects[e.value][k] = v
                 mlogger.debug(f'function alignIndices() : adding None to : {e.value}/{k}')
 
-
 @log_function_call
 def readModel(fileToRead: str) -> conf.XMLContent:
     '''
         Read an archimate model (in "open exchange" format)
         feed the object XMLContent with what's read
     '''
+    @log_function_call
+    def addImplicitRelationship(content: conf.XMLContent) -> None:
+        '''
+        Add a relationship between two nodes that are embeded in a view
+        '''
+        try:
+            #first : single out all the relations with a source equal to the parent node
+            search = content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RS.value]
+            npsearch = np.asarray(search)
+            indices = np.asarray(npsearch==content.isPotentialParent).nonzero()
+
+            found = True
+            if len(indices[0]) > 0:
+                #second : in the result, search a target that is the current node
+                relationExists = [ i for i in range(len(indices[0])) if indices[0][i] == content.isChild ]
+                if len(relationExists) > 0:
+                    # third : I found a least a relationship between the parent and the child
+                    # now let's examine if there is a suitable relation type to add
+                    relationOK = [ i for i in range(len(relationExists)) if relationExists[i] == conf.SuitableRelationship.COMPOSITION.value ]
+                    if len(relationOK) > 0:
+                        content.allObjects[content.currentNodeType][content.currentView][2].append(conf.NodeType.RELATIONSSHIP.value[conf.ToStore.RI.value][relationOK[0]])
+                        content.allObjects[content.currentNodeType][content.currentView][2].append(relationOK[0])
+                    else:
+                        relationOK = [ i for i in range(len(relationExists)) if relationExists[i] == conf.SuitableRelationship.AGGREGATION.value ]
+                        if len(relationOK) > 0:
+                            content.allObjects[content.currentNodeType][content.currentView][2].append(conf.NodeType.RELATIONSSHIP.value[conf.ToStore.RI.value][relationOK[0]])
+                            content.allObjects[content.currentNodeType][content.currentView][2].append(relationOK[0])
+                        else:
+                            found = False
+                else:
+                    found = False
+            else:
+                found = False
+            
+            if not found:
+                uid = uuid.uuid4()
+                content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RI.value].append(uid)
+                content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RT.value].append(conf.SuitableRelationship.COMPOSITION.value)
+                content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RN.value].append(None)
+                content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RD.value].append(None)
+                content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RS.value].append(content.isPotentialParent)
+                content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RG.value].append(content.isChild)
+                content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RA.value].append(None)
+                content.allObjects[content.currentNodeType][content.currentView][2].append(uid)
+        except Exception as e:
+            mlogger.warning(f"'A problem occured during the process of isPotentialParent : {content.isPotentialParent}, isChild {content.isChild}', {type(e)}{e.args})")
 
     def processNodeAttributes(node: Node, content: conf.XMLContent) -> None:
         mlogger.debug(f'function processNodeAttributes() : node received {node.localName}')
@@ -63,7 +110,7 @@ def readModel(fileToRead: str) -> conf.XMLContent:
                     try:
                         match tofind:
                             case conf.ToStore.VI.value: #diagrams-identifier
-                                # each time I find this value I know that it's a ne view to add
+                                # each time I find this value I know that it's a new view to add
                                 content.allObjects[content.currentNodeType][map[key].value] = [None, [], []]
                                                                                             # [name, [Nodes], [Relationships]]
                                 content.currentView = map[key].value
@@ -75,6 +122,10 @@ def readModel(fileToRead: str) -> conf.XMLContent:
                                     # I encountered ToStore.VI.value
                             case conf.ToStore.NE.value | conf.ToStore.OE.value: # view-elementRef, node-elementRef
                                 if content.currentView is not None:
+                                    content.isPotentialParent = map[key].value if tofind in conf.IsPotentialParentType.list() else ''
+                                    if tofind in conf.IsChildType.list():
+                                        content.isChild = map[key].value
+                                        addImplicitRelationship(content)
                                     content.allObjects[content.currentNodeType][content.currentView][1].append(map[key].value)
                             case conf.ToStore.VR.value: # view-relationshipRef
                                 if content.currentView is not None:
