@@ -54,34 +54,26 @@ def readModel(fileToRead: str) -> conf.XMLContent:
         Add a relationship between two nodes that are embeded in a view
         '''
         try:
+            #what to do : single out all the aggregation and composition relations ships
+            #           for each of these relations find if both the source and the target is in the nodes of each view
+            # when the relation is not referenced for the view, add it.
+
             #first : single out all the relations with a source equal to the parent node
             search = content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RS.value]
             npsearch = np.asarray(search)
             indices = np.asarray(npsearch==content.isPotentialParent).nonzero()
 
-            found = True
+            found = False
             if len(indices[0]) > 0:
-                #second : in the result, search a target that is the current node
-                relationExists = [ i for i in range(len(indices[0])) if indices[0][i] == content.isChild ]
+                #second : in the result, search if the current node is a target
+                relationExists = [ i for i in range(len(indices[0])) if content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RG.value][i] == content.isChild ]
                 if len(relationExists) > 0:
-                    # third : I found a least a relationship between the parent and the child
+                    # third : hence, I found at least a relationship between the parent and the child
                     # now let's examine if there is a suitable relation type to add
-                    relationOK = [ i for i in range(len(relationExists)) if relationExists[i] == conf.SuitableRelationship.COMPOSITION.value ]
-                    if len(relationOK) > 0:
-                        content.allObjects[content.currentNodeType][content.currentView][2].append(conf.NodeType.RELATIONSSHIP.value[conf.ToStore.RI.value][relationOK[0]])
-                        content.allObjects[content.currentNodeType][content.currentView][2].append(relationOK[0])
-                    else:
-                        relationOK = [ i for i in range(len(relationExists)) if relationExists[i] == conf.SuitableRelationship.AGGREGATION.value ]
-                        if len(relationOK) > 0:
-                            content.allObjects[content.currentNodeType][content.currentView][2].append(conf.NodeType.RELATIONSSHIP.value[conf.ToStore.RI.value][relationOK[0]])
-                            content.allObjects[content.currentNodeType][content.currentView][2].append(relationOK[0])
-                        else:
-                            found = False
-                else:
-                    found = False
-            else:
-                found = False
-            
+                    for i in range(len(relationExists)):
+                        if content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RT.value][relationExists[i]] in conf.SuitableRelationship.list():
+                            content.allObjects[content.currentNodeType][content.currentView][2].append(conf.NodeType.RELATIONSSHIP.value[conf.ToStore.RI.value][relationExists[i]])
+                            found = True
             if not found:
                 uid = uuid.uuid4()
                 content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RI.value].append(uid)
@@ -122,10 +114,6 @@ def readModel(fileToRead: str) -> conf.XMLContent:
                                     # I encountered ToStore.VI.value
                             case conf.ToStore.NE.value | conf.ToStore.OE.value: # view-elementRef, node-elementRef
                                 if content.currentView is not None:
-                                    content.isPotentialParent = map[key].value if tofind in conf.IsPotentialParentType.list() else ''
-                                    if tofind in conf.IsChildType.list():
-                                        content.isChild = map[key].value
-                                        addImplicitRelationship(content)
                                     content.allObjects[content.currentNodeType][content.currentView][1].append(map[key].value)
                             case conf.ToStore.VR.value: # view-relationshipRef
                                 if content.currentView is not None:
@@ -208,6 +196,7 @@ def readModel(fileToRead: str) -> conf.XMLContent:
                 mlogger.critical(f'Something went wrong in function read_model() check the logs')
                 return None
         alignIndices(content)
+        #addImplicitRelationship(content)
         return content
     except BaseException as be:
         mlogger.critical(f'Unexpected error in function read_model() : {type(be)}{be.args}')
