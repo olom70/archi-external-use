@@ -48,44 +48,6 @@ def readModel(fileToRead: str) -> conf.XMLContent:
         Read an archimate model (in "open exchange" format)
         feed the object XMLContent with what's read
     '''
-    @log_function_call
-    def addImplicitRelationship(content: conf.XMLContent) -> None:
-        '''
-        Add a relationship between two nodes that are embeded in a view
-        '''
-        try:
-            #what to do : single out all the aggregation and composition relations ships
-            #           for each of these relations find if both the source and the target is in the nodes of each view
-            # when the relation is not referenced for the view, add it.
-
-            #first : single out all the relations with a source equal to the parent node
-            search = content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RS.value]
-            npsearch = np.asarray(search)
-            indices = np.asarray(npsearch==content.isPotentialParent).nonzero()
-
-            found = False
-            if len(indices[0]) > 0:
-                #second : in the result, search if the current node is a target
-                relationExists = [ i for i in range(len(indices[0])) if content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RG.value][i] == content.isChild ]
-                if len(relationExists) > 0:
-                    # third : hence, I found at least a relationship between the parent and the child
-                    # now let's examine if there is a suitable relation type to add
-                    for i in range(len(relationExists)):
-                        if content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RT.value][relationExists[i]] in conf.SuitableRelationship.list():
-                            content.allObjects[content.currentNodeType][content.currentView][2].append(conf.NodeType.RELATIONSSHIP.value[conf.ToStore.RI.value][relationExists[i]])
-                            found = True
-            if not found:
-                uid = uuid.uuid4()
-                content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RI.value].append(uid)
-                content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RT.value].append(conf.SuitableRelationship.COMPOSITION.value)
-                content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RN.value].append(None)
-                content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RD.value].append(None)
-                content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RS.value].append(content.isPotentialParent)
-                content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RG.value].append(content.isChild)
-                content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RA.value].append(None)
-                content.allObjects[content.currentNodeType][content.currentView][2].append(uid)
-        except Exception as e:
-            mlogger.warning(f"'A problem occured during the process of isPotentialParent : {content.isPotentialParent}, isChild {content.isChild}', {type(e)}{e.args})")
 
     def processNodeAttributes(node: Node, content: conf.XMLContent) -> None:
         mlogger.debug(f'function processNodeAttributes() : node received {node.localName}')
@@ -162,7 +124,62 @@ def readModel(fileToRead: str) -> conf.XMLContent:
         except KeyError as k:
             mlogger.warning(f"'{tofind}' not found in NODES, check the configuration.")
         except Exception as e:
-            mlogger.warning(f"'{tofind}' not found in NODES, check the configuration. ({type(be)}{be.args})")
+            mlogger.warning(f"'{tofind}' not found in NODES, check the configuration. ({type(e)}{e.args})")
+    @log_function_call
+    def addAggregations(content: conf.XMLContent) -> None:
+        '''
+            In a view, when a concept is embeded in another one, the relationship does not appear in the XML file.
+            I do need to add it manually, assuming it's a Composition or an aggregation
+        '''
+
+        def RelationCanBeAdded(content: conf.XMLContent, viewid: str, node: str, nodesWithRelations: list, toStoreOne: conf.ToStore, toStoreTwo: conf.ToStore) -> tuple:
+            found = False
+            if node not in nodesWithRelations:
+                #first : single out all the relations with a source or target equal to the node
+                search = content.allObjects[conf.NodeType.RELATIONSSHIP.value][toStoreOne]
+                npsearch = np.asarray(search)
+                indices = np.asarray(npsearch==node).nonzero()
+                if len(indices[0]) > 0:
+                    remainingNodes = set(nodes) - set(nodesWithRelations)
+                    for i in indices[0]:
+                        otherSideOfTheCurrentRelationship = content.allObjects[conf.NodeType.RELATIONSSHIP.value][toStoreTwo][i]
+                        for nodeToCompareTo in remainingNodes:
+                            if nodeToCompareTo == otherSideOfTheCurrentRelationship:
+                                if content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RT.value][i] in conf.SuitableRelationship.list():
+                                    content.allObjects[conf.NodeType.VIEW.value][viewid][2].append(content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RI.value][i])
+                                    found = True
+                                    nodesWithRelations.append(toStoreTwo)
+                                    nodesWithRelations.append(otherSideOfTheCurrentRelationship)
+                                    break
+            return (found, nodesWithRelations)
+
+        try:
+            if len(content.allObjects[conf.NodeType.VIEW.value]):
+                for viewid in content.allObjects[conf.NodeType.VIEW.value].keys():
+                    name = ''
+                    nodes = []
+                    relationships = []
+                    name, nodes, relationships = content.allObjects[conf.NodeType.VIEW.value][viewid]
+                    nodesWithRelations = []
+                    if len(relationships) > 0:
+                        # Here, I retrieve all the nodes with an explicit relationship in the view :
+                        # I  do not need to add a relationship for these one
+                        for rs in relationships:
+                            try:
+                                index = content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RI.value].index(rs)
+                                nodesWithRelations.append(content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RS.value][index])
+                                nodesWithRelations.append(content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RG.value][index])
+                            except ValueError as ve:
+                                mlogger.warning(f"There must be a nasty bug, because the relationship {rs} is not found ({type(ve)}{ve.args})")
+                    for node in nodes:
+                        found, nodesWithRelations = RelationCanBeAdded(content, viewid, node, nodesWithRelations, conf.ToStore.RS.value, conf.ToStore.RG.value)
+                        if not found:
+                            found, nodesWithRelations = RelationCanBeAdded(content, viewid, node, nodesWithRelations, conf.ToStore.RG.value, conf.ToStore.RS.value)
+                            if not found:
+                                mlogger.info(f"The node {node} has either no connection at all or has an explicit connection in the view")
+        except Exception as e:
+            mlogger.warning(f"'unexpected error in the function addAggregations. ({type(e)}{e.args})")
+
 
     @log_function_call
     def walk(listOfNodes, content: conf.XMLContent) -> None:
@@ -196,7 +213,7 @@ def readModel(fileToRead: str) -> conf.XMLContent:
                 mlogger.critical(f'Something went wrong in function read_model() check the logs')
                 return None
         alignIndices(content)
-        #addImplicitRelationship(content)
+        addAggregations(content)
         return content
     except BaseException as be:
         mlogger.critical(f'Unexpected error in function read_model() : {type(be)}{be.args}')

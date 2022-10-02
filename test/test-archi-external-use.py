@@ -35,6 +35,7 @@ if __name__ == '__main__':
     assert allContent[conf.NodeType.VIEW.value]['id-2683cb1d748a40148dba0ca693063c60'][0] == 'application layer'
     assert allContent[conf.NodeType.VIEW.value]['id-2683cb1d748a40148dba0ca693063c60'][1][0] == 'id-e7ba459f108a4c62804e8e2ac83d25bd'
     assert allContent[conf.NodeType.VIEW.value]['id-2683cb1d748a40148dba0ca693063c60'][2][0] == 'id-23a7d1fa38a94c698f5295ebaee087c7'
+    assert allContent[conf.NodeType.VIEW.value]['id-14c9a667d06949e49b10686750cf5cac'][2][0] == 'id-afea383831d546909ccd4235087de2af'
     
     modelAsGraph = tools.createGraph(content)
     assert nx.is_directed(modelAsGraph)
@@ -45,6 +46,8 @@ if __name__ == '__main__':
     viewAsGraph = tools.createGraphView(viewIdentifier, content)
     name = nx.get_node_attributes(viewAsGraph, conf.ToStore.EN.value)
     assert name['id-2652f6a8ea82422f914026fd17b39331'] == 'Support'
+    assert len(viewAsGraph.get_edge_data('id-2652f6a8ea82422f914026fd17b39331', 'id-5c93f97b4b684599add997942e49fb7f')) > 0
+    assert len(viewAsGraph.get_edge_data('id-3842a16dac924661b4ef18fbb0231be9', 'id-0760dabecdff4cf092beeb6a009ba38b')) > 0
     
     viewIdentifier = 'id-2683cb1d748a40148dba0ca693063c60'
     viewAsGraph = tools.createGraphView(viewIdentifier, content)

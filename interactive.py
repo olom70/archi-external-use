@@ -1,4 +1,5 @@
 #%%
+from re import L
 from tkinter import Variable
 from xml.dom import minidom, Node
 from xml.dom.expatbuilder import TEXT_NODE
@@ -411,3 +412,11 @@ print(list(MDG.nodes))
 print(list(nx.topological_sort(MDG)))
 
 print([n for n,d in MDG.in_degree() if d==0])
+
+#%%
+
+a = [1, 2, 3, 4, 5]
+b = [4, 5, 6, 7, 8]
+
+print(set(a) - set(b))
+

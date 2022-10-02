@@ -121,9 +121,6 @@ class XMLContent(object):
                 'connection-bendpoint') #12
         }
 
-        self.isPotentialParent = ''
-        self.isChild = ''
-
         self.GETFROMTHESENODES = {NodeType.ELEMENT.value:
                                 (ToGet.ATTR, #0
                             ToGet.DATA, #1
@@ -171,7 +168,7 @@ class XMLContent(object):
                                 ToStore.RS.value: [],
                                 ToStore.RG.value: [],
                                 ToStore.RA.value: []},
-                            NodeType.VIEW.value: {}
+                            NodeType.VIEW.value: {} # content : keys : identifier of the views, values : [name: str, [nodes], [relationships]] 
                         }
 
         # holds value of the NodeType currently processed
