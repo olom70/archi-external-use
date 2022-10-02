@@ -372,6 +372,7 @@ MDG = nx.MultiDiGraph()
 nodes = ['id5', 'id2', 'id3', 'id4', 'id1', 'id0']
 MDG.add_nodes_from(nodes)
 edges = [('id1', 'id2', {"composed of": "name12"}),
+         ("id1", "id6", {"composed of": "name23"}),
          ("id2", "id3", {"composed of": "name23"}),
          ("id3", "id4", {"composed of": "name34"}),
          ("id3", "id4", {"aggregates": "name34a"}),
@@ -381,25 +382,31 @@ edges = [('id1', 'id2', {"composed of": "name12"}),
 MDG.add_edges_from(edges)
 
 
-def walkgraph(MDG: nx.MultiDiGraph,  current_node: str, already_met: list) -> None:
+def walkgraph(MDG: nx.MultiDiGraph,  current_node: list, already_met: list) -> None:
 
     def continue_walk(e: dict) -> bool:
         print("inside continue")
         for v, k in e.items():
+            print(f' dictionary : {k}')
             if ("composed of" in k):
                 print('return true')
                 return True
 
     print(f'current_node : {current_node}')
-#    if current_node not in already_met:
-    for e in nx.edges(MDG, current_node):
-        if e[0] not in already_met:
+    print(f'all edges {nx.edges(MDG, current_node)}')
+    nextNodes = []
+    if len(nx.edges(MDG, current_node)) > 0:
+        for e in nx.edges(MDG, current_node):
             print(f"edges : {e}")
             print(f"list of edges {MDG.adj[e[0]][e[1]]}")
-            if continue_walk(MDG.adj[e[0]][e[1]]):
-                already_met.append(e[0])
-                print(f'already_met : {already_met}')
-                walkgraph(MDG, e[1], already_met)           
+            continue_walk(MDG.adj[e[0]][e[1]])
+            try:
+                i = nextNodes.index(e[1])
+            except ValueError:
+                nextNodes.append(e[1])
+            print(f'nextnodes : {nextNodes}')
+            continue_walk(MDG.adj[e[0]][e[1]])
+        walkgraph(MDG, nextNodes, already_met)           
 
 
 
@@ -411,7 +418,10 @@ print(list(MDG.nodes))
 
 print(list(nx.topological_sort(MDG)))
 
-print([n for n,d in MDG.in_degree() if d==0])
+top = [n for n,d in MDG.in_degree() if d==0]
+print(top)
+print(MDG.out_degree(top))
+# %%
 
 #%%
 
@@ -419,4 +429,7 @@ a = [1, 2, 3, 4, 5]
 b = [4, 5, 6, 7, 8]
 
 print(set(a) - set(b))
+
+level = 2
+print(level+1)
 

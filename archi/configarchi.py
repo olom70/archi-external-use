@@ -88,6 +88,16 @@ class IsChildType(Enum):
     def list():
         return list(map(lambda c: c.value, IsChildType))
 
+class Lists(object):
+    def __init__(self) -> None:
+        self.ids = []
+        self.sizes = []
+        self.names = []
+        self.parents = []
+        self.levels = []
+        self.textsinfo = []
+        self.labels = []
+ 
 
 class XMLContent(object):
     def __init__(self, modelName: str) -> None:
