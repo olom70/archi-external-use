@@ -73,7 +73,6 @@ def createGraphView(viewIdentifier: str, content: conf.XMLContent) -> nx.MultiDi
         for k,v in content.allObjects[conf.NodeType.VIEW.value].items():
             mlogger.debug(f'key / value processed : {k} / {v}')
             if k == viewIdentifier:
-                viewAsGraph.add_nodes_from([(viewIdentifier, {conf.ToStore.NI.value: v[0]})]) # v[0] holds the identifiers of the view
                 for n in v[1]: # v[1] holds the identifiers of the nodes
                     i = content.allObjects[conf.NodeType.ELEMENT.value][conf.ToStore.EI.value].index(n)
                     name = content.allObjects[conf.NodeType.ELEMENT.value][conf.ToStore.EN.value][i]
@@ -83,8 +82,12 @@ def createGraphView(viewIdentifier: str, content: conf.XMLContent) -> nx.MultiDi
                     name = content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RN.value][i]
                     source = content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RS.value][i]
                     target = content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RG.value][i]
+                    rtype = content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RT.value][i]
+                    accessType = content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RA.value][i]
                     viewAsGraph.add_edges_from([(source, target, {conf.ToStore.RN.value: name,
-                                                                conf.ToStore.RI.value: e
+                                                                conf.ToStore.RI.value: e,
+                                                                conf.ToStore.RT.value: rtype,
+                                                                conf.ToStore.RA.value: accessType
                                                                 })]
                                                 )
         return viewAsGraph
