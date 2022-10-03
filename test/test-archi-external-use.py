@@ -19,7 +19,7 @@ import archi.exploitgrpah as exploitgraph
 if __name__ == '__main__':
 
     logger = logging.getLogger('test-archi-external-use')
-    logger.setLevel(logging.WARNING)
+    logger.setLevel(logging.DEBUG)
     fh = logging.FileHandler(filename='test-archi-external-use.log')
     fh.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -59,7 +59,8 @@ if __name__ == '__main__':
     
     viewIdentifier = 'id-14c9a667d06949e49b10686750cf5cac'
     viewAsGraph = creategraphs.createGraphView(viewIdentifier, content)
-    lists = exploitgraph.prepareBusinessCapabilitiesTreemap(viewAsGraph,)
+    lists: conf.Lists
+    lists = exploitgraph.prepareBusinessCapabilitiesTreemap(viewAsGraph)
     assert len(lists.parents) > 0
     assert len(lists.names) > 0
     assert len (lists.levels) > 0

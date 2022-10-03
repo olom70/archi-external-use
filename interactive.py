@@ -425,11 +425,7 @@ print(MDG.out_degree(top))
 
 #%%
 
-a = [1, 2, 3, 4, 5]
-b = [4, 5, 6, 7, 8]
-
-print(set(a) - set(b))
-
-level = 2
-print(level+1)
+d = {"one": 1, "two": 2}
+l = [v for v in d.values()]
+print(l)
 
