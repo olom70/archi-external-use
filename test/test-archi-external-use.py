@@ -19,7 +19,7 @@ import archi.exploitgrpah as exploitgraph
 if __name__ == '__main__':
 
     logger = logging.getLogger('test-archi-external-use')
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.WARNING)
     fh = logging.FileHandler(filename='test-archi-external-use.log')
     fh.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')

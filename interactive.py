@@ -425,7 +425,8 @@ print(MDG.out_degree(top))
 
 #%%
 
-d = {"one": 1, "two": 2}
-l = [v for v in d.values()]
-print(l)
-
+d = {"one": [], "two": 2}
+x = d["one"]
+x.append("1")
+d["one"] = x
+print(d)

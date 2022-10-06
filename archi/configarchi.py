@@ -97,6 +97,7 @@ class Lists(object):
         self.levels = []
         self.textsinfo = []
         self.labels = []
+        self.childs = {}
  
 
 class XMLContent(object):
