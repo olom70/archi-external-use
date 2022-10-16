@@ -5,12 +5,21 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "test",
             "type": "python",
             "request": "launch",
             "program": "test/test-archi-external-use.py",
             "console": "integratedTerminal",
             "justMyCode": true
+        },
+        {
+            "name": "main",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
         }
+
     ]
 }

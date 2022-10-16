@@ -4,7 +4,7 @@ from xml.dom import minidom, Node
 import archi.configarchi as conf
 import numpy as np
 
-mlogger = logging.getLogger('test-archi-external-use.tools')
+mlogger = logging.getLogger('archi-external-use.parsexml')
 
 def log_function_call(func):
     @functools.wraps(func)
@@ -122,33 +122,37 @@ def readModel(fileToRead: str) -> conf.XMLContent:
             mlogger.warning(f"'{tofind}' not found in NODES, check the configuration.")
         except Exception as e:
             mlogger.warning(f"'{tofind}' not found in NODES, check the configuration. ({type(e)}{e.args})")
+    
     @log_function_call
     def addAggregations(content: conf.XMLContent) -> None:
         '''
             In a view, when a concept is embeded in another one, the relationship does not appear in the XML file.
-            I do need to add it manually, assuming it's a Composition or an aggregation
+            I do need to add it manually, assuming it's a relation that can be nested
         '''
 
-        def RelationCanBeAdded(content: conf.XMLContent, viewid: str, node: str, nodesWithRelations: list, toStoreOne: conf.ToStore, toStoreTwo: conf.ToStore) -> tuple:
+        @log_function_call
+        def RelationCanBeAdded(content: conf.XMLContent, viewid: str, node: str, toStoreOne: conf.ToStore, toStoreTwo: conf.ToStore) -> None:
             found = False
-            if node not in nodesWithRelations:
-                #first : single out all the relations with a source or target equal to the node
+            #first : single out all the relations with a source or target equal to the node
+            mlogger.debug(f'searching relation for node {node}')
+            try:
                 search = content.allObjects[conf.NodeType.RELATIONSSHIP.value][toStoreOne]
                 npsearch = np.asarray(search)
                 indices = np.asarray(npsearch==node).nonzero()
                 if len(indices[0]) > 0:
-                    remainingNodes = set(nodes) - set(nodesWithRelations)
                     for i in indices[0]:
                         otherSideOfTheCurrentRelationship = content.allObjects[conf.NodeType.RELATIONSSHIP.value][toStoreTwo][i]
-                        for nodeToCompareTo in remainingNodes:
+                        for nodeToCompareTo in nodes:
                             if nodeToCompareTo == otherSideOfTheCurrentRelationship:
                                 if content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RT.value][i] in conf.SuitableRelationship.list():
                                     content.allObjects[conf.NodeType.VIEW.value][viewid][2].append(content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RI.value][i])
+                                    mlogger.debug(f'adding relation {content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RI.value][i]}')
                                     found = True
-                                    nodesWithRelations.append(toStoreTwo)
-                                    nodesWithRelations.append(otherSideOfTheCurrentRelationship)
-                                    break
-            return (found, nodesWithRelations)
+                if not found:
+                    mlogger.info(f"The node {node} has either no connection at all or has an explicit connection in the view")
+            except Exception as e:
+                mlogger.warning(f"'unexpected error in the function relationCanBeAdded(). ({type(e)}{e.args})")
+
 
         try:
             if len(content.allObjects[conf.NodeType.VIEW.value]):
@@ -157,23 +161,8 @@ def readModel(fileToRead: str) -> conf.XMLContent:
                     nodes = []
                     relationships = []
                     name, nodes, relationships = content.allObjects[conf.NodeType.VIEW.value][viewid]
-                    nodesWithRelations = []
-                    if len(relationships) > 0:
-                        # Here, I retrieve all the nodes with an explicit relationship in the view :
-                        # I  do not need to add a relationship for these one
-                        for rs in relationships:
-                            try:
-                                index = content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RI.value].index(rs)
-                                nodesWithRelations.append(content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RS.value][index])
-                                nodesWithRelations.append(content.allObjects[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RG.value][index])
-                            except ValueError as ve:
-                                mlogger.warning(f"There must be a nasty bug, because the relationship {rs} is not found ({type(ve)}{ve.args})")
                     for node in nodes:
-                        found, nodesWithRelations = RelationCanBeAdded(content, viewid, node, nodesWithRelations, conf.ToStore.RS.value, conf.ToStore.RG.value)
-                        if not found:
-                            found, nodesWithRelations = RelationCanBeAdded(content, viewid, node, nodesWithRelations, conf.ToStore.RG.value, conf.ToStore.RS.value)
-                            if not found:
-                                mlogger.info(f"The node {node} has either no connection at all or has an explicit connection in the view")
+                        RelationCanBeAdded(content, viewid, node, conf.ToStore.RS.value, conf.ToStore.RG.value)
         except Exception as e:
             mlogger.warning(f"'unexpected error in the function addAggregations. ({type(e)}{e.args})")
 

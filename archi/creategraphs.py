@@ -4,7 +4,7 @@ import networkx as nx
 
 from archi.parsexml import log_function_call
 
-mlogger = logging.getLogger('test-archi-external-use.graphcreation')
+mlogger = logging.getLogger('archi-external-use.creategraphs')
 
 @log_function_call
 def createGraph(content: conf.XMLContent) -> nx.MultiDiGraph:

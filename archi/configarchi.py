@@ -17,6 +17,9 @@ class NodeType(Enum):
 class SuitableRelationship(Enum):
     COMPOSITION = 'Composition'
     AGGREGATION = 'Aggregation'
+    REALISATION = 'Realization'
+    ASSIGNEMENT = 'Assignement'
+
 
     @staticmethod
     def list():
