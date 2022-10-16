@@ -36,15 +36,28 @@ if __name__ == '__main__':
     
     allContent = content.getAll()
     assert 'id-bc7db218fc4c42b88409118617393819' in allContent[conf.NodeType.ELEMENT.value][conf.ToStore.EI.value]
+    assert 'id-e6f02aa2c3cc491285e8cb17fe91493e' in allContent[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RI.value] #relationship beween to groups
+    i = allContent[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RI.value].index('id-e6f02aa2c3cc491285e8cb17fe91493e')
+    assert allContent[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RS.value][i] == 'id-5c93f97b4b684599add997942e49fb7f' # source and destination exists
+    assert allContent[conf.NodeType.RELATIONSSHIP.value][conf.ToStore.RG.value][i] == 'id-f180722b19304db18ac623c0e8957d5e'
+    
     assert allContent[conf.NodeType.VIEW.value]['id-2683cb1d748a40148dba0ca693063c60'][0] == 'application layer'
     assert allContent[conf.NodeType.VIEW.value]['id-2683cb1d748a40148dba0ca693063c60'][1][0] == 'id-e7ba459f108a4c62804e8e2ac83d25bd'
     assert allContent[conf.NodeType.VIEW.value]['id-2683cb1d748a40148dba0ca693063c60'][2][0] == 'id-23a7d1fa38a94c698f5295ebaee087c7'
     assert allContent[conf.NodeType.VIEW.value]['id-14c9a667d06949e49b10686750cf5cac'][2][0] == 'id-afea383831d546909ccd4235087de2af'
+
+    assert allContent[conf.NodeType.VIEW.value]['id-14c9a667d06949e49b10686750cf5cac'][0] == 'POS complet'
+    assert 'id-e6f02aa2c3cc491285e8cb17fe91493e' in allContent[conf.NodeType.VIEW.value]['id-14c9a667d06949e49b10686750cf5cac'][2]
+    
+    
+    
     
     modelAsGraph = creategraphs.createGraph(content)
     assert nx.is_directed(modelAsGraph)
     name = nx.get_node_attributes(modelAsGraph, conf.ToStore.EN.value)
     assert name["id-e7ba459f108a4c62804e8e2ac83d25bd"] == 'A function'
+    assert len(modelAsGraph.get_edge_data('id-5c93f97b4b684599add997942e49fb7f', 'id-f180722b19304db18ac623c0e8957d5e')) > 0 #source and destination exists
+
 
     viewIdentifier = 'id-14c9a667d06949e49b10686750cf5cac'
     viewAsGraph = creategraphs.createGraphView(viewIdentifier, content)
@@ -52,13 +65,9 @@ if __name__ == '__main__':
     assert name['id-2652f6a8ea82422f914026fd17b39331'] == 'Support'
     assert len(viewAsGraph.get_edge_data('id-2652f6a8ea82422f914026fd17b39331', 'id-5c93f97b4b684599add997942e49fb7f')) > 0
     assert len(viewAsGraph.get_edge_data('id-3842a16dac924661b4ef18fbb0231be9', 'id-0760dabecdff4cf092beeb6a009ba38b')) > 0
-    
-    viewIdentifier = 'id-2683cb1d748a40148dba0ca693063c60'
-    viewAsGraph = creategraphs.createGraphView(viewIdentifier, content)
     assert len(viewAsGraph.get_edge_data('id-e7ba459f108a4c62804e8e2ac83d25bd', 'id-bc7db218fc4c42b88409118617393819')) > 0
-    
-    viewIdentifier = 'id-14c9a667d06949e49b10686750cf5cac'
-    viewAsGraph = creategraphs.createGraphView(viewIdentifier, content)
+    assert len(viewAsGraph.get_edge_data('id-5c93f97b4b684599add997942e49fb7f', 'id-f180722b19304db18ac623c0e8957d5e')) > 0
+
     lists: conf.Lists
     lists = exploitgraph.prepareBusinessCapabilitiesTreemap(viewAsGraph)
     assert len(lists.parents) > 0
