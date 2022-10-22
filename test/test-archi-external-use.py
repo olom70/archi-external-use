@@ -19,7 +19,7 @@ if __name__ == '__main__':
     logger = logging.getLogger('archi-external-use')
     logger.setLevel(logging.WARNING)
     fh = logging.FileHandler(filename='test-archi-external-use.log')
-    fh.setLevel(logging.DEBUG)
+    fh.setLevel(logging.WARNING)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     fh.setFormatter(formatter)
     logger.addHandler(fh)
