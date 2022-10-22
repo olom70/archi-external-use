@@ -2349,6 +2349,30 @@ Transfer from store to remote reserve and reverse</documentation>
       </child>
       <child xsi:type="archimate:DiagramObject" id="id-e370b9eadb9f48a889c9a8253b8eb71a" font="1|Segoe UI Black|13.8|0|WINDOWS|1|-23|0|0|0|900|0|0|0|0|3|2|1|34|Segoe UI Black" textAlignment="1" fillColor="#ffffff" archimateElement="id-0548aba5d7f8481e8652d9b77a97bc53">
         <bounds x="519" y="629" width="959" height="155"/>
+        <sourceConnection xsi:type="archimate:Connection" id="id-2b560db3877346ec8f3eaf91ce0f255a" source="id-e370b9eadb9f48a889c9a8253b8eb71a" target="id-80164a91049340c38f5551351e10a417" archimateRelationship="id-17357e5fc6684c16a872fa8f126843b9"/>
+        <sourceConnection xsi:type="archimate:Connection" id="id-4e2f71e50e374e22a4ff058dde45baa1" source="id-e370b9eadb9f48a889c9a8253b8eb71a" target="id-d8715660be344bfbbfa520a8e9bfe67c" archimateRelationship="id-5dec74b823804d33b5245a342af5fadf"/>
+        <child xsi:type="archimate:DiagramObject" id="id-80164a91049340c38f5551351e10a417" targetConnections="id-2b560db3877346ec8f3eaf91ce0f255a" textAlignment="1" archimateElement="id-d1501d8416874a2397372a43aecdbf72">
+          <bounds x="36" y="36" width="193" height="73"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-e9d401948689469d94ec39bd7ccbbfd7" source="id-80164a91049340c38f5551351e10a417" target="id-ef6bcdfddda24d93b6abe3c438d96f71" archimateRelationship="id-a26bbe87a3f74d5fa1f3ba7bba57c480"/>
+          <child xsi:type="archimate:DiagramObject" id="id-ef6bcdfddda24d93b6abe3c438d96f71" targetConnections="id-e9d401948689469d94ec39bd7ccbbfd7" archimateElement="id-576ba4aef9d3487ca7719d39fae8cb5f">
+            <bounds x="36" y="36" width="120" height="55"/>
+          </child>
+        </child>
+        <child xsi:type="archimate:DiagramObject" id="id-d8715660be344bfbbfa520a8e9bfe67c" targetConnections="id-4e2f71e50e374e22a4ff058dde45baa1" textAlignment="1" archimateElement="id-57402ae43be54b1f9b4281671c77fd42">
+          <bounds x="264" y="44" width="577" height="65"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-ecd34b7e01674948b48b4dbdfdec8bbe" source="id-d8715660be344bfbbfa520a8e9bfe67c" target="id-0a81ac594bbf4d04a271b58952bb0ae0" archimateRelationship="id-628f1f983f9149c6bc2cb4a4140b0245"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-2b0b7e3d07974644aad7af4d8e0175c7" source="id-d8715660be344bfbbfa520a8e9bfe67c" target="id-37f0bf9580ec4559acc7a8fc87d07d51" archimateRelationship="id-12dd6b30c9c2481e92afa609a33ed303"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-31a7090359b64f009b45f70dad9e2039" source="id-d8715660be344bfbbfa520a8e9bfe67c" target="id-36ca6bea6085403883c6a0552a225989" archimateRelationship="id-bb076af96b0c4bf4a1f2c8d4f894fd81"/>
+          <child xsi:type="archimate:DiagramObject" id="id-0a81ac594bbf4d04a271b58952bb0ae0" targetConnections="id-ecd34b7e01674948b48b4dbdfdec8bbe" archimateElement="id-0ac38c192e42449d9399fc18fc211130">
+            <bounds x="24" y="36" width="120" height="55"/>
+          </child>
+          <child xsi:type="archimate:DiagramObject" id="id-37f0bf9580ec4559acc7a8fc87d07d51" targetConnections="id-2b0b7e3d07974644aad7af4d8e0175c7" archimateElement="id-57d59f26224d4bae81a632f50462f79e">
+            <bounds x="211" y="43" width="120" height="55"/>
+          </child>
+          <child xsi:type="archimate:DiagramObject" id="id-36ca6bea6085403883c6a0552a225989" targetConnections="id-31a7090359b64f009b45f70dad9e2039" archimateElement="id-e7d512afae73443dbb257f9d1fac55c2">
+            <bounds x="418" y="40" width="120" height="55"/>
+          </child>
+        </child>
       </child>
       <child xsi:type="archimate:DiagramObject" id="id-df4d27f4353946c4ace6ea6f3e3a0d93" font="1|Segoe UI Black|13.8|0|WINDOWS|1|-23|0|0|0|900|0|0|0|0|3|2|1|34|Segoe UI Black" textAlignment="1" fillColor="#ffffff" archimateElement="id-3bef3682ea8a4e23b5421f215269853e">
         <bounds x="519" y="797" width="695" height="203"/>
@@ -2367,6 +2391,14 @@ Transfer from store to remote reserve and reverse</documentation>
       </child>
       <child xsi:type="archimate:DiagramObject" id="id-8403942cbc9b4dc987736d6ff1d45e6c" font="1|Segoe UI Black|13.8|0|WINDOWS|1|-23|0|0|0|900|0|0|0|0|3|2|1|34|Segoe UI Black" textAlignment="1" fillColor="#ffffff" archimateElement="id-3a3cbe0dad534418ac4617f71fa9db29">
         <bounds x="1523" y="1181" width="520" height="142"/>
+        <sourceConnection xsi:type="archimate:Connection" id="id-ea03e2053fb9454caef91bf82cfbc309" source="id-8403942cbc9b4dc987736d6ff1d45e6c" target="id-9b7bbce75f2a4edf92c857891a345d5c" archimateRelationship="id-584e0832e5d4412ab59eb1e50d5b0e8a"/>
+        <child xsi:type="archimate:DiagramObject" id="id-9b7bbce75f2a4edf92c857891a345d5c" targetConnections="id-ea03e2053fb9454caef91bf82cfbc309" textAlignment="1" archimateElement="id-13196a34bf65473296b6db1cf152297a">
+          <bounds x="36" y="48" width="400" height="140"/>
+          <sourceConnection xsi:type="archimate:Connection" id="id-3f78774c1d3f4108a698dbd2eef4faa8" source="id-9b7bbce75f2a4edf92c857891a345d5c" target="id-35eb0690894e4060aed5c751f9a78200" archimateRelationship="id-5d36424689a74358b8078b1dfd06775b"/>
+          <child xsi:type="archimate:DiagramObject" id="id-35eb0690894e4060aed5c751f9a78200" targetConnections="id-3f78774c1d3f4108a698dbd2eef4faa8" archimateElement="id-98f59050ec044c2ea027016f35a532ab">
+            <bounds x="170" y="49" width="120" height="55"/>
+          </child>
+        </child>
       </child>
       <child xsi:type="archimate:DiagramObject" id="id-67784eafcb4241669e5128df4bdbbe51" font="1|Segoe UI Black|13.8|0|WINDOWS|1|-23|0|0|0|900|0|0|0|0|3|2|1|34|Segoe UI Black" textAlignment="1" fillColor="#ffffff" archimateElement="id-eee57a0b327949fd943a76d695ace2ff">
         <bounds x="1503" y="1572" width="1287" height="885"/>
