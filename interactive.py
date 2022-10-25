@@ -425,7 +425,6 @@ print(MDG.out_degree(top))
 
 #%%
 
-from dash import Dash
 import logging
 
 import archi.parsexml as parsexml
