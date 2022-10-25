@@ -19,7 +19,16 @@
             "program": "tinkerexploitation.py",
             "console": "integratedTerminal",
             "justMyCode": true
+        },
+        {
+            "name": "VC",
+            "type": "python",
+            "request": "launch",
+            "program": "VCexploitation.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
         }
+
 
     ]
 }

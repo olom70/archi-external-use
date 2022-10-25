@@ -425,8 +425,29 @@ print(MDG.out_degree(top))
 
 #%%
 
-d = {"one": [], "two": 2}
-x = d["one"]
-x.append("1")
-d["one"] = x
-print(d)
+from dash import Dash
+import logging
+
+import archi.parsexml as parsexml
+import archi.creategraphs as creategraphs
+import archi.configarchi as conf
+import networkx as nx
+logger = logging.getLogger('archi-external-use')
+logger.setLevel(logging.WARNING)
+fh = logging.FileHandler(filename='test-archi-external-use.log')
+fh.setLevel(logging.WARNING)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+fh.setFormatter(formatter)
+logger.addHandler(fh)
+logger.info('Start. Application is initializing')
+
+fileToRead = 'VC.xml'
+content = parsexml.readModel(fileToRead)
+modelAsGraph = creategraphs.createGraph(content)
+listOfIsolatedNodes = [n for n,d in modelAsGraph.degree() if d==0]
+name = nx.get_node_attributes(modelAsGraph, conf.ToStore.EN.value)
+type = nx.get_node_attributes(modelAsGraph, conf.ToStore.ET.value)
+for isolatedNode in listOfIsolatedNodes:
+    print(f'id : {isolatedNode}, name : {name[isolatedNode]}, type : {type[isolatedNode]} ')
+
+# %%
