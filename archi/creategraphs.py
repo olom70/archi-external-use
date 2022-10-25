@@ -2,7 +2,7 @@ import logging
 import archi.configarchi as conf
 import networkx as nx
 
-from archi.parsexml import log_function_call
+from archi.common import log_function_call
 
 mlogger = logging.getLogger('archi-external-use.creategraphs')
 

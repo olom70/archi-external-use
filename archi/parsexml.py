@@ -1,19 +1,12 @@
 import logging
-import functools
 from xml.dom import minidom, Node
 import archi.configarchi as conf
 import numpy as np
+from archi.common import log_function_call
 
 mlogger = logging.getLogger('archi-external-use.parsexml')
 
-def log_function_call(func):
-    @functools.wraps(func)
-    def wrapper(*args, **kwargs):
-        mlogger.info(f'Start of the function {func.__name__}')
-        response = func(*args, **kwargs)
-        mlogger.info(f'End of the function {func.__name__}')
-        return response
-    return wrapper
+
 
 @log_function_call
 def alignIndices(content: conf.XMLContent) -> None:
