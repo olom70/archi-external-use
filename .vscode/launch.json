@@ -13,10 +13,10 @@
             "justMyCode": true
         },
         {
-            "name": "main",
+            "name": "tinker",
             "type": "python",
             "request": "launch",
-            "program": "main.py",
+            "program": "tinkerexploitation.py",
             "console": "integratedTerminal",
             "justMyCode": true
         }
