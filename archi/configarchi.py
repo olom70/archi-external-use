@@ -18,7 +18,6 @@ class SuitableRelationship(Enum):
     REALISATION = 'Realization'
     ASSIGNEMENT = 'Assignement'
 
-
     @staticmethod
     def list():
         return list(map(lambda c: c.value, SuitableRelationship))
@@ -102,7 +101,6 @@ class Lists(object):
         self.labels = []
         self.childs = {}
  
-
 class XMLContent(object):
     def __init__(self, modelName: str) -> None:
         self.NODES = {NodeType.ELEMENT.value:  
