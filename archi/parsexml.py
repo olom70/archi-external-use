@@ -66,7 +66,7 @@ def readModel(fileToRead: str) -> conf.XMLContent:
                                                                                             # [name, [Nodes], [Relationships]]
                                 content.currentView = map[key].value
                             case conf.ToStore.VT.value: #diagrams-type
-                                if map[key].value != 'Diagram':
+                                if map[key].value != conf.DIAGRAM_IDENTIFICATION:
                                     del content.allObjects[content.currentNodeType][content.currentView]
                                     content.currentView = None
                                     # As the view is not a diagram I delete what I initiated when

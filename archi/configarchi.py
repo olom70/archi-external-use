@@ -1,6 +1,4 @@
-from enum import IntEnum, Enum
-from pickle import NONE
-from re import A
+from enum import Enum
 
 class NodeType(Enum):
     '''
@@ -90,6 +88,8 @@ class IsChildType(Enum):
     @staticmethod
     def list():
         return list(map(lambda c: c.value, IsChildType))
+
+DIAGRAM_IDENTIFICATION = 'Diagram'
 
 class Lists(object):
     def __init__(self) -> None:

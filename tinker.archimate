@@ -1160,6 +1160,7 @@ Transfer from store to remote reserve and reverse</documentation>
     <element xsi:type="archimate:AggregationRelationship" name="IL00086COR_APP_081" id="id-e84276affb0c45eca45a184d560776c8" source="id-eb6fdc2c1472476ebf83871e6a87a41c" target="id-ca360b0129b44ac9af844089dc65a1e1"/>
   </folder>
   <folder name="Views" id="id-b36ca452468446bb80d96bf6ac2332f7" type="diagrams">
+    <property key="Report:View:Detailed" value="false"/>
     <element xsi:type="archimate:ArchimateDiagramModel" name="application layer" id="id-2683cb1d748a40148dba0ca693063c60">
       <child xsi:type="archimate:DiagramObject" id="id-8f9c2c66eed14037891c1bba98cfffb8" targetConnections="id-8694941da3db4eaa9b49b449613c5cad" font="1|Sans|9.0|0|WINDOWS|1|-22|0|0|0|400|0|0|0|0|3|2|1|34|Sans" fontColor="#000000" lineColor="#5c5c5c" fillColor="#b5ffff" archimateElement="id-e7ba459f108a4c62804e8e2ac83d25bd">
         <bounds x="672" y="273" width="120" height="55"/>
@@ -2339,6 +2340,7 @@ Transfer from store to remote reserve and reverse</documentation>
           </child>
         </child>
       </child>
+      <property key="Report:View:Detailed" value="false"/>
     </element>
     <element xsi:type="archimate:ArchimateDiagramModel" name="POS Zone seulement" id="id-3b14631921cc4d81b7ead680fdb9979f">
       <child xsi:type="archimate:DiagramObject" id="id-81de5f8baac9461eb04a248c60bca9a9" font="1|Segoe UI Black|13.8|0|WINDOWS|1|-23|0|0|0|900|0|0|0|0|3|2|1|34|Segoe UI Black" textAlignment="1" archimateElement="id-2652f6a8ea82422f914026fd17b39331">
@@ -2406,6 +2408,20 @@ Transfer from store to remote reserve and reverse</documentation>
       <child xsi:type="archimate:DiagramObject" id="id-6ad2fbd9010a4833bc054c4cadfd1339" font="1|Segoe UI Black|13.8|0|WINDOWS|1|-23|0|0|0|900|0|0|0|0|3|2|1|34|Segoe UI Black" textAlignment="1" fillColor="#ffffff" archimateElement="id-098b70af17b04a568aa19abc17814f62">
         <bounds x="2043" y="617" width="896" height="932"/>
       </child>
+      <property key="Report:Model:Hide:Business" value="True"/>
+      <property key="Report:Model:Hide:Application" value="True"/>
+      <property key="Report:Model:Hide:Rechnology&amp;Physical" value="True"/>
+      <property key="Report:Model:Hide:Motivation" value="True"/>
+      <property key="Report:Model:Hide:Implementation&amp;Migration" value="True"/>
+      <property key="Report:Model:Hide:Other" value="True"/>
+      <property key="Report:Model:Hide:Relations" value="True"/>
     </element>
   </folder>
+  <property key="Report:Model:Hide:Relations" value="true"/>
+  <property key="Report:Model:Hide:Other" value="true"/>
+  <property key="Report:Model:Hide:Implementation&amp;Migration" value="true"/>
+  <property key="Report:Model:Hide:Motivation" value="true"/>
+  <property key="Report:Model:Hide:Technology&amp;Physical" value="true"/>
+  <property key="Report:Model:Hide:Application" value="true"/>
+  <property key="Report:Model:Hide:Business" value="true"/>
 </archimate:model>
