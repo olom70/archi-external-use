@@ -40,6 +40,10 @@ def readModel(fileToRead: str) -> conf.XMLContent:
     '''
 
     def processNodeAttributes(node: Node, content: conf.XMLContent) -> None:
+        '''
+            https://linux.die.net/diveintopython/html/xml_processing/attributes.html
+
+        '''
         mlogger.debug(f'function processNodeAttributes() : node received {node.localName}')
         if node.hasAttributes():
             map = node.attributes
