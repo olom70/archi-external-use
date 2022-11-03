@@ -1,6 +1,15 @@
 from enum import Enum
 
 '''
+concepts to creat if necessary prior to other things :
+- Plateau
+- asIsLandscape
+- oldNewProcessAssessment
+- collaborationAssessment
+- suitabilityAssessment
+- futureAssessment
+
+
 column : map to /  work to do
 B : processus "N1" /
 C : function "N2" / "N1" aggregates "N2" + ArchiProperties.LINKTON1 = "N1" cleanName 
@@ -16,8 +25,11 @@ L : propertie ArchiProperties.COLLAB / link value to FunctionListToolKit.collabo
 M-AC : use FunctionListToolKit.asIsLandscape to link to the right app. + property ArchiProperties.AppAssigned + link to plateau PlateauToCreate.PRODASIS
 AD : Documentation for "N3" / concatenate with G and H separated via \n and prefixed by "link to these tools : "
 AE : Documentation for "N3" / concatenate with G and H and AD separated via \n and prefixed by "other tools : "
-AF :  / create a child assessment of the assessment 'N' created for K + ArchiProperties.AFAssessment
+AF :  / create a child assessment of the assessment 'N' created for K + ArchiProperties.AFAssessment + link to N3
 AG :  / if I = "NP" and not empty, create an outcome child of the outcome "Pain Solved by new process"
+AH : link "N3" to FunctionListToolKit.targetAssessment + ArchiProperties.targetAssessment
+AI : link "N3" to FunctionListToolKit.productionReferencerAssessment + ArchiProperties.productionReferencer
+AJ-AV : link "N3" app in AY and AZ + link app (AY and AZ to to resource FunctionListToolkit.toBeResources
 
 TODO : add an ID to all requirements, assessments and outcome
 
@@ -37,6 +49,8 @@ class ArchiProperties(Enum):
     APPASSIGNED = 'AppAssigned'
     AFASSESSMENT = 'AFAssessment'
     OLDNEWPROCESS = 'OldOrNewProcess'
+    TARGETASSEMENT = 'targetAssessment'
+    PRODUCTIONREFERENCER = 'Production Referencer'
 
 
 
@@ -110,3 +124,23 @@ class FunctionListToolkit(object):
                                 'AB': 'a7efee8a-a0ec-4475-b531-d77f93c49978', # Tactical S&OP
                                 'AC': 'id-1fd605bd-76cb-44c0-914c-f8d4e32947db', #ETCO
         }
+        self.targetAssessment = {'N': 'This is not a target process',
+                                    'Y': 'This is a target process'
+        }
+        self.productionReferencerAssessment = {'x': 'Tecnically needed  for S/4 but can also be the MD main tool (not compulsory if the DB is the same)'
+        }
+        self.toBeResources = {'AJ': 'Order Manager',
+                              'AK': 'Stock Manager',
+                              'AL': 'CPT Quotation Manager',
+                              'AM': 'CPT Planner (MRP)',
+                              'AN': 'Alert Manager',
+                              'AO': 'Pre Invoice Manager',
+                              'AP': 'Mold',
+                              'AQ': 'Sales / Purchase Forecast (APO)',
+                              'AR': 'Assess GO',
+                              'AS': 'Expedition / Preparation',
+                              'AT': 'BI',
+                              'AU': 'Athorization Manager',
+                              'AV': 'ADMIN Parameters'
+        }
+
