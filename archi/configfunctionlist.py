@@ -29,7 +29,15 @@ AF :  / create a child assessment of the assessment 'N' created for K + ArchiPro
 AG :  / if I = "NP" and not empty, create an outcome child of the outcome "Pain Solved by new process"
 AH : link "N3" to FunctionListToolKit.targetAssessment + ArchiProperties.targetAssessment
 AI : link "N3" to FunctionListToolKit.productionReferencerAssessment + ArchiProperties.productionReferencer
-AJ-AV : link "N3" app in AY and AZ + link app (AY and AZ to to resource FunctionListToolkit.toBeResources
+AJ-AV : link "N3" to APP in AY and AZ + link app (AY and AZ) to resource FunctionListToolkit.toBeResources in AJ-AV + ArchiProperties.resource + ArchiProperties.apptobe
+        --> creat APP directly in Archi
+AW : can be ignored, link AY & AZ directly to N3
+AX : to ignore
+BA-BF : create an assessment S/4 Analysis a child assessment for each column and a child for each value
+
+--> November 4th : decision to create all the assessment and requirements directly in ARchi and manage the config like the asis apps
+
+
 
 TODO : add an ID to all requirements, assessments and outcome
 
@@ -51,6 +59,8 @@ class ArchiProperties(Enum):
     OLDNEWPROCESS = 'OldOrNewProcess'
     TARGETASSEMENT = 'targetAssessment'
     PRODUCTIONREFERENCER = 'Production Referencer'
+    RESOURCE = 'Resource'
+    APPTOBE = 'AppToBe'
 
 
 
@@ -69,6 +79,10 @@ class PlateauToCreate(Enum):
 
 class FunctionListToolkit(object):
     def __init__(self) -> None:
+
+
+        self.prefixToID = 'IFFLBCMO-' # that prefix will be complemented by the cleaned name up to 39 characters includinf the prefix
+
         # futureAssessment : from column J.
         # used to create the assessments and then link them to the sub function.
         #  If the cell is empty :  do not link to an assessment
@@ -76,13 +90,13 @@ class FunctionListToolkit(object):
         # create a parent assessement "Future of the function" and the childs below
         self.futureAssessment = {'?': 'Do not know', 
                                  'T': 'Keep function, Transpose it in another tool',
-                                 'T?': 'Keep function, Transpose it in another tool, Assessment not 100pct sure',
+                                 'T?': '(not sure) Keep function, Transpose it in another tool',
                                  'Y/T': 'Keep but uncertainty on tool',
                                  'N': 'excluded from the future sub-function due to no value for the users',
-                                 'N?': 'excluded from the future sub-function due to no value for the users, Assessment not 100pct sure',
+                                 'N?': '(not sure) excluded from the future sub-function due to no value for the users',
                                  'D': 'deleted because it as a  doublet',
                                  'Y': 'Keep for future',
-                                 'Y?': 'Keep for future, Assessment not 100pct sure'
+                                 'Y?': '(not sure) Keep for future'
         }
         # suitabilityAssessment : from column K.
         # The value from the spreadsheet is stored in the property ArchiProperties.
@@ -127,7 +141,7 @@ class FunctionListToolkit(object):
         self.targetAssessment = {'N': 'This is not a target process',
                                     'Y': 'This is a target process'
         }
-        self.productionReferencerAssessment = {'x': 'Tecnically needed  for S/4 but can also be the MD main tool (not compulsory if the DB is the same)'
+        self.productionReferencerAssessment = {'x': 'Tecnically needed for S/4 but can also be the MD main tool (not compulsory if the DB is the same)'
         }
         self.toBeResources = {'AJ': 'Order Manager',
                               'AK': 'Stock Manager',
