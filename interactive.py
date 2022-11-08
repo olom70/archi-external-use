@@ -158,3 +158,103 @@ for isolatedNode in listOfIsolatedNodes:
     print(f'id : {isolatedNode}, name : {name[isolatedNode]}, type : {type[isolatedNode]} ')
 nx.write_graphml(modelAsGraph, 'modelasgraph.graphml')
 # %%
+
+from archi.lib import stringutil
+v = [
+'Access ID',
+'ALERTING',
+'APO',
+'APS',
+'APS ?',
+'ASSESS GO',
+'BOM mgr',
+'BOM Mgr',
+'COM',
+'DPCP Dashboard',
+'DPCP Portal',
+'Forecast Collab',
+'Integrator',
+'INTEGRATOR',
+'Order Collab',
+'PLM',
+'RFID',
+'RFID order',
+'RFQ',
+'S/4',
+'SAC',
+'SHU',
+'Stock collab',
+'Stock Collab',
+'WMS',
+'?',
+'?',
+'APS',
+'Linkeo',
+'Order Collab',
+'Order Collab & S/4',
+'other modules',
+'PLM',
+'PLM &  Order Collab',
+'PSV',
+'RANK2',
+'RFQ',
+'S/4',
+'S/4 & APS',
+'S/4 & APS & SAC',
+'S/4 & DPCP Dashboard',
+'SAC',
+'SHU',
+
+]
+r = []
+for n in v:
+    r.append(stringutil.cleanName(
+                                                    n,
+                                                    True,
+                                                    True,
+                                                    'lowercase',
+                                                    True,
+                                                    False,
+                                                    True)
+    )
+splitted = []
+for s in r:
+    for a in s.split('&'):
+        splitted.append(a)
+    print 
+print(splitted)
+# %%
+v = 'SAP ?'
+from archi.lib import stringutil
+vclean = stringutil.cleanName(
+                                                    v,
+                                                    True,
+                                                    True,
+                                                    'lowercase',
+                                                    True,
+                                                    False,
+                                                    True)
+
+l = vclean.split('?')
+print(l)
+# %%
+from archi.lib import stringutil
+v = '''
+Id	Macro process	Function Future	Key word	Market ID	Sub Function List	Future Sub-function General Description	User story / Information	OP: Old  NP: New	Sub-funct Future Y/N/T/D/?	Suitability of the SI today	Collabor	Prod.com	LINK	APO	FMS	ECC	CAPE	Order Max	Rank 2	Assess GO	CPP	PSV	SNC	MOLDGO	Asset GO	PACE	Tactical S&OP	ETCO	link with tool	Others	Function Gap ( Based on the actual local projects, feedback and expectation from the users)	Pain solved	Target	Production Referencer	Order Manager	Stock Manager	CPT Quotation Manager	CPT Planner (MRP)	Alert Manager	Pre-invoice Manager	Mold	APO	ASSES GO	Expedition Preparation	BI	Authorisation manager	ADMIN Parameters	Other	CTR only one target tool	Tool proposal	Tool  proposal 2	IF S/4, manage in it ?	If not S/4 where ?	S/4 std level (S/P/E/D/A?)	Weigh	Cost if dev in prod.com	Needed S4/p/2	Comment	Open questions	Forcasted year	Target reached
+'''
+l = v.split()
+for n in l:
+    print(stringutil.cleanName(
+                                                        v,
+                                                        True,
+                                                        True,
+                                                        'lowercase',
+                                                        True,
+                                                        True,
+                                                        True)
+    )
+# %%
+v = 'R'
+a = int(v)
+print(isinstance(a, int))
+# %%

@@ -140,25 +140,44 @@ class FunctionListToolkit(object):
         }
 
         #toBeLanscape : from column AY & AZ  (values in the cells)
-        self.toBeLandscape = {'apo': 'id-45864c5fd431470498a528db100857ba', # SAP APO
-                                'aps': 'id-9b695f97aaf3461a9102ed944a26380f', # APS (BlueYonder)
-                                'aps?': 'id-9b695f97aaf3461a9102ed944a26380f', # Blue yonder + link to assessment "not sure of the tool to use in the future" 
+        self.toBeLandscape = {
+                                'accessid': 'id-c9e7afb6b4a24ab1b21fb860580b1d72', # identity access
+                                '?': 'id-48b86642f7f84d298677fbf61efca7fb', # app to define
+                                'alerting': 'id-fa6d9789ef4c4446a144819e0aca1821', # my alert
+                                'apo': 'id-45864c5fd431470498a528db100857ba', # SAP APO
+                                'aps?': 'id-2e999e92a37844c087e39b11f76eadef', # smart Planning for components + link to assessment "not sure of the tool to use in the future" 
+                                'aps': 'id-2e999e92a37844c087e39b11f76eadef', # smart Planning for components
+                                'assessgo': 'id-705bd79c-9a3e-49d7-81c0-ff51c8e2b1bf', # assessGO
                                 'bommgr': 'id-fd4fe2e2dcad48a7ac80658add009443', # BOM Manager
+                                'com': 'id-b905fc58b87244b3addfb56552331fbc', # communication
+                                'dpcpdashboard': 'id-7af32f96-b3d5-4f0c-8973-7ccda679dddd', #DPCP Dashboard
+                                'dpcpportal': 'id-4964247a-745b-42f1-a1be-b23945745038', #DPCP Portal
                                 'forecastcollab': 'c5ba2e10-96a7-4267-9df0-3a1379d6f497', # DPCP Forecast (e)
                                 'integrator': 'id-b566b7c2685242f8a167487115cf6b23', # Integrator
+                                'linkeo': 'id-ee73b67f112f4595893d498bbdda059f', #linkeo
                                 'ordercollab': 'id-a95f7fe378b542a9bc6dcb245fe3799d', # Order Collaboration
-                                's4': 'id-f78c58175d774305a90a69becd71a3b7', # S/4 
-                                'shu': 'e154fd41-ece4-4d01-8818-007839fdeb4f', # SHU SSCC (e) 
+                                'othermodules': 'id-b900bbddcbae49258d5b1ad8bb2ad219', # Other Modules ?
                                 'plm': 'id-a976bb6a4ea14dcf996797476177e6eb', # PLM (Spark)
-                                'stockcollab': 'id-5eefed56469b49bdb7fc3b2b81663bbf', # 
+                                'psv': 'id-89ab3ca484e2459c865b4989e6815d1d', # PSV (Production Stock Visibility)
+                                'rank2': 'id-228ec315252e4465a03ec94c3facb035', # Rank2 platform
+                                'rfid': 'id-45dd37a7e2614d17b8b840e9317c3c35', # RFID Order
+                                'rfidorder': 'id-45dd37a7e2614d17b8b840e9317c3c35', #RFID Order
+                                'rfq': 'id-45864c5fd431470498a528db100857ba', # SAP APO
+                                's/4': 'id-f78c58175d774305a90a69becd71a3b7', # S/4 
+                                'sac': 'id-1d5dd6cea6784be48dc7537b665ac088', # SAP SAC
+                                'shu': 'e154fd41-ece4-4d01-8818-007839fdeb4f', # SHU SSCC (e) 
+                                'stockcollab': 'id-5eefed56469b49bdb7fc3b2b81663bbf', # Stock Collab
+                                'wms': 'id-ed63d508610f420592774b87760ae98a' # WMS App
                                 
         }
 
         self.targetAssessment = {'N': 'id-7c8a58af73e44f3ca85556e43e66ed64', # 'This is not a target process',
                                     'Y': 'id-870462cc1c2d4995aeb0c247c79003d0', # 'This is a target process'
         }
+
         self.productionReferencerAssessment = {'x': 'Tecnically needed for S/4 but can also be the MD main tool (not compulsory if the DB is the same)'
         }
+
         self.toBeResources = {'AI': 'id-ef7fead320de457d9700fd14aa4b9f84', #'Production Referencer',
                               'AJ': 'id-53efadb0186246fc84af42b9d57a7790', #'Order Manager',
                               'AK': 'id-1ce1072e0e614b63a30748fabce61004', #'Stock Manager',
@@ -174,4 +193,3 @@ class FunctionListToolkit(object):
                               'AU': 'id-b2a6811f33ab4134b9f1b7408b42c3b6', #'Athorization Manager',
                               'AV': 'id-762a65c23b164d2b934114d313291b89', #'ADMIN Parameters'
         }
-
