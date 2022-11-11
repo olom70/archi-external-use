@@ -89,11 +89,12 @@ class YedProperties(Enum):
         return list(map(lambda c: c.value, YedProperties))
 
 PREFIXTOID = 'ICMO-' # that prefix will be complemented by the cleaned name up to 39 characters includinf the prefix
-DOCSEPARATOR = "|||\\"
+DOCSEPARATOR = "|||\n"
 YEDFILEPREFIX = 'FunctionListYED'
+YEDFILESUFFIX = '.graphml'
 ARCHIPREFIX = 'impflcmo'
 TAB='Clean List'
-
+YES='Y'
 
 # OldNewProcessAssessment : from column I.
 # The value from the spreadsheet is stored in the property ArchiProperties.

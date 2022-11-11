@@ -216,7 +216,7 @@ def importFL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str) -> bool:
             #Process Level1 ###############################################################
             if Level1ID not in l1_alreadyAdded:
                 try:
-                    graph.write_graph(OUTPUT_FOLDER + os.path.sep + l1_alreadyAdded[len(l1_alreadyAdded)-1]+".graphml", pretty_print=True)
+                    graph.write_graph(OUTPUT_FOLDER + os.path.sep + l1_alreadyAdded[len(l1_alreadyAdded)-1]+cfl.YEDFILESUFFIX, pretty_print=True)
                 except NameError:
                     pass
                 graph = openYed()
@@ -225,7 +225,7 @@ def importFL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str) -> bool:
                 Name = getCleanedName(b, 1)
                 Documentation = ''
                 writeLine(csvutil.initElements(ID=Level1ID, Type=cfl.ArchiConcepts.BUSINESSPROCESS.value, Name=Name, Documentation=Documentation), 1)
-                writeLine(csvutil.initProperties(ID=Level1ID, Key=cfl.ArchiProperties.IMPORTEDFROMFUNCTIONLIST.value, Value='Y'), 3)
+                writeLine(csvutil.initProperties(ID=Level1ID, Key=cfl.ArchiProperties.IMPORTEDFROMFUNCTIONLIST.value, Value=cfl.YES), 3)
                 graph.add_node(Level1ID, label=Name, font_size=cfl.YedProperties.L1FONTSIZE.value, font_style=cfl.YedProperties.L1FONTSTYLE.value, width=cfl.YedProperties.WIDTH.value, shape_fill=cfl.YedProperties.L1COLOR.value)
             
             #Level2 ###############################################################
@@ -234,7 +234,7 @@ def importFL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str) -> bool:
                 Name = getCleanedName(c, 2)
                 Documentation = getCleanedString(e)
                 writeLine(csvutil.initElements(ID=Level2ID, Type=cfl.ArchiConcepts.BUSINESSFUNCTION.value, Name=Name, Documentation=Documentation), 1)
-                writeLine(csvutil.initProperties(ID=Level2ID, Key=cfl.ArchiProperties.IMPORTEDFROMFUNCTIONLIST.value, Value='Y'), 3)
+                writeLine(csvutil.initProperties(ID=Level2ID, Key=cfl.ArchiProperties.IMPORTEDFROMFUNCTIONLIST.value, Value=cfl.YES), 3)
                 writeLine(csvutil.initProperties(ID=Level2ID, Key=cfl.ArchiProperties.KEYWORD.value, Value=d), 3)
                 writeLine(csvutil.initProperties(ID=Level2ID, Key=cfl.ArchiProperties.LINKTON1.value, Value=Level1ID), 3)
                 writeLine(csvutil.initRelations(ID=uuid.uuid4(), Type=cfl.ArchiConcepts.COMPOSITIONRELATION.value, Source=Level1ID, Target=Level2ID), 5)
@@ -248,7 +248,7 @@ def importFL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str) -> bool:
                 Documentation = getCleanedString(g) + cfl.DOCSEPARATOR + getCleanedString(h)
             
                 writeLine(csvutil.initElements(ID=Level3ID, Type=cfl.ArchiConcepts.BUSINESSFUNCTION.value, Name=Name, Documentation=Documentation), 1)
-                writeLine(csvutil.initProperties(ID=Level3ID, Key=cfl.ArchiProperties.IMPORTEDFROMFUNCTIONLIST.value, Value='Y'), 3)
+                writeLine(csvutil.initProperties(ID=Level3ID, Key=cfl.ArchiProperties.IMPORTEDFROMFUNCTIONLIST.value, Value=cfl.YES), 3)
                 writeLine(csvutil.initProperties(ID=Level3ID, Key=cfl.ArchiProperties.LINKTON2.value, Value=Level2ID), 3)
                 writeLine(csvutil.initRelations(ID=uuid.uuid4(), Type=cfl.ArchiConcepts.COMPOSITIONRELATION.value, Source=Level2ID, Target=Level3ID), 5)
                 everythingwascool = False if not writelink(LevelID=Level3ID, columnToLink='I', valueOfTheCell=i) else everythingwascool
@@ -261,7 +261,7 @@ def importFL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str) -> bool:
     outputfiles[2].close()
     outputfiles[4].close()
     try:
-        graph.write_graph(OUTPUT_FOLDER + os.path.sep + l1_alreadyAdded[len(l1_alreadyAdded)-1]+".graphml", pretty_print=True)
+        graph.write_graph(OUTPUT_FOLDER + os.path.sep + l1_alreadyAdded[len(l1_alreadyAdded)-1]+cfl.YEDFILESUFFIX, pretty_print=True)
     except NameError:
         pass
 
