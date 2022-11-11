@@ -258,3 +258,44 @@ v = 'R'
 a = int(v)
 print(isinstance(a, int))
 # %%
+import pyyed
+l_alreadyAdded = []
+g.write_graph(MAIN_FOLDER + os.path.sep + OUTPUT + os.path.sep + l_alreadyAdded[len(l_alreadyAdded)-1], pretty_print=True)
+g = pyyed.Graph()
+g.define_custom_property("node", "UseCase", "string", "")
+
+# %%
+l_alreadyAdded = [1, 2]
+print(l_alreadyAdded[len(l_alreadyAdded)-1])
+# %%
+v = 'clode'
+print(v[0:2])
+# %%
+l = ['a', 'b', 'c']
+a, b, c = [l[i] for i in range(0, len(l))]
+print(f'a={a}, b={b}, c={c}')
+# %%
+import archi.configfunctionlist as cfl
+fltk = cfl.FunctionListToolkit()
+def writelink(Level3ID: str, columnToLink: str, valueOfTheCell: str ) -> None:
+    found = True
+    try:
+        match columnToLink.upper():
+            case 'I':
+                source = fltk.oldNewProcessAssessment[valueOfTheCell]
+                destination = Level3ID
+                linkType = cfl.ArchiConcepts.ASSOCIATIONRELATION.value
+            case _:
+                found = False
+                print('this value is not configured')
+    except KeyError:
+        print('this value is not handled')
+        found = False
+    if found:
+        print(f'source={source}, destination={destination}, linkType={linkType}')
+
+column = 'i'
+value = 'OP'
+myprocess = 'level3process'
+writelink(myprocess, column, value)
+# %%
