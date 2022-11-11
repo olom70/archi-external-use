@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "test",
+            "name": "archi export test",
             "type": "python",
             "request": "launch",
             "program": "test/test-archi-external-use.py",
@@ -13,7 +13,7 @@
             "justMyCode": true
         },
         {
-            "name": "tinker",
+            "name": "tinker test",
             "type": "python",
             "request": "launch",
             "program": "tinkerexploitation.py",
@@ -21,11 +21,38 @@
             "justMyCode": true
         },
         {
-            "name": "VC",
+            "name": "VC export",
             "type": "python",
             "request": "launch",
             "program": "VCexploitation.py",
             "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "importfull test FL ",
+            "type": "python",
+            "request": "launch",
+            "program": "test/test-vc-import-function-list.py",
+            "console": "integratedTerminal",
+            "args": ["FunctionsList.xlsx", "/Users/CLAUDE/Documents/dev/archi-external-use", "output"],
+            "justMyCode": true
+        },
+        {
+            "name": "importminimal FL ",
+            "type": "python",
+            "request": "launch",
+            "program": "test/test-vc-import-function-list.py",
+            "console": "integratedTerminal",
+            "args": ["FunctionsListminimal.xlsx", "/Users/CLAUDE/Documents/dev/archi-external-use", "output"],
+            "justMyCode": true
+        },
+        {
+            "name": "importoneline FL ",
+            "type": "python",
+            "request": "launch",
+            "program": "test/test-vc-import-function-list.py",
+            "console": "integratedTerminal",
+            "args": ["FunctionsListoneLine.xlsx", "/Users/CLAUDE/Documents/dev/archi-external-use", "output"],
             "justMyCode": true
         }
 

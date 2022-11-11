@@ -66,7 +66,7 @@ class ArchiConcepts(Enum):
     COMPOSITIONRELATION = 'CompositionRelationship'
     BUSINESSPROCESS = 'BusinessProcess'
     BUSINESSFUNCTION = 'BusinessFunction'
-    ASSOCIATIONRELATION = 'Association'
+    ASSOCIATIONRELATION = 'AssociationRelationship'
 
     @staticmethod
     def list():
@@ -90,6 +90,10 @@ class YedProperties(Enum):
 
 PREFIXTOID = 'ICMO-' # that prefix will be complemented by the cleaned name up to 39 characters includinf the prefix
 DOCSEPARATOR = "|||\\"
+YEDFILEPREFIX = 'FunctionListYED'
+ARCHIPREFIX = 'impflcmo'
+TAB='Clean List'
+
 
 # OldNewProcessAssessment : from column I.
 # The value from the spreadsheet is stored in the property ArchiProperties.

@@ -14,51 +14,49 @@
 import os
 import sys
 import logging
-import archi.importfunctionlist  as importfunctionlist
+import argparse
 
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 sys.path.append(PROJECT_ROOT)
 
+import archi.importfunctionlist  as importfunctionlist
+
 if __name__ == '__main__':
 
-    logger = logging.getLogger('test-vc-import-function-list')
+    logger = logging.getLogger('vc-import-function-list')
     logger.setLevel(logging.DEBUG)
-    fh = logging.FileHandler(filename='test-vc-import-function-list.log')
-    fh.setLevel(logging.DEBUG)
+    fh = logging.FileHandler(filename='vc-import-function-list.log')
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     fh.setFormatter(formatter)
     logger.addHandler(fh)
     logger.info('Start. Application is initializing')
 
+    my_parser = argparse.ArgumentParser(description='Create csv files to import into Archi')
 
-    
-    MAIN_FOLDER = '/Users/CLAUDE/Documents/dev/archi-external-use'
-    FUNCTIONLIST_NAME = 'Functions List.xlsx'
-    OUTPUT_FOLDER = 'output'
-    YEDFILEPREFIX = 'FunctionListYED'
-    ARCHIPREFIX = 'impflcmo'
-    TAB='Clean List'
+    # Add the arguments
+    my_parser.add_argument('file',
+                        metavar='file',
+                        type=str,
+                        help='the excel file to import')
+    my_parser.add_argument('path',
+                        metavar='path',
+                        type=str,
+                        help='the path where resides the excel file')
+    my_parser.add_argument('output',
+                        metavar='output',
+                        type=str,
+                        help='the folder where to create the csv files')
 
-    try:
-            os.mkdir(MAIN_FOLDER)
-    except FileExistsError as fe:
-        pass
-    except FileNotFoundError as fnf:
-        logger.critical(f'wrong path, please fix MAIN_FOLDER : {MAIN_FOLDER}')
-        print('wrong path, please fix MAIN_FOLDER') 
-        exit()
-    except Exception as e:
-        logger.critical(f'unexpected error : {type(e)}{e.args}')
-        print(f'unexpected error : {type(e)}{e.args}')
-        exit()
+    # Execute the parse_args() method
+    args = my_parser.parse_args()
 
-    INPUT = MAIN_FOLDER + os.path.sep + FUNCTIONLIST_NAME
-    if not os.path.isfile(INPUT):
-        logger.critical(f'this file does not exists {input}. put it in the folder {MAIN_FOLDER}')
-        print(f'this file does not exists {input}. put it in the folder {MAIN_FOLDER}')
+    # Initialize program variables after the parameters
+    FUNCTIONLIST_NAME = args.file
+    MAIN_FOLDER = args.path
+    OUTPUT = args.output
 
 
-importfunctionlist.importFL(MAIN_FOLDER=MAIN_FOLDER, OUTPUT=OUTPUT_FOLDER,
-                                FUNCTIONLIST_NAME=FUNCTIONLIST_NAME, TAB=TAB, YEDFILEPREFIX=YEDFILEPREFIX, ARCHIPREFIX=ARCHIPREFIX)
+assert importfunctionlist.importFL(MAIN_FOLDER=MAIN_FOLDER, OUTPUT=OUTPUT,
+                                FUNCTIONLIST_NAME=FUNCTIONLIST_NAME)
 
