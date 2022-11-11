@@ -206,11 +206,9 @@ def importFL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str) -> bool:
 
         if processLine:
             # IDgeneration ####################################################
-            Level1ID = str(hash(getcleanedID(b, 1)))
+            Level1ID = getcleanedID(b, 1)
             Level2ID = Level1ID + getcleanedID(c, 2)
-            Level2ID = str(hash(Level2ID))
             Level3ID = Level2ID + getcleanedID(f, 3)
-            Level3ID = str(hash(Level3ID))
             
             #Process Level1 ###############################################################
             if Level1ID not in l1_alreadyAdded:
