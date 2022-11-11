@@ -82,7 +82,7 @@ def importFL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str) -> bool:
                     found = False
                     mlogger.info(f"This column : '{columnToLink}' is not handled by the function writelink ")
         except KeyError:
-            mlogger.info(f"Level : '{LevelID}' can not be link because this value : '{valueOfTheCell}' from column '{columnToLink}' doesn't exists in dictionary COLI_OLDNEWPROCESSASSESSMENT ")
+            mlogger.info(f"Level : '{LevelID}' can not be linked because this value : '{valueOfTheCell}' from column '{columnToLink}' doesn't exists in its dedicated dictionary")
             found = False
         if found:
             writeLine(csvutil.initRelations(ID=uuid.uuid4(), Type=linkType, Source=source, Target=target), 5)

@@ -96,22 +96,17 @@ ARCHIPREFIX = 'impflcmo'
 TAB='Clean List'
 YES='Y'
 
-# OldNewProcessAssessment : from column I.
-# The value from the spreadsheet is stored in the property ArchiProperties.
-# Create a parent assessment "Old or New Process ?" and these childs
+# column I.
 COLI_OLDNEWPROCESSASSMENT = {'OP': 'id-bc7e380a92844733bc25589ee80a0b3c', # 'Old Process',
                                 'NP': 'id-8416d5b25dce4717aff279fa55c0b97b', # 'New Process'
 }
 
-plateaux = {'AsIs' : 'id-6579a4f9a64349cdaa0118ae7471803f',
+# link accordingly apps from as is / to be landscape 
+PLATEAUX = {'AsIs' : 'id-6579a4f9a64349cdaa0118ae7471803f',
                     'ToBe': 'id-12de8bea5eb34d2188298a69f918262e' 
 }
-# futureAssessment : from column J.
-# used to create the assessments and then link them to the sub function.
-#  If the cell is empty :  do not link to an assessment
-# The value from the spreasheet is stored in the property ArchiProperties.SUBFUNCTIONFUTURE
-# create a parent assessement "Future of the function" and the childs below
-futureAssessment = {'?': 'id-0d5e3f1dfd234798941af9efe25e8bbd', #'Do not know', 
+# column J.
+J_FUTUREASSESSMENT = {'?': 'id-0d5e3f1dfd234798941af9efe25e8bbd', #'Do not know', 
                             'T': 'id-25390d4dbe8c4a9bbac414c42d23f8ee', # 'Keep function, Transpose it in another tool',
                             'T?': 'id-794382a1a4724d6989fb6c758c879e51', # '(not sure) Keep function, Transpose it in another tool',
                             'Y/T': 'id-6d4b3d4ce40d41cd921c646248925121', # 'Keep but uncertainty on tool',
@@ -121,33 +116,27 @@ futureAssessment = {'?': 'id-0d5e3f1dfd234798941af9efe25e8bbd', #'Do not know',
                             'Y': 'id-edc51050f9c244798afd195b98ade1a2', # 'Keep for future',
                             'Y?': 'id-d319cb40623e4c408d2faec3b430fd5f', # '(not sure) Keep for future'
 }
-# suitabilityAssessment : from column K.
-# The value from the spreadsheet is stored in the property ArchiProperties.
-# create a parent assessment "Suitability of the function" and these childs :
-suitabilityAssessment = {'N': 'id-2743503fad7e444b834200ecb839e6d2', # 'Do not fullfill the business need',
+# column K.
+K_SUITABILITYASSESSMENT = {'N': 'id-2743503fad7e444b834200ecb839e6d2', # 'Do not fullfill the business need',
                                 'Y': 'id-51ef9790aabc4c1586310013717c0f4d', # 'Fullfill the business need'
 }
-# collaborationRequirement : from column L.
-# The value from the spreadsheet is stored in the property ArchiProperties.
-# Create a parent requirement "Collaboration with the supplier" and these childs :
-collaborationRequirement = {'Y': 'id-ebbd2ea860064784bee3818b20e2b0fd', # 'We want to collaborate with the Supplier',
+# column L.
+L_COLLABORATIONREQUIREMENT = {'Y': 'id-ebbd2ea860064784bee3818b20e2b0fd', # 'We want to collaborate with the Supplier',
                                 'N': 'id-15a6a454eb0e42c4959915feb0d86324', # 'We do not want to collaborate with the supplier'
 }
 
-# TargetAssessment : from column AH.
-# The value from the spreadsheet is stored in the property ArchiProperties.
-TargetAssessment = {'Y': 'id-870462cc1c2d4995aeb0c247c79003d0', # 'This is a target process',
+# column AH.
+AH_TARGETASSESSMENT = {'Y': 'id-870462cc1c2d4995aeb0c247c79003d0', # 'This is a target process',
                             'N': 'id-7c8a58af73e44f3ca85556e43e66ed64', # 'This is not a target process'
 }
 
-# futureToolAssessment : used when there is a ? in the name in the columns AY & AZ
-# The value from the spreadsheet is stored in the property ArchiProperties.
-futureToolAssessment = { '?': 'id-d51ad52b3ae4497ba67abece2fbf536e'}, # 'Not sure of the tool to use in the future',
+# columns AY & AZ
+AYAZ_FUTUREASSESSMENT = { '?': 'id-d51ad52b3ae4497ba67abece2fbf536e'}, # 'Not sure of the tool to use in the future',
 
-#asIsLandscape : from column M to AE.
+# columns M to AE.
 # key : the column
 # value : the id in Archi of the app
-asIsLandscape = {'M': 'id-9b38f547-e31e-4bc8-b65b-0e52cf759fc9', #prod.com
+MAE_ASISLANDSCAPE = {'M': 'id-9b38f547-e31e-4bc8-b65b-0e52cf759fc9', #prod.com
                         'N': 'e3399ac2-4e43-4c33-987e-fb3009ae1dcc', #LINK
                         'O': 'id-45864c5fd431470498a528db100857ba', # SAP APO
                         'P': 'id-0bff31b62eaa43918c23c5b0a21369cb', #FMS
@@ -166,8 +155,8 @@ asIsLandscape = {'M': 'id-9b38f547-e31e-4bc8-b65b-0e52cf759fc9', #prod.com
                         'AC': 'id-1fd605bd-76cb-44c0-914c-f8d4e32947db', #ETCO
 }
 
-#toBeLanscape : from column AY & AZ  (values in the cells)
-toBeLandscape = {
+# columns AY & AZ  (values in the cells)
+AYAZ_TOBELANDSCAPE = {
                         'accessid': 'id-c9e7afb6b4a24ab1b21fb860580b1d72', # identity access
                         '?': 'id-48b86642f7f84d298677fbf61efca7fb', # app to define
                         'alerting': 'id-fa6d9789ef4c4446a144819e0aca1821', # my alert
@@ -198,15 +187,12 @@ toBeLandscape = {
                         
 }
 
-targetAssessment = {'N': 'id-7c8a58af73e44f3ca85556e43e66ed64', # 'This is not a target process',
-                            'Y': 'id-870462cc1c2d4995aeb0c247c79003d0', # 'This is a target process'
+# column AI
+AI_PRODUCTIONREFERENCERASSESSMENT = {'x': 'Tecnically needed for S/4 but can also be the MD main tool (not compulsory if the DB is the same)'
 }
 
-productionReferencerAssessment = {'x': 'Tecnically needed for S/4 but can also be the MD main tool (not compulsory if the DB is the same)'
-}
-
-toBeResources = {'AI': 'id-ef7fead320de457d9700fd14aa4b9f84', #'Production Referencer',
-                        'AJ': 'id-53efadb0186246fc84af42b9d57a7790', #'Order Manager',
+# columns AJ to AV
+AJAV_TOBERESOURCES = {'AJ': 'id-53efadb0186246fc84af42b9d57a7790', #'Order Manager',
                         'AK': 'id-1ce1072e0e614b63a30748fabce61004', #'Stock Manager',
                         'AL': 'id-9299e5238ff8442e92fe39338db288cd', #'CPT Quotation Manager',
                         'AM': 'id-2d61455566a041f2ad0b4ed50e7fbeb0', #'CPT Planner (MRP)',
