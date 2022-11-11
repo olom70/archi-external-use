@@ -69,6 +69,9 @@ def importFL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str) -> bool:
     @log_function_call
     def writelink(LevelID: str, columnToLink: str, valueOfTheCell: str ) -> None:
         found = True
+        if valueOfTheCell == '':
+            mlogger.debug(f'no value in the cell for {LevelID} in column {columnToLink}')
+            return True
         try:
             match columnToLink.upper():
                 case 'I':
