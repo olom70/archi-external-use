@@ -67,6 +67,11 @@ class ArchiConcepts(Enum):
     BUSINESSPROCESS = 'BusinessProcess'
     BUSINESSFUNCTION = 'BusinessFunction'
     ASSOCIATIONRELATION = 'AssociationRelationship'
+    ASSIGNEMENTRELATION = 'AssignmentRelationship'
+    ASSESSMENT = 'Assessment'
+    AGGREGATIONRELATION = 'AggregationRelationship'
+    OUTCOME = 'Outcome'
+    REALIZATIONRELATION = 'RealizationRelationship'
 
     @staticmethod
     def list():
@@ -95,16 +100,25 @@ YEDFILESUFFIX = '.graphml'
 ARCHIPREFIX = 'impflcmo'
 TAB='Clean List'
 YES='Y'
+SPLITAPPON='&'
+MTOACEXPECTEDVALUE = 'Y'
+AJTOAVEXPRECTEDVALUE = 'X'
 
 # column I.
-COLI_OLDNEWPROCESSASSMENT = {'OP': 'id-bc7e380a92844733bc25589ee80a0b3c', # 'Old Process',
+I_OLDNEWPROCESSASSMENT = {'OP': 'id-bc7e380a92844733bc25589ee80a0b3c', # 'Old Process',
                                 'NP': 'id-8416d5b25dce4717aff279fa55c0b97b', # 'New Process'
 }
 
 # link accordingly apps from as is / to be landscape 
-PLATEAUX = {'AsIs' : 'id-6579a4f9a64349cdaa0118ae7471803f',
-                    'ToBe': 'id-12de8bea5eb34d2188298a69f918262e' 
-}
+class Plateaux(Enum):
+    ASIS = 'id-6579a4f9a64349cdaa0118ae7471803f'
+    TOBE = 'id-12de8bea5eb34d2188298a69f918262e' 
+
+    @staticmethod
+    def list():
+        return list(map(lambda c: c.value, Plateaux))
+
+
 # column J.
 J_FUTUREASSESSMENT = {'?': 'id-0d5e3f1dfd234798941af9efe25e8bbd', #'Do not know', 
                             'T': 'id-25390d4dbe8c4a9bbac414c42d23f8ee', # 'Keep function, Transpose it in another tool',
@@ -130,13 +144,10 @@ AH_TARGETASSESSMENT = {'Y': 'id-870462cc1c2d4995aeb0c247c79003d0', # 'This is a 
                             'N': 'id-7c8a58af73e44f3ca85556e43e66ed64', # 'This is not a target process'
 }
 
-# columns AY & AZ
-AYAZ_FUTUREASSESSMENT = { '?': 'id-d51ad52b3ae4497ba67abece2fbf536e'}, # 'Not sure of the tool to use in the future',
-
-# columns M to AE.
+# columns M to AC.
 # key : the column
 # value : the id in Archi of the app
-MAE_ASISLANDSCAPE = {'M': 'id-9b38f547-e31e-4bc8-b65b-0e52cf759fc9', #prod.com
+MAC_ASISLANDSCAPE = {'M': 'id-9b38f547-e31e-4bc8-b65b-0e52cf759fc9', #prod.com
                         'N': 'e3399ac2-4e43-4c33-987e-fb3009ae1dcc', #LINK
                         'O': 'id-45864c5fd431470498a528db100857ba', # SAP APO
                         'P': 'id-0bff31b62eaa43918c23c5b0a21369cb', #FMS
@@ -154,6 +165,9 @@ MAE_ASISLANDSCAPE = {'M': 'id-9b38f547-e31e-4bc8-b65b-0e52cf759fc9', #prod.com
                         'AB': 'a7efee8a-a0ec-4475-b531-d77f93c49978', # Tactical S&OP
                         'AC': 'id-1fd605bd-76cb-44c0-914c-f8d4e32947db', #ETCO
 }
+
+#column AG
+AG_PAINSOLVED = {'AG': 'id-39c5daa47a33412aba4346fab6d00032'} id-a27ed20cd5a24e84b8e6ce219087a123
 
 # columns AY & AZ  (values in the cells)
 AYAZ_TOBELANDSCAPE = {
@@ -205,4 +219,32 @@ AJAV_TOBERESOURCES = {'AJ': 'id-53efadb0186246fc84af42b9d57a7790', #'Order Manag
                         'AT': 'id-cc7a56aa79e7435781e0c48e70bbcbf5', #'BI',
                         'AU': 'id-b2a6811f33ab4134b9f1b7408b42c3b6', #'Athorization Manager',
                         'AV': 'id-762a65c23b164d2b934114d313291b89', #'ADMIN Parameters'
+}
+
+# columns BA - BF
+# the key is the concatenation of the column's name and the value that can be encountered in the cell
+BABF_S4ANALYSIS = {
+                    'BAP': 'id-ea56ed63074644a5bcf3a4a7e96a7e39', # Partially managed in S/4
+                    'BAY': 'id-38d13a26ba8f45dba76dcc7ccf1e6cd5', # Fully managed in S/4
+                    'BAN': 'id-800a2846b8ce44e2b4fd46ae5f74c91d', # Not managed in S/4
+                    'BCS': 'id-859f4c368bd441828f74a8a1876ba6e9', # S : Standard
+                    'BCP': 'id-28c86b37b4e54065a7515e15a3f33576', # P : With Process adjustment
+                    'BCE': 'id-869a86cd77a14844af056c6bf14446f9', # E : To manage in External module
+                    'BCD': 'id-4777426700d0471cac777355f17f9365', # D : Dev required
+                    'BCA': 'id-2a82b4d5dc3441dc9e819dda25b97c83', # A : Impossible => Abort
+                    'BC?': 'id-bb1c86180aee4765b0db0294cda27caa', # ? : to study ni detail
+                    'BD*': 'id-7970a56ecdc94ea5b489467f4642a388', #* nice to have
+                    'BD**': 'id-dcb8a6ec110c48ffbac8d3f4d1345782', #** usefull
+                    'BD***': 'id-cfdede8577b24639ae15f6b983ee57af', #*** important
+                    'BD****': 'id-b5a58e51d2f749a6989407065028d4da', #**** very important
+                    'BD*****': 'id-e69fcd29fd5445b9aa96a8cf16f1f77e', #***** impossible to work w/o it 
+                    'BE-': 'id-bd2606ec530846348bc386a8ed44afcc', #
+                    'BE*': 'id-5a5b2c140c7a4ce39feba1cdc00de578', #
+                    'BE**': 'id-4864fdff3b6247029ace9835d19e9a7c', #
+                    'BE***': 'id-6f84441cc7d24e03a2c82f2bf381f919', #
+                    'BEincl': 'id-e83f588f94f4424e8a0697ab424c22d3', #
+                    'BENA': 'id-084f66a25d2d4abbb0fa1882ca95abd0', #
+                    'BFp': 'id-172db897c8e14f9899c45eb49cf875b8', # develop in prod.com
+                    'BF2': 'id-261bdb455064420cacd97a3ccd257737', # develop in S/4 and prod.com
+                    'BFS/4': 'id-14fff60b514442949135e863fbbd9916', # develop in S/4
 }
