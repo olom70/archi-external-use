@@ -143,16 +143,20 @@ def importFL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str) -> bool:
                             lineID = v
                         if k == 'suitability':
                             suitability = v
+                            if suitability not in cfl.SUITABILITYEXPECTEDVALUE:
+                                suitability = cfl.NO
                     if (lineID is None or suitability is None):
                         mlogger.critical(
                             f'the column {columnToLink} expect the incoming variables LineID & suitability , which are not found.')
                         return False
                     else:
                         # create the assessment with the value. then link it to suitability of the function, then link the function to it.
-                        doc = getCleanedName(valueOfTheCell)
+                        doc = getCleanedString(valueOfTheCell)
                         idfg = columnToLink+str(lineID)
                         writeLine(csvutil.initElements(
                             ID=idfg, Type=cfl.ArchiConcepts.ASSESSMENT.value, Name=doc, Documentation=doc), 1)
+                        writeLine(csvutil.initProperties(
+                            ID=idfg, Key=cfl.ArchiProperties.IMPORTEDFROMFUNCTIONLIST.value, Value=cfl.YES), 3)
                         source = cfl.K_SUITABILITYASSESSMENT[suitability]
                         target = idfg
                         linkType = cfl.ArchiConcepts.AGGREGATIONRELATION.value
@@ -160,10 +164,9 @@ def importFL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str) -> bool:
                             ID=uuid.uuid4(), Type=linkType, Source=source, Target=target), 5)
                         source = idfg
                         target = LevelID
-                        linkType = cfl.ArchiConcepts.ASSOCIATIONRELATION
+                        linkType = cfl.ArchiConcepts.ASSOCIATIONRELATION.value
                         writeLine(csvutil.initRelations(
                             ID=uuid.uuid4(), Type=linkType, Source=source, Target=target), 5)
-                        pass
                 case 'AG':
                     # create the outcome with the value and link it to the main outcome "Pain solved" and the function
                     lineID = None
@@ -175,18 +178,20 @@ def importFL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str) -> bool:
                             f'the column {columnToLink} expect the incoming variable LineID, which is not found.')
                         return False
                     else:
-                        doc = getCleanedName(valueOfTheCell)
+                        doc = getCleanedString(valueOfTheCell)
                         idps = columnToLink+str(lineID)
                         writeLine(csvutil.initElements(
                             ID=idps, Type=cfl.ArchiConcepts.OUTCOME.value, Name=doc, Documentation=doc), 1)
+                        writeLine(csvutil.initProperties(
+                            ID=idps, Key=cfl.ArchiProperties.IMPORTEDFROMFUNCTIONLIST.value, Value=cfl.YES), 3)
                         source = cfl.AG_PAINSOLVED[toMatch]
                         target = idps
-                        linkType = cfl.ArchiConcepts.AGGREGATIONRELATION
+                        linkType = cfl.ArchiConcepts.AGGREGATIONRELATION.value
                         writeLine(csvutil.initRelations(
                             ID=uuid.uuid4(), Type=linkType, Source=source, Target=target), 5)
                         source = idps
                         target = LevelID
-                        linkType = cfl.ArchiConcepts.ASSOCIATIONRELATION
+                        linkType = cfl.ArchiConcepts.ASSOCIATIONRELATION.value
                         writeLine(csvutil.initRelations(
                             ID=uuid.uuid4(), Type=linkType, Source=source, Target=target), 5)
                 case 'AH':

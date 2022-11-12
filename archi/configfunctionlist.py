@@ -100,9 +100,11 @@ YEDFILESUFFIX = '.graphml'
 ARCHIPREFIX = 'impflcmo'
 TAB='Clean List'
 YES='Y'
+NO='N'
 SPLITAPPON='&'
 MTOACEXPECTEDVALUE = 'Y'
 AJTOAVEXPRECTEDVALUE = 'X'
+SUITABILITYEXPECTEDVALUE = ('Y', 'N')
 
 # column I.
 I_OLDNEWPROCESSASSMENT = {'OP': 'id-bc7e380a92844733bc25589ee80a0b3c', # 'Old Process',
@@ -155,15 +157,15 @@ MAC_ASISLANDSCAPE = {'M': 'id-192b1d1207224c47bedae9878bfd9ad6', #prod.com
                         'R': 'id-6a611baeddcd4f0e886168a038179b3f', # CAPE ou CAPETM ? : 'id-0285b0c626e44cb6b41805b293e94235'
                         'S': 'd9d24b08-3dfa-416c-a167-ec1ef66c22e2', # Order Max
                         'T': 'id-228ec315252e4465a03ec94c3facb035', # Rank2
-                        'U': 'id-705bd79c-9a3e-49d7-81c0-ff51c8e2b1bf', # Assess GO --> doublet with column Z.
-                        'V': 'id-127c49ca-0a73-4d21-8863-424dadc0620b', #CPP
+                        'U': '705bd79c-9a3e-49d7-81c0-ff51c8e2b1bf', # Assess GO --> doublet with column Z.
+                        'V': '127c49ca-0a73-4d21-8863-424dadc0620b', #CPP
                         'W': 'id-89ab3ca484e2459c865b4989e6815d1d', #PSV
                         'X': 'ec64ef8e-e763-4b82-9e61-1e568bb0e907', #SAPSNC
-                        'Y': 'id-639a99c0-7499-4366-ba87-ae236d99489d', #Mold
-                        'Z': 'id-705bd79c-9a3e-49d7-81c0-ff51c8e2b1bf', #AssessGo --> doublet with column U
+                        'Y': '639a99c0-7499-4366-ba87-ae236d99489d', #Mold
+                        'Z': '705bd79c-9a3e-49d7-81c0-ff51c8e2b1bf', #AssessGo --> doublet with column U
                         'AA': 'id-6b2c94a449a84e5fac4e17d01a291c86', #Pace
                         'AB': 'a7efee8a-a0ec-4475-b531-d77f93c49978', # Tactical S&OP
-                        'AC': 'id-1fd605bd-76cb-44c0-914c-f8d4e32947db', #ETCO
+                        'AC': '1fd605bd-76cb-44c0-914c-f8d4e32947db', #ETCO
 }
 
 #column AG
@@ -177,7 +179,7 @@ AYAZ_TOBELANDSCAPE = {
                         'apo': 'id-45864c5fd431470498a528db100857ba', # SAP APO
                         'aps?': 'id-2e999e92a37844c087e39b11f76eadef', # smart Planning for components + link to assessment "not sure of the tool to use in the future" 
                         'aps': 'id-2e999e92a37844c087e39b11f76eadef', # smart Planning for components
-                        'assessgo': 'id-705bd79c-9a3e-49d7-81c0-ff51c8e2b1bf', # assessGO
+                        'assessgo': '705bd79c-9a3e-49d7-81c0-ff51c8e2b1bf', # assessGO
                         'bommgr': 'id-fd4fe2e2dcad48a7ac80658add009443', # BOM Manager
                         'com': 'id-b905fc58b87244b3addfb56552331fbc', # communication
                         'dpcpdashboard': 'id-7af32f96-b3d5-4f0c-8973-7ccda679dddd', #DPCP Dashboard
@@ -197,7 +199,10 @@ AYAZ_TOBELANDSCAPE = {
                         'sac': 'id-1d5dd6cea6784be48dc7537b665ac088', # SAP SAC
                         'shu': 'e154fd41-ece4-4d01-8818-007839fdeb4f', # SHU SSCC (e) 
                         'stockcollab': 'id-5eefed56469b49bdb7fc3b2b81663bbf', # Stock Collab
-                        'wms': 'id-ed63d508610f420592774b87760ae98a' # WMS App
+                        'wms': 'id-ed63d508610f420592774b87760ae98a', # WMS App
+                        'pi4t': 'id-363075155640440892b2119036575b72', #PI4T
+                        'mold': '639a99c0-7499-4366-ba87-ae236d99489d', #Mold
+                        'perimeter': 'id-88f4536d78ba45c281767fc8a85c0d91' #PERIMETER
                         
 }
 
