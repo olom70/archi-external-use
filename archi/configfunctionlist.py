@@ -147,7 +147,7 @@ AH_TARGETASSESSMENT = {'Y': 'id-870462cc1c2d4995aeb0c247c79003d0', # 'This is a 
 # columns M to AC.
 # key : the column
 # value : the id in Archi of the app
-MAC_ASISLANDSCAPE = {'M': 'id-9b38f547-e31e-4bc8-b65b-0e52cf759fc9', #prod.com
+MAC_ASISLANDSCAPE = {'M': 'id-192b1d1207224c47bedae9878bfd9ad6', #prod.com
                         'N': 'e3399ac2-4e43-4c33-987e-fb3009ae1dcc', #LINK
                         'O': 'id-45864c5fd431470498a528db100857ba', # SAP APO
                         'P': 'id-0bff31b62eaa43918c23c5b0a21369cb', #FMS
@@ -167,7 +167,7 @@ MAC_ASISLANDSCAPE = {'M': 'id-9b38f547-e31e-4bc8-b65b-0e52cf759fc9', #prod.com
 }
 
 #column AG
-AG_PAINSOLVED = {'AG': 'id-39c5daa47a33412aba4346fab6d00032'} id-a27ed20cd5a24e84b8e6ce219087a123
+AG_PAINSOLVED = {'AG': 'id-a27ed20cd5a24e84b8e6ce219087a123'}
 
 # columns AY & AZ  (values in the cells)
 AYAZ_TOBELANDSCAPE = {
@@ -206,7 +206,8 @@ AI_PRODUCTIONREFERENCERASSESSMENT = {'x': 'Tecnically needed for S/4 but can als
 }
 
 # columns AJ to AV
-AJAV_TOBERESOURCES = {'AJ': 'id-53efadb0186246fc84af42b9d57a7790', #'Order Manager',
+AIAV_TOBERESOURCES = {'AI': 'id-ef7fead320de457d9700fd14aa4b9f84', # Production Referencer
+                        'AJ': 'id-53efadb0186246fc84af42b9d57a7790', #'Order Manager',
                         'AK': 'id-1ce1072e0e614b63a30748fabce61004', #'Stock Manager',
                         'AL': 'id-9299e5238ff8442e92fe39338db288cd', #'CPT Quotation Manager',
                         'AM': 'id-2d61455566a041f2ad0b4ed50e7fbeb0', #'CPT Planner (MRP)',

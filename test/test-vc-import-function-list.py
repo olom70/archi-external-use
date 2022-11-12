@@ -25,7 +25,7 @@ import archi.importfunctionlist  as importfunctionlist
 if __name__ == '__main__':
 
     logger = logging.getLogger('vc-import-function-list')
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.INFO)
     fh = logging.FileHandler(filename='vc-import-function-list.log')
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     fh.setFormatter(formatter)

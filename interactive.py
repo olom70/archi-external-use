@@ -160,6 +160,7 @@ nx.write_graphml(modelAsGraph, 'modelasgraph.graphml')
 # %%
 
 from archi.lib import stringutil
+import archi.configfunctionlist as cfl
 v = [
 'Access ID',
 'ALERTING',
@@ -221,7 +222,7 @@ splitted = []
 for s in r:
     for a in s.split('&'):
         splitted.append(a)
-    print 
+    print(cfl.AYAZ_TOBELANDSCAPE[a])
 print(splitted)
 # %%
 v = 'SAP ?'
@@ -301,4 +302,12 @@ writelink(myprocess, column, value)
 # %%
 import uuid
 print(uuid.uuid4())
+# %%
+def test(one='', **kwargs):
+    print(one)
+    for k, v in kwargs.items():
+        if k == 't':
+            print(v)
+test('a')
+test(one='a', t='two')
 # %%

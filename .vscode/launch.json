@@ -54,6 +54,15 @@
             "console": "integratedTerminal",
             "args": ["FunctionsListoneLine.xlsx", "/Users/CLAUDE/Documents/dev/archi-external-use", "output"],
             "justMyCode": true
+        },
+        {
+            "name": "importtestallcolumns FL ",
+            "type": "python",
+            "request": "launch",
+            "program": "test/test-vc-import-function-list.py",
+            "console": "integratedTerminal",
+            "args": ["FunctionsListTestAllColumns.xlsx", "/Users/CLAUDE/Documents/dev/archi-external-use", "output"],
+            "justMyCode": true
         }
 
 

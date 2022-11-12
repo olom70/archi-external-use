@@ -76,17 +76,16 @@ def importFL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str) -> bool:
         return cleaned
     
     @log_function_call
-    def getcleanedValue(rawname: str, level: int) -> str:
-        cleaned = cfl.PREFIXTOID + stringutil.cleanName(
+    def getcleanedValue(rawname: str) -> str:
+        cleaned = stringutil.cleanName(
             rawname,
             True,
             False,
             'uppercase',
             False,
             False,
-            False) \
-            + '_Level' + str(level)[0:39]
-        mlogger.debug(f"level {level}, raw : {rawname}, cleaned : {cleaned} ")
+            False)
+        mlogger.debug(f"raw : {rawname}, cleaned : {cleaned} ")
         return cleaned
 
 
@@ -196,10 +195,10 @@ def importFL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str) -> bool:
                     linkType = cfl.ArchiConcepts.ASSOCIATIONRELATION.value
                     writeLine(csvutil.initRelations(ID=uuid.uuid4(),
                               Type=linkType, Source=source, Target=target), 5)
-                case 'AJ' | 'AK' | 'AL' | 'AM' | 'AN' | 'AO' | 'AP' | 'AQ' | 'AR' | 'AS' | 'AT' | 'AU' | 'AV':
+                case 'AI' | 'AJ' | 'AK' | 'AL' | 'AM' | 'AN' | 'AO' | 'AP' | 'AQ' | 'AR' | 'AS' | 'AT' | 'AU' | 'AV':
                     if getcleanedValue(valueOfTheCell) == cfl.AJTOAVEXPRECTEDVALUE:
                         source = LevelID
-                        target = cfl.AJAV_TOBERESOURCES[toMatch]
+                        target = cfl.AIAV_TOBERESOURCES[toMatch]
                         linkType = cfl.ArchiConcepts.ASSOCIATIONRELATION.value
                         writeLine(csvutil.initRelations(ID=uuid.uuid4(),
                                 Type=linkType, Source=source, Target=target), 5)
@@ -217,7 +216,7 @@ def importFL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str) -> bool:
                                 f"The application {standaloneApp} extracted from the value {valueOfTheCell} for column {columnToLink} not found in AYAZ_TOBELANDSCAPE")
                             return False
                 case 'BA' | 'BC' | 'BD' | 'BE' | 'BF':
-                    key = toMatch+valueOfTheCell
+                    key = toMatch+str(valueOfTheCell)
                     source = LevelID
                     target = cfl.BABF_S4ANALYSIS[key]
                     linkType = cfl.ArchiConcepts.ASSOCIATIONRELATION.value
