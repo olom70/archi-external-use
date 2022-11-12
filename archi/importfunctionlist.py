@@ -211,7 +211,8 @@ def importFL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str) -> bool:
             # IDgeneration ####################################################
             Level1ID = getcleanedID(b, 1)
             Level2ID = Level1ID + getcleanedID(c, 2)
-            Level3ID = Level2ID + getcleanedID(f, 3)
+            idInName = '(' + str(a) + ') '
+            Level3ID = Level2ID + getcleanedID(idInName + f, 3)
             
             #Process Level1 ###############################################################
             if Level1ID not in l1_alreadyAdded:
@@ -242,20 +243,18 @@ def importFL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str) -> bool:
                 graph.add_edge(Level1ID, Level2ID)
 
             #Level 3 ##############################################################
-            if Level3ID not in l_alreadyAdded:
-                l_alreadyAdded.append(Level3ID)
-                Name = getCleanedName(f, 3)
-                Documentation = getCleanedString(g) + cfl.DOCSEPARATOR + getCleanedString(h)
-            
-                writeLine(csvutil.initElements(ID=Level3ID, Type=cfl.ArchiConcepts.BUSINESSFUNCTION.value, Name=Name, Documentation=Documentation), 1)
-                writeLine(csvutil.initProperties(ID=Level3ID, Key=cfl.ArchiProperties.IMPORTEDFROMFUNCTIONLIST.value, Value=cfl.YES), 3)
-                writeLine(csvutil.initProperties(ID=Level3ID, Key=cfl.ArchiProperties.LINKTON2.value, Value=Level2ID), 3)
-                writeLine(csvutil.initRelations(ID=uuid.uuid4(), Type=cfl.ArchiConcepts.COMPOSITIONRELATION.value, Source=Level2ID, Target=Level3ID), 5)
-                everythingwascool = False if not writelink(LevelID=Level3ID, columnToLink='I', valueOfTheCell=i) else everythingwascool
+            Name = idInName + getCleanedName(f, 3)
+            Documentation = getCleanedString(g) + cfl.DOCSEPARATOR + getCleanedString(h)
+        
+            writeLine(csvutil.initElements(ID=Level3ID, Type=cfl.ArchiConcepts.BUSINESSFUNCTION.value, Name=Name, Documentation=Documentation), 1)
+            writeLine(csvutil.initProperties(ID=Level3ID, Key=cfl.ArchiProperties.IMPORTEDFROMFUNCTIONLIST.value, Value=cfl.YES), 3)
+            writeLine(csvutil.initProperties(ID=Level3ID, Key=cfl.ArchiProperties.LINKTON2.value, Value=Level2ID), 3)
+            writeLine(csvutil.initRelations(ID=uuid.uuid4(), Type=cfl.ArchiConcepts.COMPOSITIONRELATION.value, Source=Level2ID, Target=Level3ID), 5)
+            everythingwascool = False if not writelink(LevelID=Level3ID, columnToLink='I', valueOfTheCell=i) else everythingwascool
 
-                graph.add_node(Level3ID, label=Name, font_size=cfl.YedProperties.L3FONTSIZE.value, font_style=cfl.YedProperties.L3FONTSTYLE.value, width=cfl.YedProperties.WIDTH.value, shape_fill=cfl.YedProperties.L3COLOR.value,
-                            custom_properties={"UseCase": getCleanedString(h)})
-                graph.add_edge(Level2ID, Level3ID)
+            graph.add_node(Level3ID, label=Name, font_size=cfl.YedProperties.L3FONTSIZE.value, font_style=cfl.YedProperties.L3FONTSTYLE.value, width=cfl.YedProperties.WIDTH.value, shape_fill=cfl.YedProperties.L3COLOR.value,
+                        custom_properties={"UseCase": getCleanedString(h)})
+            graph.add_edge(Level2ID, Level3ID)
     
     outputfiles[0].close()
     outputfiles[2].close()
