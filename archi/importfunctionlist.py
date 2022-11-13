@@ -209,6 +209,48 @@ def importFL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str) -> bool:
                                 Type=linkType, Source=source, Target=target), 5)
                 case 'AY' | 'AZ':
                     cleanapp = getCleanedApp(valueOfTheCell)
+                    try:
+                        cut = cfl.AYAZ_EXCEPTIONLIST.index(cleanapp)
+                        match cut:
+                            case 0 | 3 | 4:
+                                s1 = 0
+                                e1 = 3
+                                s2 = 4
+                                e2 = 7
+                            case 1:
+                                s1 = 0
+                                e1 = 3
+                                s2 = 3
+                                e2 = 6
+                            case 2:
+                                s1 = 0
+                                e1 = 3
+                                s2 = 3
+                                e2 = 4
+                            case 4:
+                                s1 = 0
+                                e1 = 3
+                                s2 = 3
+                                e2 = 4
+                            case 5:
+                                s1 = 0
+                                e1 = 3
+                                s2 = 4
+                                e2 = 9
+                            case 6:
+                                s1 = 0
+                                e1 = 3
+                                s2 = 3
+                                e2 = 6
+                            case 7:
+                                s1 = 0
+                                e1 = 7
+                                s2 = 8
+                                e2 = 11
+                        a1, a2 = [cfl.AYAZ_EXCEPTIONLIST[cut][s1:e1], cfl.AYAZ_EXCEPTIONLIST[cut][s2:e2]]
+                        cleanapp = a1 + cfl.SPLITAPPON + a2
+                    except ValueError:
+                        pass
                     for standaloneApp in cleanapp.split(cfl.SPLITAPPON):
                         try:
                             source = cfl.AYAZ_TOBELANDSCAPE[standaloneApp]

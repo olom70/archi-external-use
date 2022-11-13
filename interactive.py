@@ -162,50 +162,14 @@ nx.write_graphml(modelAsGraph, 'modelasgraph.graphml')
 from archi.lib import stringutil
 import archi.configfunctionlist as cfl
 v = [
-'Access ID',
-'ALERTING',
-'APO',
-'APS',
-'APS ?',
-'ASSESS GO',
-'BOM mgr',
-'BOM Mgr',
-'COM',
-'DPCP Dashboard',
-'DPCP Portal',
-'Forecast Collab',
-'Integrator',
-'INTEGRATOR',
-'Order Collab',
-'PLM',
-'RFID',
-'RFID order',
-'RFQ',
-'S/4',
-'SAC',
-'SHU',
-'Stock collab',
-'Stock Collab',
-'WMS',
-'?',
-'?',
-'APS',
-'Linkeo',
-'Order Collab',
-'Order Collab & S/4',
-'other modules',
-'PLM',
-'PLM &  Order Collab',
-'PSV',
-'RANK2',
-'RFQ',
-'S/4',
-'S/4 & APS',
-'S/4 & APS & SAC',
-'S/4 & DPCP Dashboard',
-'SAC',
-'SHU',
-
+'PSV S/4',
+'S/4 / Rank2',
+'S/4 ?',
+'SAC ? APS ?',
+'S/4/ BOM',
+'ECC APS',
+'APS/APO ',
+'ASSES GO / GEX'
 ]
 r = []
 for n in v:
@@ -310,4 +274,62 @@ def test(one='', **kwargs):
             print(v)
 test('a')
 test(one='a', t='two')
+# %%
+import archi.lib.stringutil as stringutil
+import archi.configfunctionlist as cfl
+def getcleanedID(rawname: str, level: int) -> str:
+    cleaned = 'L' + str(level) + cfl.PREFIXTOID + stringutil.cleanName(
+        rawname,
+        True,
+        True,
+        'lowercase',
+        True,
+        True,
+        True)
+    return cleaned
+
+v = 'azertyuiopqsdfghjklmwxcvbn,;:azerrtyuiopqsdfghjklmwxcvn'
+print(getcleanedID(v, 1)[0:10])
+# %%
+import archi.lib.stringutil as stringutil
+#v = 'PSV S/4'
+# 'S/4 / Rank2',
+# 'S/4 ?',
+# 'SAC ? APS ?',
+# 'S/4/ BOM',
+# 'ECC APS',
+v = 'APS/APO'
+v = 'PSV S/4'
+# 'ASSES GO / GEX'
+
+def getCleanedApp(rawname: str) -> str:
+    cleaned = stringutil.cleanName(
+        rawname,
+        True,
+        True,
+        'lowercase',
+        True,
+        False,
+        True)
+    print(cleaned)
+    return cleaned
+
+cl = getCleanedApp(v)
+
+for standaloneApp in v.split('S/4'):
+    try:
+        print(standaloneApp)
+
+    except KeyError:
+        print('error')
+
+# %%
+import archi.configfunctionlist as cfl
+exceptionlist = ['aps/apo', 'eccaps', 's/4?', 's/4/bom?', 'sac?aps?', 's/4/rank2', 'psvs/4', 'assesgo/gex']
+v = 'aps/apo'
+i = cfl.AYAZ_EXCEPTIONLIST.index(v)
+print(i)
+a, c = [exceptionlist[7][0:7], exceptionlist[7][8:11]]
+print(a)
+print(c)
 # %%

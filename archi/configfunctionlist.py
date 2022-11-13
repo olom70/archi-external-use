@@ -180,10 +180,12 @@ AYAZ_TOBELANDSCAPE = {
                         'aps?': 'id-2e999e92a37844c087e39b11f76eadef', # smart Planning for components + link to assessment "not sure of the tool to use in the future" 
                         'aps': 'id-2e999e92a37844c087e39b11f76eadef', # smart Planning for components
                         'assessgo': '705bd79c-9a3e-49d7-81c0-ff51c8e2b1bf', # assessGO
+                        'assesgo': '705bd79c-9a3e-49d7-81c0-ff51c8e2b1bf', # assessGO
                         'bommgr': 'id-fd4fe2e2dcad48a7ac80658add009443', # BOM Manager
+                        'bom': 'id-fd4fe2e2dcad48a7ac80658add009443', # BOM Manager
                         'com': 'id-b905fc58b87244b3addfb56552331fbc', # communication
-                        'dpcpdashboard': 'id-7af32f96-b3d5-4f0c-8973-7ccda679dddd', #DPCP Dashboard
-                        'dpcpportal': 'id-4964247a-745b-42f1-a1be-b23945745038', #DPCP Portal
+                        'dpcpdashboard': '7af32f96-b3d5-4f0c-8973-7ccda679dddd', #DPCP Dashboard
+                        'dpcpportal': '4964247a-745b-42f1-a1be-b23945745038', #DPCP Portal
                         'forecastcollab': 'c5ba2e10-96a7-4267-9df0-3a1379d6f497', # DPCP Forecast (e)
                         'integrator': 'id-b566b7c2685242f8a167487115cf6b23', # Integrator
                         'linkeo': 'id-ee73b67f112f4595893d498bbdda059f', #linkeo
@@ -196,15 +198,28 @@ AYAZ_TOBELANDSCAPE = {
                         'rfidorder': 'id-45dd37a7e2614d17b8b840e9317c3c35', #RFID Order
                         'rfq': 'id-45864c5fd431470498a528db100857ba', # SAP APO
                         's/4': 'id-f78c58175d774305a90a69becd71a3b7', # S/4 
+                        's/4?': 'id-f78c58175d774305a90a69becd71a3b7', # S/4 
                         'sac': 'id-1d5dd6cea6784be48dc7537b665ac088', # SAP SAC
                         'shu': 'e154fd41-ece4-4d01-8818-007839fdeb4f', # SHU SSCC (e) 
                         'stockcollab': 'id-5eefed56469b49bdb7fc3b2b81663bbf', # Stock Collab
                         'wms': 'id-ed63d508610f420592774b87760ae98a', # WMS App
                         'pi4t': 'id-363075155640440892b2119036575b72', #PI4T
                         'mold': '639a99c0-7499-4366-ba87-ae236d99489d', #Mold
-                        'perimeter': 'id-88f4536d78ba45c281767fc8a85c0d91' #PERIMETER
+                        'mould': '639a99c0-7499-4366-ba87-ae236d99489d', #Mold
+                        'perimeter': 'id-88f4536d78ba45c281767fc8a85c0d91', #PERIMETER
+                        'wm': 'id-ed63d508610f420592774b87760ae98a', # WMS app
+                        'tms': 'id-0285b0c626e44cb6b41805b293e94235', # CAPETM
+                        'md': '631e94a7-58f1-44d1-848b-687dc34f6a66', # Master data ?
+                        'alertingtool': 'id-8db799a93b9444d5853f8cb13d9fd381', # alerting tool
+                        'alerting?' : 'id-8db799a93b9444d5853f8cb13d9fd381', # alerting tool
+                        'it': 'id-435e1c5f710547c6ad7fef5fbb2aeed1', # IT tool
+                        'selfbilling': 'id-109863eac0184976b84f6c532f3011a1', # Self Billing
+                        'ecc': 'id-006f61c9520a4fe99f149d794ca87c20', # SAP ECC CORP
+                        'gex': 'id-f5f6bc68e50b4621918960815ed394cd' # GEX IVALUA
                         
 }
+
+AYAZ_EXCEPTIONLIST = ['aps/apo', 'eccaps', 's/4?', 's/4/bom?', 'sac?aps?', 's/4/rank2', 'psvs/4', 'assesgo/gex']
 
 # column AI
 AI_PRODUCTIONREFERENCERASSESSMENT = {'x': 'Tecnically needed for S/4 but can also be the MD main tool (not compulsory if the DB is the same)'
@@ -251,6 +266,6 @@ BABF_S4ANALYSIS = {
                     'BEincl': 'id-e83f588f94f4424e8a0697ab424c22d3', #
                     'BENA': 'id-084f66a25d2d4abbb0fa1882ca95abd0', #
                     'BFp': 'id-172db897c8e14f9899c45eb49cf875b8', # develop in prod.com
-                    'BF2': 'id-261bdb455064420cacd97a3ccd257737', # develop in S/4 and prod.com
+                    'BF2.0': 'id-261bdb455064420cacd97a3ccd257737', # develop in S/4 and prod.com
                     'BFS/4': 'id-14fff60b514442949135e863fbbd9916', # develop in S/4
 }
