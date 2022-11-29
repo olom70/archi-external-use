@@ -63,6 +63,24 @@
             "console": "integratedTerminal",
             "args": ["FunctionsListTestAllColumns.xlsx", "/Users/CLAUDE/Documents/dev/archi-external-use", "output"],
             "justMyCode": true
+        },
+        {
+            "name": "LeanIX - BC _ one file ",
+            "type": "python",
+            "request": "launch",
+            "program": "test/test-import-LeanIX.py",
+            "console": "integratedTerminal",
+            "args": ["BCMap.xlsx", "FunctionsList.xlsx", "/Users/CLAUDE/Documents/dev/archi-external-use", "outputLeanIX", "LeanIXimport", "True"],
+            "justMyCode": true
+        },
+        {
+            "name": "LeanIX - BC - several files ",
+            "type": "python",
+            "request": "launch",
+            "program": "test/test-import-LeanIX.py",
+            "console": "integratedTerminal",
+            "args": ["BCMap.xlsx", "FunctionsList.xlsx", "/Users/CLAUDE/Documents/dev/archi-external-use", "outputLeanIX", "LeanIXimport", "False"],
+            "justMyCode": true
         }
 
 
