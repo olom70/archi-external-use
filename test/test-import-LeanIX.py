@@ -39,14 +39,6 @@ if __name__ == '__main__':
                         metavar='output',
                         type=str,
                         help='the folder where to create the csv files')
-    my_parser.add_argument('outputfileprefix',
-                        metavar='outputfileprefix',
-                        type=str,
-                        help='the prefix of the file to create in the outputfolder')
-    my_parser.add_argument('allinonefile',
-                        metavar='allinonefile',
-                        type=str,
-                        help='true to generate one output file only, false to create a file for each input file')
 
     # Execute the parse_args() method
     args = my_parser.parse_args()
@@ -56,13 +48,8 @@ if __name__ == '__main__':
     BUSINESS_CAPABILITIE_NAME = args.bcfile
     MAIN_FOLDER = args.path
     OUTPUT = args.output
-    OUTPUT_FILE_PREFIX = args.outputfileprefix
-    ALL_IN_ONE_FILE = True if args.allinonefile == 'True' else False
-
     assert leaniximport.importALL(MAIN_FOLDER=MAIN_FOLDER, OUTPUT=OUTPUT,
                                 FUNCTIONLIST_NAME=FUNCTIONLIST_NAME,
-                                BUSINESS_CAPABILITIE_NAME=BUSINESS_CAPABILITIE_NAME,
-                                OUTPUT_FILE_PREFIX=OUTPUT_FILE_PREFIX,
-                                ALL_IN_ONE_FILE=ALL_IN_ONE_FILE)
+                                BUSINESS_CAPABILITIE_NAME=BUSINESS_CAPABILITIE_NAME)
 
     fh.close()

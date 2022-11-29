@@ -12,37 +12,26 @@ import archi.lib.fileutil as fileutil
 
 mlogger = logging.getLogger('test-import-LeanIX.leaniximport')
 
-def createLeanIXFile(MAIN_FOLDER: str, OUTPUT: str, OUTPUT_FILE:str) -> list:
-    try:
-        os.mkdir(MAIN_FOLDER)
-        os.mkdir(MAIN_FOLDER + os.path.sep + OUTPUT)
-    except FileExistsError as fe:
-        pass
-    except FileNotFoundError as fnf:
-        mlogger.critical(
-            f'wrong path, please fix MAIN_FOLDER : {MAIN_FOLDER} and/or OUTPUT {OUTPUT}')
-        return []
-    except Exception as e:
-        mlogger.critical(f'unexpected error : {type(e)}{e.args}')
-        return []
-
-    OUTPUT_FOLDER = MAIN_FOLDER + os.path.sep + OUTPUT
-    try:
-        creationtime = str(time.time())
-        csvelementsfile = OUTPUT_FOLDER + os.path.sep + creationtime + OUTPUT_FILE+ '.csv'
-        return csvutil.createfiles([csvelementsfile])
-    except Exception as e:
-        mlogger.critical(
-            f'The initialisation of the csv files ({csvelementsfile}) failed')
-        return []
-
-
 @log_function_call
 def importALL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str,
-                BUSINESS_CAPABILITIE_NAME: str,
-                OUTPUT_FILE_PREFIX: str,
-                ALL_IN_ONE_FILE : bool
+                BUSINESS_CAPABILITIE_NAME: str
             ) -> bool:
+
+
+    def getProcessCell(colDLinkToFL: str) -> str:
+        if len(colDLinkToFL) > 4:
+            relBusinessCapabilityToProcess =  colDLinkToFL.replace(clix.SPLITON, clix.LIST_SEPARATOR)
+        else:
+            relBusinessCapabilityToProcess = ''
+        return relBusinessCapabilityToProcess
+
+    def getAppCell(colJITSolutions: str) -> str:
+        if len(colJITSolutions) > 2:
+            relBusinessCapabilityToApplication =  colJITSolutions.replace(clix.SPLITON, clix.LIST_SEPARATOR)
+        else:
+            relBusinessCapabilityToApplication = ''
+        return relBusinessCapabilityToApplication
+
 
     @log_function_call
     def importBC() -> bool:
@@ -52,7 +41,7 @@ def importALL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str,
 
         try:
 
-            toWrite = csvutil.initLeanIX(type=clix.TYPE_CAPABILITY, name=clix.ROOT) #it's the default Business Capability
+            toWrite = csvutil.initLeanIXCapabilities(type=clix.TYPE_CAPABILITY, name=clix.ROOT) #it's the default Business Capability
             outputfiles[1].writerow(toWrite)
 
             db = xl.readxl(fn=INPUT)
@@ -116,7 +105,7 @@ def importALL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str,
                     ############################
                     if Level1ID not in l_alreadyAdded:
                         l_alreadyAdded.append(Level1ID)
-                        toWrite = csvutil.initLeanIX(type=clix.TYPE_CAPABILITY,
+                        toWrite = csvutil.initLeanIXCapabilities(type=clix.TYPE_CAPABILITY,
                                                         name=Level1ID,
                                                         displayName=colBL1ID,
                                                         relToParent=clix.ROOT
@@ -129,11 +118,15 @@ def importALL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str,
                         l_alreadyAdded.append(Level2ID)
                         if len(colEL3ID) < 4:
                             relToParent=clix.ROOT + clix.HIERARCHY_SEPARATOR + Level1ID
-                            toWrite = csvutil.initLeanIX(type=clix.TYPE_CAPABILITY,
+                            relBusinessCapabilityToProcess =  getProcessCell(colDLinkToFL)
+                            relBusinessCapabilityToApplication =  getProcessCell(colJITSolutions)
+                            toWrite = csvutil.initLeanIXCapabilities(type=clix.TYPE_CAPABILITY,
                                                         name=Level2ID,
                                                         displayName=colCL2ID,
                                                         relToParent=relToParent,
-                                                        description=description
+                                                        description=description,
+                                                        relBusinessCapabilityToProcess=relBusinessCapabilityToProcess,
+                                                        relBusinessCapabilityToApplication=relBusinessCapabilityToApplication
                                                     )
                             outputfiles[1].writerow(toWrite)
                     ############################
@@ -147,11 +140,16 @@ def importALL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str,
                                 + Level1ID \
                                 + clix.HIERARCHY_SEPARATOR \
                                 + Level2ID
-                            toWrite = csvutil.initLeanIX(type=clix.TYPE_CAPABILITY,
+                            relBusinessCapabilityToProcess =  getProcessCell(colDLinkToFL)
+                            relBusinessCapabilityToApplication =  getProcessCell(colJITSolutions)
+
+                            toWrite = csvutil.initLeanIXCapabilities(type=clix.TYPE_CAPABILITY,
                                                         name=Level3ID,
                                                         displayName=colEL3ID,
                                                         relToParent=relToParent,
-                                                        description=description
+                                                        description=description,
+                                                        relBusinessCapabilityToProcess=relBusinessCapabilityToProcess,
+                                                        relBusinessCapabilityToApplication=relBusinessCapabilityToApplication
                                                     )
                             outputfiles[1].writerow(toWrite)
                     ############################
@@ -160,18 +158,65 @@ def importALL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str,
                     if Level4ID not in l_alreadyAdded:
                         l_alreadyAdded.append(Level3ID)
                         if len(colFL4ID) > 4:
-                            relToParent=clix.ROOT + clix.HIERARCHY_SEPARATOR + Level1ID + clix.HIERARCHY_SEPARATOR + Level2ID + clix.HIERARCHY_SEPARATOR + Level3ID
-                            toWrite = csvutil.initLeanIX(type=clix.TYPE_CAPABILITY,
+                            relToParent=clix.ROOT \
+                                + clix.HIERARCHY_SEPARATOR \
+                                + Level1ID \
+                                + clix.HIERARCHY_SEPARATOR \
+                                + Level2ID \
+                                + clix.HIERARCHY_SEPARATOR + Level3ID
+                            relBusinessCapabilityToProcess =  getProcessCell(colDLinkToFL)
+                            relBusinessCapabilityToApplication =  getProcessCell(colJITSolutions)
+
+                            toWrite = csvutil.initLeanIXCapabilities(type=clix.TYPE_CAPABILITY,
                                                         name=Level4ID,
                                                         displayName=colFL4ID,
                                                         relToParent=relToParent,
-                                                        description=description
+                                                        description=description,
+                                                        relBusinessCapabilityToProcess=relBusinessCapabilityToProcess,
+                                                        relBusinessCapabilityToApplication=relBusinessCapabilityToApplication
                                                     )
                             outputfiles[1].writerow(toWrite)
+                    ############################
+                    # PROCESS ##################
+                    ############################
+                    if len(colDLinkToFL) > 4:
+                        for process in colDLinkToFL.split(clix.SPLITON):
+                            process = stringutil.cleanName(
+                                                    process,
+                                                    False,
+                                                    True,
+                                                    'noChange',
+                                                    True,
+                                                    False,
+                                                    False)
+                            if process not in l_alreadyAdded:
+                                l_alreadyAdded.append(process)
+                                outputfiles[3].writerow(
+                                csvutil.initLeanIXProcess(type=clix.TYPE_PROCESS, name=process)
+                                )
+                    ############################
+                    # APPLICATIONS ##################
+                    ############################
+                    if len(colJITSolutions) > 2:
+                        for app in colJITSolutions.split(clix.SPLITON):
+                            app = stringutil.cleanName(
+                                                    app,
+                                                    True,
+                                                    True,
+                                                    'lowercase',
+                                                    True,
+                                                    False,
+                                                    False)
+                            if app not in l_alreadyAdded:
+                                l_alreadyAdded.append(app)
+                                outputfiles[5].writerow(
+                                csvutil.initLeanIXProcess(type=clix.TYPE_APPLICATION, name=app)
+                                )
+                    
 
             return True
         except Exception as e:
-            mlogger.critical(f'Unexpected error in function prepareCapabilitiesTreemap() : {type(e)}{e.args}')
+            mlogger.critical(f'Unexpected error in function importAll() : {type(e)}{e.args}')
             return False
 
 
@@ -185,14 +230,67 @@ def importALL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str,
     #==================================================================================
     #Start of function
     #==================================================================================
-    if not ALL_IN_ONE_FILE:
-        outputfiles = createLeanIXFile(MAIN_FOLDER=MAIN_FOLDER, OUTPUT=OUTPUT, OUTPUT_FILE=OUTPUT_FILE_PREFIX+clix.BC_SUFFIX)
-    else:
-        outputfiles = createLeanIXFile(MAIN_FOLDER=MAIN_FOLDER, OUTPUT=OUTPUT, OUTPUT_FILE=OUTPUT_FILE_PREFIX)
+    
     try:
-        outputfiles[1].writerow(csvutil.initLeanIXHeader())
+        os.mkdir(MAIN_FOLDER)
+        os.mkdir(MAIN_FOLDER + os.path.sep + OUTPUT)
+    except FileExistsError as fe:
+        pass
+    except FileNotFoundError as fnf:
+        mlogger.critical(
+            f'wrong path, please fix MAIN_FOLDER : {MAIN_FOLDER} and/or OUTPUT {OUTPUT}')
+        return False
     except Exception as e:
-        mlogger.critical(f'Unexpected error in function importALL() : {type(e)}{e.args}')
+        mlogger.critical(f'unexpected error : {type(e)}{e.args}')
+        return False
+
+    OUTPUT_FOLDER = MAIN_FOLDER + os.path.sep + OUTPUT
+    try:
+        creationtime = str(time.time())
+        csvBusinessCapability = OUTPUT_FOLDER + os.path.sep + clix.PREFIX + creationtime + clix.BC_SUFFIX + '.csv'
+        csvProcess = OUTPUT_FOLDER + os.path.sep + clix.PREFIX + creationtime + clix.PR_SUFFIX + '.csv'
+        csvAPP = OUTPUT_FOLDER + os.path.sep + clix.PREFIX + creationtime + clix.AP_SUFFIX + '.csv'
+        outputfiles = csvutil.createfiles([csvBusinessCapability, csvProcess, csvAPP])
+    except Exception as e:
+        mlogger.critical(
+            f'The initialisation of the csv files ({csvBusinessCapability}, {csvProcess}, {csvAPP}) failed')
+        return False
+
+    # Init first 2 lines of the Business Capabilities
+    outputfiles[1].writerow(
+        csvutil.initLeanIXCapabilities(id='id', type='type', name='name', displayName='displayName',
+                            description='description', relToParent='relToParent', 
+                            relBusinessCapabilityToProcess='relBusinessCapabilityToProcess',
+                            relBusinessCapabilityToApplication='relBusinessCapabilityToApplication')
+                            )
+    outputfiles[1].writerow(
+        csvutil.initLeanIXCapabilities(id='ID', type='Type', name='Name', displayName='Display Name',
+                            description='Description', relToParent='Parents', 
+                            relBusinessCapabilityToProcess='Processes',
+                            relBusinessCapabilityToApplication='Applications')
+                            )
+    # Init first 2 lines of the Processes
+    outputfiles[3].writerow(
+        csvutil.initLeanIXProcess(id='id', type='type', name='name', displayName='displayName',
+                            description='description',
+                            relProcessToApplication='relProcessToApplication')
+                            )
+    outputfiles[3].writerow(
+        csvutil.initLeanIXProcess(id='ID', type='Type', name='Name', displayName='Display Name',
+                            description='Description',
+                            relProcessToApplication='Applications')
+                            )
+    # Init first 2 lines of the Applications
+    outputfiles[5].writerow(
+        csvutil.initLeanIXApplication(id='id', type='type', name='name', displayName='displayName',
+                            description='description', functionalSuitability='functionalSuitability', 
+                            relApplicationToProcess='relApplicationToProcess')
+                            )
+    outputfiles[5].writerow(
+        csvutil.initLeanIXApplication(id='ID', type='Type', name='Name', displayName='Display Name',
+                            description='Description', functionalSuitability='Functional Fit', 
+                            relApplicationToProcess='Processes')
+                            )
 
     INPUT = MAIN_FOLDER + os.path.sep + BUSINESS_CAPABILITIE_NAME
     if not os.path.isfile(INPUT):
@@ -202,27 +300,11 @@ def importALL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str,
 
     ok = importBC()
     if not ok:
-        outputfiles[0].close()    
-        return False
-
-    if not ALL_IN_ONE_FILE:
+        mlogger.critical(f'ImportBC() returned False')
         outputfiles[0].close()
-        outputfiles = createLeanIXFile(MAIN_FOLDER=MAIN_FOLDER, OUTPUT=OUTPUT, OUTPUT_FILE=OUTPUT_FILE_PREFIX+clix.FL_SUFFIX)
-        try:
-            outputfiles[1].writerow(csvutil.initLeanIXHeader())
-        except Exception as e:
-            mlogger.critical(f'Unexpected error in function importALL() : {type(e)}{e.args}')
-
-    INPUT = MAIN_FOLDER + os.path.sep + FUNCTIONLIST_NAME
-    if not os.path.isfile(INPUT):
-        mlogger.critical(
-            f'this file does not exists {INPUT}. put it in the folder {MAIN_FOLDER}')
+        outputfiles[2].close()
+        outputfiles[4].close()
         return False
-    ok = importFL()
-    if not ok:
-        outputfiles[0].close()
-        return False
-
-    outputfiles[0].close()
-    return True
-
+    
+    if ok: return True
+    
