@@ -21,6 +21,14 @@ def importALL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str,
     def getProcessCell(colDLinkToFL: str) -> str:
         if len(colDLinkToFL) > 4:
             relBusinessCapabilityToProcess =  colDLinkToFL.replace(clix.SPLITON, clix.LIST_SEPARATOR)
+            relBusinessCapabilityToProcess = stringutil.cleanName(
+                                                    relBusinessCapabilityToProcess,
+                                                    False,
+                                                    False,
+                                                    'noChange',
+                                                    True,
+                                                    False,
+                                                    False)
         else:
             relBusinessCapabilityToProcess = ''
         return relBusinessCapabilityToProcess
@@ -28,6 +36,14 @@ def importALL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str,
     def getAppCell(colJITSolutions: str) -> str:
         if len(colJITSolutions) > 2:
             relBusinessCapabilityToApplication =  colJITSolutions.replace(clix.SPLITON, clix.LIST_SEPARATOR)
+            relBusinessCapabilityToApplication = stringutil.cleanName(
+                                                    relBusinessCapabilityToApplication,
+                                                    True,
+                                                    True,
+                                                    'lowercase',
+                                                    True,
+                                                    False,
+                                                    False)
         else:
             relBusinessCapabilityToApplication = ''
         return relBusinessCapabilityToApplication
@@ -41,8 +57,8 @@ def importALL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str,
 
         try:
 
-            toWrite = csvutil.initLeanIXCapabilities(type=clix.TYPE_CAPABILITY, name=clix.ROOT) #it's the default Business Capability
-            outputfiles[1].writerow(toWrite)
+            # toWrite = csvutil.initLeanIXCapabilities(type=clix.TYPE_CAPABILITY, name=clix.ROOT) #it's the default Business Capability
+            # outputfiles[1].writerow(toWrite)
 
             db = xl.readxl(fn=INPUT)
             colA = db.ws(ws='bcmap').col(col=1)
@@ -107,8 +123,8 @@ def importALL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str,
                         l_alreadyAdded.append(Level1ID)
                         toWrite = csvutil.initLeanIXCapabilities(type=clix.TYPE_CAPABILITY,
                                                         name=Level1ID,
-                                                        displayName=colBL1ID,
-                                                        relToParent=clix.ROOT
+                                                        displayName=Level1ID,
+                                                        relToParent=''
                                                     )
                         outputfiles[1].writerow(toWrite)
                     ############################
@@ -116,64 +132,73 @@ def importALL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str,
                     ############################
                     if Level2ID not in l_alreadyAdded:
                         l_alreadyAdded.append(Level2ID)
-                        if len(colEL3ID) < 4:
-                            relToParent=clix.ROOT + clix.HIERARCHY_SEPARATOR + Level1ID
-                            relBusinessCapabilityToProcess =  getProcessCell(colDLinkToFL)
-                            relBusinessCapabilityToApplication =  getProcessCell(colJITSolutions)
-                            toWrite = csvutil.initLeanIXCapabilities(type=clix.TYPE_CAPABILITY,
-                                                        name=Level2ID,
-                                                        displayName=colCL2ID,
-                                                        relToParent=relToParent,
-                                                        description=description,
-                                                        relBusinessCapabilityToProcess=relBusinessCapabilityToProcess,
-                                                        relBusinessCapabilityToApplication=relBusinessCapabilityToApplication
-                                                    )
-                            outputfiles[1].writerow(toWrite)
+                        displayName=Level1ID + clix.HIERARCHY_SEPARATOR + Level2ID
+                        relToParent=Level1ID
+                        relBusinessCapabilityToProcess =  getProcessCell(colDLinkToFL)
+                        relBusinessCapabilityToApplication =  getAppCell(colJITSolutions)
+                        toWrite = csvutil.initLeanIXCapabilities(type=clix.TYPE_CAPABILITY,
+                                                    name=Level2ID,
+                                                    displayName=displayName,
+                                                    description=description,
+                                                    relBusinessCapabilityToProcess=relBusinessCapabilityToProcess,
+                                                    relBusinessCapabilityToApplication=relBusinessCapabilityToApplication,
+                                                    relToParent=relToParent
+                                                )
+                        outputfiles[1].writerow(toWrite)
                     ############################
                     # LEVEL 3 ##################
                     ############################
                     if Level3ID not in l_alreadyAdded:
                         l_alreadyAdded.append(Level3ID)
-                        if len(colFL4ID) < 4:
-                            relToParent=clix.ROOT \
+                        if len(colEL3ID) > 4:
+                            displayName=Level1ID \
                                 + clix.HIERARCHY_SEPARATOR \
-                                + Level1ID \
+                                + Level2ID \
+                                + clix.HIERARCHY_SEPARATOR \
+                                + Level3ID
+                            relToParent=Level1ID \
                                 + clix.HIERARCHY_SEPARATOR \
                                 + Level2ID
                             relBusinessCapabilityToProcess =  getProcessCell(colDLinkToFL)
-                            relBusinessCapabilityToApplication =  getProcessCell(colJITSolutions)
+                            relBusinessCapabilityToApplication =  getAppCell(colJITSolutions)
 
                             toWrite = csvutil.initLeanIXCapabilities(type=clix.TYPE_CAPABILITY,
                                                         name=Level3ID,
-                                                        displayName=colEL3ID,
-                                                        relToParent=relToParent,
+                                                        displayName=displayName,
                                                         description=description,
                                                         relBusinessCapabilityToProcess=relBusinessCapabilityToProcess,
-                                                        relBusinessCapabilityToApplication=relBusinessCapabilityToApplication
+                                                        relBusinessCapabilityToApplication=relBusinessCapabilityToApplication,
+                                                        relToParent=relToParent
                                                     )
                             outputfiles[1].writerow(toWrite)
                     ############################
                     # LEVEL 4 ##################
                     ############################
                     if Level4ID not in l_alreadyAdded:
-                        l_alreadyAdded.append(Level3ID)
+                        l_alreadyAdded.append(Level4ID)
                         if len(colFL4ID) > 4:
-                            relToParent=clix.ROOT \
-                                + clix.HIERARCHY_SEPARATOR \
-                                + Level1ID \
+                            displayName=Level1ID \
                                 + clix.HIERARCHY_SEPARATOR \
                                 + Level2ID \
-                                + clix.HIERARCHY_SEPARATOR + Level3ID
+                                + clix.HIERARCHY_SEPARATOR \
+                                + Level3ID \
+                                + clix.HIERARCHY_SEPARATOR \
+                                + Level4ID
+                            relToParent=Level1ID \
+                                + clix.HIERARCHY_SEPARATOR \
+                                + Level2ID \
+                                + clix.HIERARCHY_SEPARATOR \
+                                + Level3ID
                             relBusinessCapabilityToProcess =  getProcessCell(colDLinkToFL)
-                            relBusinessCapabilityToApplication =  getProcessCell(colJITSolutions)
+                            relBusinessCapabilityToApplication =  getAppCell(colJITSolutions)
 
                             toWrite = csvutil.initLeanIXCapabilities(type=clix.TYPE_CAPABILITY,
                                                         name=Level4ID,
-                                                        displayName=colFL4ID,
-                                                        relToParent=relToParent,
+                                                        displayName=displayName,
                                                         description=description,
                                                         relBusinessCapabilityToProcess=relBusinessCapabilityToProcess,
-                                                        relBusinessCapabilityToApplication=relBusinessCapabilityToApplication
+                                                        relBusinessCapabilityToApplication=relBusinessCapabilityToApplication,
+                                                        relToParent=relToParent
                                                     )
                             outputfiles[1].writerow(toWrite)
                     ############################
@@ -184,7 +209,7 @@ def importALL(MAIN_FOLDER: str, OUTPUT: str, FUNCTIONLIST_NAME: str,
                             process = stringutil.cleanName(
                                                     process,
                                                     False,
-                                                    True,
+                                                    False,
                                                     'noChange',
                                                     True,
                                                     False,
