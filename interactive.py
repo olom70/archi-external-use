@@ -333,3 +333,11 @@ a, c = [exceptionlist[7][0:7], exceptionlist[7][8:11]]
 print(a)
 print(c)
 # %%
+
+# %%l = [1,2,3]
+li = [1,2,3]
+
+m = ''.join(map(str,li))
+print(m)
+
+# %%
